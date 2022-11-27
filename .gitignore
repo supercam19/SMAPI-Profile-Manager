@@ -7,3 +7,6 @@
 /venv
 /backup
 *.exe
+*.spec
+profiles.txt
+smapi.png
