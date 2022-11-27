@@ -31,6 +31,7 @@ class Window(ctk.CTk):
         self.canvas.configure(scrollregion=self.canvas.bbox("all"))
 
 
+
 class Frame(ctk.CTkFrame):
     def __init__(self, parent, **kwargs):
         super().__init__(parent, **kwargs)

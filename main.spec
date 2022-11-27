@@ -8,7 +8,7 @@ a = Analysis(
     ['main.py'],
     pathex=[],
     binaries=[],
-    datas=[('C:/Users/label/scoop/apps/python/current/Lib/site-packages/customtkinter', 'customtkinter/')],
+    datas=[('C:\\Users\\label\\scoop\\apps\\python\\current\\Lib\\site-packages\\customtkinter', 'customtkinter')],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},

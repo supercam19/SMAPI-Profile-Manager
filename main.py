@@ -21,6 +21,8 @@ class Profile:
         self.prof_title.pack(side=tk.LEFT, padx=2)
         self.prof_button.pack(side=tk.RIGHT, padx=10)
         self.prof_delete.pack(side=tk.RIGHT)
+        warning_label.pack_forget()
+
 
     def select_profile(self):
         os.chdir(self.path)
@@ -102,14 +104,24 @@ profile_number = 0
 name_input = ''
 VERSION = "v1.0.0"
 
+# check if profiles.txt exists, if not create it
+if not os.path.exists('profiles.txt'):
+    with open('profiles.txt', 'w') as f:
+        f.write('')
+
 # Initialize the TK window
 window = Window()
 add_prof_button = tk.CTkButton(window.top_frame, text="+", text_font=("Arial", 18), width=50, command=add_profile).pack(padx=10, pady=10, side=tk.RIGHT, anchor=tk.N)
+
+warning_label = tk.CTkLabel(window.profiles_list, text="No profiles found, use the + button to add a profile")
+warning_label.pack(pady=20, padx=100)
 
 try:
     load_profiles()
 except FileNotFoundError:
     pass
+
+
 
 window.mainloop()
 

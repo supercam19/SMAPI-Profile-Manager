@@ -1,0 +1,9 @@
+
+/.idea
+/__pycache__
+/.vscode
+/build
+/dist
+/venv
+/backup
+*.exe
