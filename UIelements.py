@@ -8,7 +8,7 @@ class Window(ctk.CTk):
         self.title("SMAPI Mod Manager")
         self.geometry("500x400")
         self.resizable(False, False)
-        self.iconphoto(True, PhotoImage(file="assets/smapi.png"))
+        self.iconphoto(True, PhotoImage(file="assets/logo.png"))
 
         self.top_frame = Frame(self, width=500, height=200)
         self.top_frame.propagate(False)

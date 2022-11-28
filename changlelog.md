@@ -4,6 +4,7 @@
 
 ### Additions
  - Added a changelog
+ - Added a new icon for the taskbar/exe file
 
 ### Fixes
  - Fixed the window icon not displaying
