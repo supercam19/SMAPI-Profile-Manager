@@ -8,7 +8,7 @@ class Window(ctk.CTk):
         self.title("SMAPI Mod Manager")
         self.geometry("500x400")
         self.resizable(False, False)
-        # self.window_icon = PhotoImage(file="logo.ico")
+        self.iconphoto(True, PhotoImage(file="smapi.png"))
 
         self.top_frame = Frame(self, width=500, height=200)
         self.top_frame.propagate(False)
@@ -29,7 +29,6 @@ class Window(ctk.CTk):
         self.scrollbar.pack(side="right", fill="y")
         self.profiles_list.bind("<Configure>", lambda e: self.canvas.configure(scrollregion=self.canvas.bbox("all")))
         self.canvas.configure(scrollregion=self.canvas.bbox("all"))
-
 
 
 class Frame(ctk.CTkFrame):
