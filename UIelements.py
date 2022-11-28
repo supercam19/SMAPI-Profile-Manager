@@ -17,6 +17,10 @@ class Window(ctk.CTk):
         self.banner_label = ctk.CTkLabel(self.top_frame, image=self.banner, width=400, height=200, anchor='nw')
         self.banner_label.pack(side="left", fill="x")
 
+        self.control_frame = Frame(self.top_frame, width=100, height=200)
+        self.control_frame.pack_propagate(False)
+        self.control_frame.pack(side="right", fill="y")
+
         self.canvas = ctk.CTkCanvas(self, width=500)
         self.profiles_list = Frame(self, width=500, height=360)
         self.scrollbar = ctk.CTkScrollbar(self.profiles_list, command=self.canvas.yview)

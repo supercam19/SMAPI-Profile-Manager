@@ -2,6 +2,8 @@ import os
 from tkinter import filedialog, PhotoImage
 import customtkinter as tk
 from UIelements import *
+import requests
+import json
 
 
 class Profile:
@@ -99,19 +101,37 @@ def load_profiles():
             profiles[-1].draw_profile()
 
 
+def check_files():
+    # Check if critical files are missing, if so, download/create them
+    if not os.path.exists('profiles.txt'):
+        with open('profiles.txt', 'w') as f:
+            f.write('')
+    if not os.path.exists('settings.txt'):
+        with open('settings.txt', 'w') as f:
+            f.write('')
+    if not os.path.exists('assets'):
+        os.mkdir('assets')
+    if not os.path.exists('assets/background.png'):
+        background_img = requests.get('https://github.com/supercam19/SMAPI-Profile-Manager/blob/main/assets/background.png?raw=true')
+        with open('assets/background.png', 'wb') as f:
+            f.write(background_img.content)
+    if not os.path.exists('assets/icon.png'):
+        icon_img = requests.get('https://github.com/supercam19/SMAPI-Profile-Manager/blob/main/assets/logo.png?raw=true')
+        with open('assets/icon.png', 'wb') as f:
+            f.write(icon_img.content)
+
+
+check_files()
+
 profiles = []
 profile_number = 0
 name_input = ''
 VERSION = "v1.0.0"
 
-# check if profiles.txt exists, if not create it
-if not os.path.exists('profiles.txt'):
-    with open('profiles.txt', 'w') as f:
-        f.write('')
 
 # Initialize the TK window
 window = Window()
-add_prof_button = tk.CTkButton(window.top_frame, text="+", text_font=("Arial", 18), width=50, command=add_profile).pack(padx=12, pady=10, side=tk.RIGHT, anchor=tk.N)
+add_prof_button = tk.CTkButton(window.control_frame, text="+", text_font=("Arial", 18), width=50, command=add_profile).pack(pady=10, anchor=tk.N)
 
 warning_label = tk.CTkLabel(window.profiles_list, text="No profiles found, use the + button to add a profile")
 warning_label.pack(pady=20, padx=100)
@@ -120,7 +140,6 @@ try:
     load_profiles()
 except FileNotFoundError:
     pass
-
 
 
 window.mainloop()
