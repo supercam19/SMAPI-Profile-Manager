@@ -38,3 +38,39 @@ class Frame(ctk.CTkFrame):
         # define size of frame
         self.width = kwargs.get("width", 100)
         self.height = kwargs.get("height", 100)
+
+
+class Popup:
+    def __init__(self, title, message, root, text_box=True):
+        self.popup = ctk.CTkToplevel(root)
+        self.popup.title(title)
+        self.popup.geometry("300x100")
+        # self.popup.resizable(False, False)
+        self.popup.protocol("WM_DELETE_WINDOW", self.close_popup)
+        self.popup_label = ctk.CTkLabel(self.popup, text=message)
+        self.popup_label.pack()
+        self.text_box = text_box
+        if text_box:
+            self.popup_text = ctk.CTkEntry(self.popup, width=200)
+            self.popup_text.pack(pady=10)
+        self.popup_button = ctk.CTkButton(self.popup, text="OK", command=self.close_popup, width=10)
+        self.popup_button.pack()
+
+    def close_popup(self):
+        popup_info.change(self.popup_text.get())
+        self.popup.destroy()
+
+
+class PopupInfo:
+    def __init__(self):
+        self.info = 'Error'
+
+    def __str__(self):
+        return self.info
+
+    def change(self, info):
+        assert isinstance(info, str)
+        self.info = info
+
+
+popup_info = PopupInfo()

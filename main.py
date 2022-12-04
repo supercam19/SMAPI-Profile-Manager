@@ -25,17 +25,15 @@ class Profile:
         self.prof_delete.pack(side=tk.RIGHT)
         warning_label.pack_forget()
 
-
     def select_profile(self):
-        os.chdir(self.path)
-        os.chdir('..')
+        os.chdir(os.path.dirname(settings['smapi_path']))
         # Find the name of the profile being disabled
-        with open('C:/Program Files (x86)/Steam/steamapps/common/Stardew Valley/Mods/profile.txt', 'r') as f:
+        with open('Mods/profile.txt', 'r') as f:
             prof_name = f.read()
         os.system(f'ren "Mods" "Mods_{prof_name}"')
         os.system(f'ren "Mods_{self.name.upper()}" "Mods"')
 
-        os.system('START "" "StardewModdingAPI.exe"')
+        os.system(f'START "" "{settings["smapi_path"]}"')
 
     def delete_profile(self):
         self.prof_frame.destroy()
@@ -51,33 +49,13 @@ class Profile:
                     f.write(line)
 
 
-class Popup:
-    def __init__(self, title, message):
-        self.popup = tk.CTkToplevel(window)
-        self.popup.title(title)
-        self.popup.geometry("300x100")
-        # self.popup.resizable(False, False)
-        self.popup.protocol("WM_DELETE_WINDOW", self.close_popup)
-        self.popup_label = tk.CTkLabel(self.popup, text=message)
-        self.popup_label.pack()
-        self.popup_text = tk.CTkEntry(self.popup, width=200)
-        self.popup_text.pack(pady=10)
-        self.popup_button = tk.CTkButton(self.popup, text="OK", command=self.close_popup, width=10)
-        self.popup_button.pack()
-
-    def close_popup(self):
-        global name_input
-        name_input = self.popup_text.get()
-        self.popup.destroy()
-
-
 def add_profile():
     prof_path = filedialog.askdirectory()
     # Write the name of the profile to a text file to save for later
-    popup = Popup("Name your profile", "Enter a name for your profile")
+    popup = Popup("Name your profile", "Enter a name for your profile", window)
     # Wait for the popup to close
     window.wait_window(popup.popup)
-    prof_name = name_input
+    prof_name = str(popup_info)
     with open(f'{prof_path}\\profile.txt', 'w') as f:
         f.write(prof_name.upper())
     os.system(f'ren "{prof_path}" "Mods_{prof_name.upper()}"')
@@ -101,13 +79,24 @@ def load_profiles():
             profiles[-1].draw_profile()
 
 
+def load_settings():
+    with open('settings.json', 'r') as f:
+        settings = json.load(f)
+    return settings
+
+
+def save_settings():
+    with open('settings.json', 'w') as f:
+        json.dump(settings, f)
+
+
 def check_files():
     # Check if critical files are missing, if so, download/create them
     if not os.path.exists('profiles.txt'):
         with open('profiles.txt', 'w') as f:
             f.write('')
-    if not os.path.exists('settings.txt'):
-        with open('settings.txt', 'w') as f:
+    if not os.path.exists('settings.json'):
+        with open('settings.json', 'w') as f:
             f.write('')
     if not os.path.exists('assets'):
         os.mkdir('assets')
@@ -121,26 +110,34 @@ def check_files():
             f.write(icon_img.content)
 
 
-check_files()
-
 profiles = []
 profile_number = 0
 name_input = ''
 VERSION = "v1.0.0"
 
+if __name__ == '__main__':
+    check_files()
+    settings = load_settings()
+    # Initialize the TK window
+    window = Window()
+    add_prof_button = tk.CTkButton(window.control_frame, text="+", text_font=("Arial", 18), width=50, command=add_profile).pack(pady=10, anchor=tk.N)
 
-# Initialize the TK window
-window = Window()
-add_prof_button = tk.CTkButton(window.control_frame, text="+", text_font=("Arial", 18), width=50, command=add_profile).pack(pady=10, anchor=tk.N)
+    warning_label = tk.CTkLabel(window.profiles_list, text="No profiles found, use the + button to add a profile")
+    warning_label.pack(pady=20, padx=100)
 
-warning_label = tk.CTkLabel(window.profiles_list, text="No profiles found, use the + button to add a profile")
-warning_label.pack(pady=20, padx=100)
+    if 'smapi_path' not in settings or not os.path.exists(settings['smapi_path']):
+        if os.path.exists('C:/Program Files (x86)/Steam/steamapps/common/Stardew Valley/StardewModdingAPI.exe'):
+            settings['smapi_path'] = 'C:/Program Files (x86)/Steam/steamapps/common/Stardew Valley/StardewModdingAPI.exe'
+        else:
+            popup = Popup("SMAPI not found!", "Select the SMAPI executable", window, False)
+            window.wait_window(popup.popup)
+            settings['smapi_path'] = filedialog.askopenfilename(title="Select StardewModdingAPI.exe", filetypes=[("StardewModdingAPI.exe", "*.exe")])
+        save_settings()
 
-try:
-    load_profiles()
-except FileNotFoundError:
-    pass
+    try:
+        load_profiles()
+    except FileNotFoundError:
+        pass
 
-
-window.mainloop()
+    window.mainloop()
 
