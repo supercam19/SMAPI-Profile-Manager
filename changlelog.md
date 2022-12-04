@@ -8,6 +8,7 @@
  - Version tag in the UI
 
 ### Changes
+ - Made the install process more simple
  - Updated the README.md file
 
 ### Fixes
