@@ -10,7 +10,7 @@ You can run the .exe file directly to use the profile manager, or if you want to
 2. In your Steam library, go to Stardew Valley
 3. Press on the gear icon and click on properties
 4. Under launch options, enter the following:<br>
-`"<path\to\profile\manager>\SMAPI Profile Manager.exe" %command%`</br>
+`"<path\to\profile\manager>\SMAPI.Profile.Manager.exe" %command%`</br>
 Where <path\to\profile\manager> is the path to the folder of the profile manager you previously downloaded
 5. You're done! Just launch the game normally through steam and the profile manager will pop up.
 
