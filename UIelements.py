@@ -60,7 +60,7 @@ class Popup:
         self.popup_button.pack()
 
     def close_popup(self):
-        popup_info.change(self.popup_text.get())
+        if self.text_box: popup_info.change(self.popup_text.get())
         self.popup.destroy()
 
 

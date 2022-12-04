@@ -28,9 +28,13 @@ class Profile:
     def select_profile(self):
         os.chdir(os.path.dirname(settings['smapi_path']))
         # Find the name of the profile being disabled
-        with open('Mods/profile.txt', 'r') as f:
-            prof_name = f.read()
-        os.system(f'ren "Mods" "Mods_{prof_name}"')
+        try:
+            with open('Mods/profile.txt', 'r') as f:
+                prof_name = f.read()
+            os.system(f'ren "Mods" "Mods_{prof_name}"')
+        except FileNotFoundError:
+            pass
+
         os.system(f'ren "Mods_{self.name.upper()}" "Mods"')
 
         os.system(f'START "" "{settings["smapi_path"]}"')
@@ -97,16 +101,16 @@ def check_files():
             f.write('')
     if not os.path.exists('settings.json'):
         with open('settings.json', 'w') as f:
-            f.write('')
+            f.write('{}')
     if not os.path.exists('assets'):
         os.mkdir('assets')
     if not os.path.exists('assets/background.png'):
         background_img = requests.get('https://github.com/supercam19/SMAPI-Profile-Manager/blob/main/assets/background.png?raw=true')
         with open('assets/background.png', 'wb') as f:
             f.write(background_img.content)
-    if not os.path.exists('assets/icon.png'):
+    if not os.path.exists('assets/logo.png'):
         icon_img = requests.get('https://github.com/supercam19/SMAPI-Profile-Manager/blob/main/assets/logo.png?raw=true')
-        with open('assets/icon.png', 'wb') as f:
+        with open('assets/logo.png', 'wb') as f:
             f.write(icon_img.content)
 
 
