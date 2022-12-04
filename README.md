@@ -23,13 +23,13 @@ This will prompt you to choose a folder, which will be one of your mod profiles.
 Once that is done, you can repeat the process for as many different profiles as you wish You can then launch the game with different profiles using their launch button, or delete the profile with the delete button.
 
 ## Restrictions
-- At the moment your game must be installed in the default location
-`C:\Program Files (x86)\Steam\steamapps\common\Stardew Valley`, but this should be fixed soon.
-- The folders of mods when adding profiles currently need to be inside the Stardew Valley folder, also something that should soon be fixed.
+- The folders of mods when adding profiles currently need to be inside the Stardew Valley folder, this will be fixed soon.
 
-## Modifiying the program
-The only external package needed for this program is [CustomTkinter](https://github.com/TomSchimansky/CustomTkinter), which can be installed with:<br>
+## Modifying the program
+The external packages for this program are [CustomTkinter](https://github.com/TomSchimansky/CustomTkinter), which can be installed with:<br>
 `pip install customtkinter`</br>
+And [requests](https://pypi.org/project/requests/), which can be installed with:<br>
+`pip install requests`</br>
 
 When building the program back into an exe file, you can use the build.bat file, but be sure to replace the file path to the customtkinter with the one shown when you run<br>
 `pip show customtkinter`

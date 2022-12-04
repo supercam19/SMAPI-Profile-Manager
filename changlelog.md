@@ -1,13 +1,17 @@
 # SMAPI Profile Manager Changelog
 
-## Update 1.1.0 ()
+## Update 1.1.0 (Dec 4, 2022)
 
 ### Additions
  - Can now launch the game if it is not in the default install location
  - Implemented a check for critical files
+ - Version tag in the UI
+
+### Changes
+ - Updated the README.md file
 
 ### Fixes
- - Fixed a bug with game not launching in most cases
+ - Fixed a bug where game would not launch in most cases
  - Properly centered the add profile button
  - Fixed the preview image not showing up in the README
 

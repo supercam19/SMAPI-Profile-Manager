@@ -1,5 +1,6 @@
 import customtkinter as ctk
 from tkinter import PhotoImage
+from main import VERSION
 
 
 class Window(ctk.CTk):
@@ -20,6 +21,8 @@ class Window(ctk.CTk):
         self.control_frame = Frame(self.top_frame, width=100, height=200)
         self.control_frame.pack_propagate(False)
         self.control_frame.pack(side="right", fill="y")
+        self.version_label = ctk.CTkLabel(self.control_frame, text="Version: " + VERSION, width=100, height=20, text_font=("Arial", 7))
+        self.version_label.pack(side="bottom", fill="x", pady=5)
 
         self.canvas = ctk.CTkCanvas(self, width=500)
         self.profiles_list = Frame(self, width=500, height=360)
