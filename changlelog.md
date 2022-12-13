@@ -1,5 +1,10 @@
 # SMAPI Profile Manager Changelog
 
+## UI Update [v1.1.1] (???)
+
+### Additions
+ - Added infrastructure for mouse hover tooltips
+
 ## Update 1.1.0 (Dec 4, 2022)
 
 ### Additions

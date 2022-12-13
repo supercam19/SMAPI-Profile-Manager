@@ -1,6 +1,7 @@
 import customtkinter as ctk
 from tkinter import PhotoImage
 from main import VERSION
+import tkinter
 
 
 class Window(ctk.CTk):
@@ -10,6 +11,7 @@ class Window(ctk.CTk):
         self.geometry("500x400")
         self.resizable(False, False)
         self.iconphoto(True, PhotoImage(file="assets/logo.png"))
+        self.protocol("WM_DELETE_WINDOW", self.close_window)
 
         self.top_frame = Frame(self, width=500, height=200)
         self.top_frame.propagate(False)
@@ -33,6 +35,12 @@ class Window(ctk.CTk):
         self.scrollbar.pack(side="right", fill="y")
         self.profiles_list.bind("<Configure>", lambda e: self.canvas.configure(scrollregion=self.canvas.bbox("all")))
         self.canvas.configure(scrollregion=self.canvas.bbox("all"))
+
+    def close_window(self):
+        try:
+            exit()
+        except KeyboardInterrupt:
+            exit()
 
 
 class Frame(ctk.CTkFrame):
@@ -62,6 +70,50 @@ class Popup:
     def close_popup(self):
         if self.text_box: popup_info.change(self.popup_text.get())
         self.popup.destroy()
+
+
+class ToolTip:
+    def __init__(self, widget, text):
+        self.wait_time = 500  # milliseconds
+        self.wrap_length = 180
+        self.widget = widget
+        self.text = text
+        self.widget.bind("<Enter>", self.schedule, add="+")
+        self.widget.bind("<Leave>", self.leave, add="+")
+        self.widget.bind("<ButtonPress>", self.leave, add="+")
+        self.id = None
+        self.tw = None
+
+    def leave(self, event=None):
+        self.unschedule()
+        self.hide_tip()
+
+    def schedule(self, event=None):
+        # self.unschedule()
+        self.id = self.widget.after(self.wait_time, self.show_tip)
+
+    def unschedule(self):
+        # Unschedule scheduled popups
+        id = self.id
+        self.id = None
+        if id:
+            self.widget.after_cancel(id)
+
+    def show_tip(self, event=None):
+        x = y = 0
+        x, y, cx, cy = self.widget.bbox("insert")
+        x += self.widget.winfo_pointerx() + 10
+        y += self.widget.winfo_pointery() + 10
+        self.tw = ctk.CTkToplevel(self.widget)
+        # Leaves only the label and removes the app window
+        self.tw.wm_overrideredirect(True)
+        self.tw.wm_geometry(f'+{x}+{y}')
+        label = ctk.CTkLabel(self.tw, text=self.text)
+        label.pack(padx=1, pady=1)
+
+    def hide_tip(self):
+        self.unschedule()
+        self.tw.withdraw()
 
 
 class PopupInfo:

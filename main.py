@@ -124,8 +124,9 @@ if __name__ == '__main__':
     settings = load_settings()
     # Initialize the TK window
     window = Window()
-    add_prof_button = tk.CTkButton(window.control_frame, text="+", text_font=("Arial", 18), width=50, command=add_profile).pack(pady=10, anchor=tk.N)
-
+    add_prof_button = tk.CTkButton(window.control_frame, text="+", text_font=("Arial", 18), width=50, command=add_profile)
+    add_prof_tooltip = ToolTip(add_prof_button, "Add a new profile")
+    add_prof_button.pack(pady=10, anchor=tk.N)
     warning_label = tk.CTkLabel(window.profiles_list, text="No profiles found, use the + button to add a profile")
     warning_label.pack(pady=20, padx=100)
 
@@ -138,10 +139,7 @@ if __name__ == '__main__':
             settings['smapi_path'] = filedialog.askopenfilename(title="Select StardewModdingAPI.exe", filetypes=[("StardewModdingAPI.exe", "*.exe")])
         save_settings()
 
-    try:
-        load_profiles()
-    except FileNotFoundError:
-        pass
+    load_profiles()
 
     window.mainloop()
 
