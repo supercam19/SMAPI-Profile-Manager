@@ -4,15 +4,15 @@
 ![Preview](assets/preview.png)
 
 ## Setup
-1. Download the [latest release](https://github.com/supercam19/SMAPI-Profile-Manager/releases/latest) of the profile manager
+Download the [latest release](https://github.com/supercam19/SMAPI-Profile-Manager/releases/latest) of the profile manager
 
 You can run the .exe file directly to use the profile manager, or if you want to open it through Steam, complete the following steps:
-2. In your Steam library, go to Stardew Valley
-3. Press on the gear icon and click on properties
-4. Under launch options, enter the following:<br>
+1. In your Steam library, go to Stardew Valley
+2. Press on the gear icon and click on properties
+3. Under launch options, enter the following:<br>
 `"<path\to\profile\manager>\SMAPI.Profile.Manager.exe" %command%`</br>
 Where <path\to\profile\manager> is the path to the folder of the profile manager you previously downloaded
-5. You're done! Just launch the game normally through steam and the profile manager will pop up.
+4. You're done! Just launch the game normally through steam and the profile manager will pop up.
 
 ## How to use
 The profile manager is a very simple program that does most of the work for you. When you open the program for the first time, you can add a profile using the blue `+` button in the top right.

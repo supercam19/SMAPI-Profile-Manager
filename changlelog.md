@@ -5,6 +5,9 @@
 ### Additions
  - Added infrastructure for mouse hover tooltips
 
+### Fixes
+ - Fix setup instructions in the README
+
 ## Update 1.1.0 (Dec 4, 2022)
 
 ### Additions
