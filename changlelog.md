@@ -3,6 +3,7 @@
 ## UI Update [v1.1.1] (???)
 
 ### Additions
+
  - Added infrastructure for mouse hover tooltips
 
 ### Fixes
