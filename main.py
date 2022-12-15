@@ -16,6 +16,9 @@ class Profile:
         self.prof_button = tk.CTkButton(self.prof_frame, text="Launch", fg_color="lime", hover_color="green", width=40, text_color="black", command=self.select_profile)
         self.prof_delete = tk.CTkButton(self.prof_frame, text="Delete", fg_color="red", hover_color="darkred", width=40, command=self.delete_profile)
 
+        self.launch_tooltip = Tooltip(self.prof_button, "Launch the game with this profile")
+        self.delete_tooltip = Tooltip(self.prof_delete, "Delete this profile")
+
     def draw_profile(self):
         global profile_number
         profile_number += 1
@@ -125,7 +128,7 @@ if __name__ == '__main__':
     # Initialize the TK window
     window = Window()
     add_prof_button = tk.CTkButton(window.control_frame, text="+", text_font=("Arial", 18), width=50, command=add_profile)
-    add_prof_tooltip = ToolTip(add_prof_button, "Add a new profile")
+    add_prof_tooltip = Tooltip(add_prof_button, "Add a new profile")
     add_prof_button.pack(pady=10, anchor=tk.N)
     warning_label = tk.CTkLabel(window.profiles_list, text="No profiles found, use the + button to add a profile")
     warning_label.pack(pady=20, padx=100)
