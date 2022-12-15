@@ -1,6 +1,6 @@
 # SMAPI Profile Manager Changelog
 
-## UI Update [v1.1.1] (???)
+## UI Update [v1.1.1] (???) 
 
 ### Additions
  - Added mouse hover tooltips to all buttons on the UI (#4)
