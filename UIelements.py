@@ -72,7 +72,7 @@ class Popup:
         self.popup.destroy()
 
 
-class ToolTip:
+class Tooltip:
     def __init__(self, widget, text):
         self.wait_time = 500  # milliseconds
         self.wrap_length = 180
@@ -113,7 +113,7 @@ class ToolTip:
 
     def hide_tip(self):
         self.unschedule()
-        self.tw.withdraw()
+        if self.tw: self.tw.withdraw()
 
 
 class PopupInfo:
