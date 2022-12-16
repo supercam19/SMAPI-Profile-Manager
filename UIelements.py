@@ -26,12 +26,18 @@ class Window(ctk.CTk):
         self.version_label = ctk.CTkLabel(self.control_frame, text="Version: " + VERSION, width=100, height=20, text_font=("Arial", 7))
         self.version_label.pack(side="bottom", fill="x", pady=5)
 
-        self.canvas = ctk.CTkCanvas(self, width=500)
+        self.canvas = ctk.CTkCanvas(self, bd=0)
         self.profiles_list = Frame(self, width=500, height=360)
         self.scrollbar = ctk.CTkScrollbar(self.profiles_list, command=self.canvas.yview)
         self.canvas.configure(yscrollcommand=self.scrollbar.set)
         self.canvas.pack(side="left")
         self.canvas.create_window((0, 200), window=self.profiles_list, anchor='nw')
+        self.canvas.config(bd=0)
+        self.canvas.config(bg="gray18")
+        self.canvas.config(highlightthickness=0)
+
+        # make it so the profiles frame has to stay below y=240
+        self.canvas.bind('<Configure>', lambda e: self.canvas.configure(scrollregion=self.canvas.bbox("all")))
         self.scrollbar.pack(side="right", fill="y")
         self.profiles_list.bind("<Configure>", lambda e: self.canvas.configure(scrollregion=self.canvas.bbox("all")))
         self.canvas.configure(scrollregion=self.canvas.bbox("all"))
