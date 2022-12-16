@@ -122,7 +122,7 @@ def check_files():
 profiles = []
 profile_number = 0
 name_input = ''
-VERSION = "v1.1.0"
+VERSION = "v1.1.1"
 
 if __name__ == '__main__':
     check_files()

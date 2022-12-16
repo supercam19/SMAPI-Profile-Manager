@@ -1,6 +1,7 @@
 # SMAPI Profile Manager Changelog
 
-## UI Update [v1.1.1] (???) 
+## UI Update [v1.1.1] (Dec 16, 2022) 
+A smaller update focused mostly on the user interface of the app
 
 ### Additions
  - Added mouse hover tooltips to all buttons on the UI (#4)
