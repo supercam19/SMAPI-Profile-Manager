@@ -7,6 +7,7 @@
  - Updated the look and feel of the profile buttons (#6)
 
 ### Fixes
+ - Fix false error message appearing when reloading the window (#7)
  - Fix setup instructions in the README
 
 ## Update 1.1.0 (Dec 4, 2022)
