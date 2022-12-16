@@ -13,8 +13,8 @@ class Profile:
         self.prof_frame = tk.CTkFrame(window.profiles_list, width=480, height=30)
         self.prof_frame.pack_propagate(False)
         self.prof_title = tk.CTkLabel(self.prof_frame, text=self.name, bg="gray", text_font=("Arial", 12))
-        self.prof_button = tk.CTkButton(self.prof_frame, text="\U000025B7", fg_color="lime", hover_color="green", width=40, text_color="black", command=self.select_profile)
-        self.prof_delete = tk.CTkButton(self.prof_frame, text="\U0001F5D1", fg_color="red", hover_color="darkred", width=40, command=self.delete_profile)
+        self.prof_button = tk.CTkButton(self.prof_frame, text="\U000025B7", fg_color="gray21", width=40, text_color="black", command=self.select_profile)
+        self.prof_delete = tk.CTkButton(self.prof_frame, text="\U0001F5D1", fg_color="gray21", width=40, command=self.delete_profile)
 
         self.launch_tooltip = Tooltip(self.prof_button, "Launch the game with this profile")
         self.delete_tooltip = Tooltip(self.prof_delete, "Delete this profile")
@@ -126,6 +126,7 @@ if __name__ == '__main__':
     check_files()
     settings = load_settings()
     # Initialize the TK window
+    tk.set_appearance_mode("dark")
     window = Window()
     add_prof_button = tk.CTkButton(window.control_frame, text="+", text_font=("Arial", 18), width=50, command=add_profile)
     add_prof_tooltip = Tooltip(add_prof_button, "Add a new profile")
