@@ -11,7 +11,7 @@ class Window(ctk.CTk):
         self.geometry("500x400")
         self.resizable(False, False)
         self.iconphoto(True, PhotoImage(file="assets/logo.png"))
-        self.protocol("WM_DELETE_WINDOW", self.close_window)
+        self.protocol("WM_DELETE_WINDOW")
 
         self.top_frame = Frame(self, width=500, height=200)
         self.top_frame.propagate(False)
@@ -42,11 +42,6 @@ class Window(ctk.CTk):
         self.profiles_list.bind("<Configure>", lambda e: self.canvas.configure(scrollregion=self.canvas.bbox("all")))
         self.canvas.configure(scrollregion=self.canvas.bbox("all"))
 
-    def close_window(self):
-        try:
-            exit()
-        except KeyboardInterrupt:
-            exit()
 
 
 class Frame(ctk.CTkFrame):
