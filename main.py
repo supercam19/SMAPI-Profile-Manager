@@ -28,7 +28,7 @@ class Profile:
         self.prof_title.pack(side=tk.LEFT)
         self.prof_button.pack(side=tk.RIGHT, padx=(2, 4))
         self.prof_delete.pack(side=tk.RIGHT)
-        warning_label.pack_forget()
+        if 'warning_label' in globals(): warning_label.pack_forget()
 
     def select_profile(self):
         os.chdir(os.path.dirname(settings['smapi_path']))
@@ -133,8 +133,6 @@ if __name__ == '__main__':
     add_prof_button = tk.CTkButton(window.control_frame, text="+", text_font=("Arial", 18), width=50, command=add_profile)
     add_prof_tooltip = Tooltip(add_prof_button, "Add a new profile")
     add_prof_button.pack(pady=10, anchor=tk.N)
-    warning_label = tk.CTkLabel(window.profiles_list, text="No profiles found, use the + button to add a profile")
-    warning_label.pack(pady=20, padx=100)
 
     if 'smapi_path' not in settings or not os.path.exists(settings['smapi_path']):
         if os.path.exists('C:/Program Files (x86)/Steam/steamapps/common/Stardew Valley/StardewModdingAPI.exe'):
@@ -146,6 +144,9 @@ if __name__ == '__main__':
         save_settings()
 
     load_profiles()
+    if not profiles:
+        warning_label = tk.CTkLabel(window.profiles_list, text="No profiles found, use the + button to add a profile")
+        warning_label.pack(pady=20, padx=100)
 
     window.mainloop()
 
