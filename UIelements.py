@@ -52,6 +52,7 @@ class Frame(ctk.CTkFrame):
 
 
 class Button(ctk.CTkButton):
+    # define a custom button that changes colour on hover
     def __init__(self, parent, **kwargs):
         super().__init__(parent, **kwargs)
         self.width = kwargs.get("width", 100)

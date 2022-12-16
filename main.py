@@ -13,8 +13,8 @@ class Profile:
         self.prof_frame = tk.CTkFrame(window.profiles_list, width=480, height=30)
         self.prof_frame.pack_propagate(False)
         self.prof_title = tk.CTkLabel(self.prof_frame, text=self.name, bg="gray", text_font=("Arial", 12))
-        self.prof_button = Button(self.prof_frame, text="\U000025B6", fg_color="gray21", text_font=("Arial", 20), text_color='white', hover_color='gray21', width=40)
-        self.prof_delete = Button(self.prof_frame, text="\U0001F5D1", fg_color="gray21", hover_color='gray21', width=40)
+        self.prof_button = Button(self.prof_frame, text="\U000025B6", fg_color="gray21", text_font=("Arial", 24), text_color='white', hover_color='gray21', width=40)
+        self.prof_delete = Button(self.prof_frame, text="\U0001F5D1", fg_color="gray21", hover_color='gray21', width=40, text_font=("Arial", 14))
         self.prof_button.configure(command=self.select_profile)
         self.prof_delete.configure(command=self.delete_profile)
 
@@ -26,7 +26,7 @@ class Profile:
         profile_number += 1
         self.prof_frame.pack(pady=2)
         self.prof_title.pack(side=tk.LEFT)
-        self.prof_button.pack(side=tk.RIGHT, padx=8)
+        self.prof_button.pack(side=tk.RIGHT, padx=(2, 4))
         self.prof_delete.pack(side=tk.RIGHT)
         warning_label.pack_forget()
 
