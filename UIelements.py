@@ -51,6 +51,51 @@ class Frame(ctk.CTkFrame):
         self.height = kwargs.get("height", 100)
 
 
+class Button(ctk.CTkButton):
+    # define a custom button that changes colour on hover
+    def __init__(self, parent, **kwargs):
+        super().__init__(parent, **kwargs)
+        self.width = kwargs.get("width", 100)
+        self.height = kwargs.get("height", 100)
+        self.configure(width=self.width, height=self.height)
+        self.text = kwargs.get("text", "Button")
+        self.configure(text=self.text)
+        self.text_font = kwargs.get("text_font", ("Arial", 10))
+        self.configure(text_font=self.text_font)
+        self.text_color_default = kwargs.get("text_color", "white")
+        self.configure(text_color=self.text_color_default)
+        self.bg_color = kwargs.get("bg_color", "gray21")
+        self.configure(bg=self.bg_color)
+        self.fg_color = kwargs.get("fg_color", "gray21")
+        self.configure(fg_color=self.fg_color)
+        self.border_color = kwargs.get("border_color", "gray21")
+        self.configure(highlightbackground=self.border_color)
+        self.border_width = kwargs.get("border_width", 1)
+        self.configure(highlightthickness=self.border_width)
+        self.border_radius = kwargs.get("border_radius", 5)
+        self.configure(relief="flat")
+        self.configure(borderwidth=self.border_radius)
+        self.command = kwargs.get("command", None)
+        self.configure(command=self.command)
+        self.image = kwargs.get("image", None)
+        self.configure(image=self.image)
+        self.padding = kwargs.get("padding", (0, 0))
+        self.configure(padx=self.padding[0], pady=self.padding[1])
+        self.cursor = kwargs.get("cursor", "arrow")
+        self.configure(cursor=self.cursor)
+        self.state = kwargs.get("state", "normal")
+        self.configure(state=self.state)
+
+        self.bind("<Enter>", self.on_enter, add="+")
+        self.bind("<Leave>", self.leave, add="+")
+
+    def on_enter(self, event=None):
+        self.configure(text_color="gray45")
+
+    def leave(self, event=None):
+        self.configure(text_color=self.text_color_default)
+
+
 class Popup:
     def __init__(self, title, message, root, text_box=True):
         self.popup = ctk.CTkToplevel(root)
