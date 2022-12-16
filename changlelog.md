@@ -4,6 +4,7 @@
 
 ### Additions
  - Added mouse hover tooltips to all buttons on the UI (#4)
+ - Updated the look and feel of the profile buttons (#6)
 
 ### Fixes
  - Fix setup instructions in the README
