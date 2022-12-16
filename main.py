@@ -13,8 +13,8 @@ class Profile:
         self.prof_frame = tk.CTkFrame(window.profiles_list, width=480, height=30)
         self.prof_frame.pack_propagate(False)
         self.prof_title = tk.CTkLabel(self.prof_frame, text=self.name, bg="gray", text_font=("Arial", 12))
-        self.prof_button = tk.CTkButton(self.prof_frame, text="\U000025B7", fg_color="gray21", width=40, text_color="black", command=self.select_profile)
-        self.prof_delete = tk.CTkButton(self.prof_frame, text="\U0001F5D1", fg_color="gray21", width=40, command=self.delete_profile)
+        self.prof_button = tk.CTkButton(self.prof_frame, text="\U000025B7", fg_color="gray21", hover_color='gray21', width=40, text_color="black", command=self.select_profile)
+        self.prof_delete = tk.CTkButton(self.prof_frame, text="\U0001F5D1", fg_color="gray21", hover_color='gray21', width=40, command=self.delete_profile)
 
         self.launch_tooltip = Tooltip(self.prof_button, "Launch the game with this profile")
         self.delete_tooltip = Tooltip(self.prof_delete, "Delete this profile")
