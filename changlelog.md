@@ -8,6 +8,7 @@
 
 ### Fixes
  - Fix false error message appearing when reloading the window (#7)
+ - Fix white rectangle from appearing in the UI
  - Fix setup instructions in the README
 
 ## Update 1.1.0 (Dec 4, 2022)
