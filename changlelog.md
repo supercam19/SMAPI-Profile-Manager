@@ -1,5 +1,10 @@
 # SMAPI Profile Manager Changelog
 
+## Update [v1.1.2] (???)
+
+### Additions
+ - Added a help button to the UI
+
 ## UI Update [v1.1.1] (Dec 16, 2022) 
 A smaller update focused mostly on the user interface of the app
 
