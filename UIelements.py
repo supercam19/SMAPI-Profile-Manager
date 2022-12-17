@@ -2,6 +2,7 @@ import customtkinter as ctk
 from tkinter import PhotoImage
 from main import VERSION
 import tkinter
+from webbrowser import open as open_url
 
 
 class Window(ctk.CTk):
@@ -13,6 +14,7 @@ class Window(ctk.CTk):
         self.iconphoto(True, PhotoImage(file="assets/logo.png"))
         self.protocol("WM_DELETE_WINDOW")
 
+        # Banner image (top left)
         self.top_frame = Frame(self, width=500, height=200)
         self.top_frame.propagate(False)
         self.top_frame.pack(fill="both", expand=True, side="top", anchor="w")
@@ -20,12 +22,21 @@ class Window(ctk.CTk):
         self.banner_label = ctk.CTkLabel(self.top_frame, image=self.banner, width=400, height=200, anchor='nw')
         self.banner_label.pack(side="left", fill="x")
 
+        # Control buttons (top right)
         self.control_frame = Frame(self.top_frame, width=100, height=200)
         self.control_frame.pack_propagate(False)
         self.control_frame.pack(side="right", fill="y")
+        self.add_prof_button = ctk.CTkButton(self.control_frame, text="+", text_font=("Arial", 18), width=50,)
+        self.add_prof_tooltip = Tooltip(self.add_prof_button, "Add a new profile")
+        self.add_prof_button.pack(pady=(10, 5), anchor=ctk.N)
+        self.github_button = ctk.CTkButton(self.control_frame, text="\U0001F6C8", text_color='white', text_font=("Arial", 20),
+                                           width=50, command=lambda: open_url("https://github.com/supercam19/SMAPI-Profile-Manager"), pady=0)
+        # decrease the padding of the text in the button
+        self.github_button.pack(pady=5, anchor="n")
         self.version_label = ctk.CTkLabel(self.control_frame, text="Version: " + VERSION, width=100, height=20, text_font=("Arial", 7))
         self.version_label.pack(side="bottom", fill="x", pady=5)
 
+        # Profiles list (bottom)
         self.canvas = ctk.CTkCanvas(self, bd=0)
         self.profiles_list = Frame(self, width=500, height=360)
         self.scrollbar = ctk.CTkScrollbar(self.profiles_list, command=self.canvas.yview)
@@ -35,12 +46,11 @@ class Window(ctk.CTk):
         self.canvas.config(bd=0)
         self.canvas.config(bg="gray18")
         self.canvas.config(highlightthickness=0)
-
-        # make it so the profiles frame has to stay below y=240
         self.canvas.bind('<Configure>', lambda e: self.canvas.configure(scrollregion=self.canvas.bbox("all")))
         self.scrollbar.pack(side="right", fill="y")
         self.profiles_list.bind("<Configure>", lambda e: self.canvas.configure(scrollregion=self.canvas.bbox("all")))
         self.canvas.configure(scrollregion=self.canvas.bbox("all"))
+
 
 
 

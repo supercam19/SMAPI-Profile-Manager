@@ -130,9 +130,7 @@ if __name__ == '__main__':
     # Initialize the TK window
     tk.set_appearance_mode("dark")
     window = Window()
-    add_prof_button = tk.CTkButton(window.control_frame, text="+", text_font=("Arial", 18), width=50, command=add_profile)
-    add_prof_tooltip = Tooltip(add_prof_button, "Add a new profile")
-    add_prof_button.pack(pady=10, anchor=tk.N)
+    window.add_prof_button.configure(command=add_profile)
 
     if 'smapi_path' not in settings or not os.path.exists(settings['smapi_path']):
         if os.path.exists('C:/Program Files (x86)/Steam/steamapps/common/Stardew Valley/StardewModdingAPI.exe'):
