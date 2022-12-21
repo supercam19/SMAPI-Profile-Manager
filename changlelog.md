@@ -3,7 +3,12 @@
 ## Update [v1.1.2] (???)
 
 ### Additions
+ - Added an icon-sheet loader which will improve the UI in the future (#9)
+ - Added the capability for widget animations (#9)
  - Added a help button to the UI
+
+### Changes
+ - New delete profile button icon, along with a hover animation (#9)
 
 ## UI Update [v1.1.1] (Dec 16, 2022) 
 A smaller update focused mostly on the user interface of the app

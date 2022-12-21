@@ -14,6 +14,8 @@ class Window(ctk.CTk):
         self.iconphoto(True, PhotoImage(file="assets/logo.png"))
         self.protocol("WM_DELETE_WINDOW")
 
+        self.icons = IconSheet('assets/iconsheet.png')
+
         # Banner image (top left)
         self.top_frame = Frame(self, width=500, height=200)
         self.top_frame.propagate(False)
@@ -64,12 +66,12 @@ class Frame(ctk.CTkFrame):
 
 class Button(ctk.CTkButton):
     # define a custom button that changes colour on hover
-    def __init__(self, parent, **kwargs):
+    def __init__(self, parent, type='text', hover_image=None, **kwargs):
         super().__init__(parent, **kwargs)
         self.width = kwargs.get("width", 100)
         self.height = kwargs.get("height", 100)
         self.configure(width=self.width, height=self.height)
-        self.text = kwargs.get("text", "Button")
+        self.text = kwargs.get("text", None)
         self.configure(text=self.text)
         self.text_font = kwargs.get("text_font", ("Arial", 10))
         self.configure(text_font=self.text_font)
@@ -88,7 +90,7 @@ class Button(ctk.CTkButton):
         self.configure(borderwidth=self.border_radius)
         self.command = kwargs.get("command", None)
         self.configure(command=self.command)
-        self.image = kwargs.get("image", None)
+        self.image_default = kwargs.get("image", None)
         self.configure(image=self.image)
         self.padding = kwargs.get("padding", (0, 0))
         self.configure(padx=self.padding[0], pady=self.padding[1])
@@ -97,14 +99,24 @@ class Button(ctk.CTkButton):
         self.state = kwargs.get("state", "normal")
         self.configure(state=self.state)
 
+        # Special properties
+        self.type = type  # text, image
+        self.hover_image = hover_image  # image to display on hover
+
         self.bind("<Enter>", self.on_enter, add="+")
         self.bind("<Leave>", self.leave, add="+")
 
     def on_enter(self, event=None):
-        self.configure(text_color="gray45")
+        if self.type == 'text':
+            self.configure(text_color="gray45")
+        elif self.type == 'button':
+            self.configure(image=self.hover_image)
 
     def leave(self, event=None):
-        self.configure(text_color=self.text_color_default)
+        if self.type == 'text':
+            self.configure(text_color=self.text_color_default)
+        elif self.type == 'button':
+            self.configure(image=self.image_default)
 
 
 class Popup:
@@ -182,6 +194,20 @@ class PopupInfo:
     def change(self, info):
         assert isinstance(info, str)
         self.info = info
+
+
+class IconSheet:
+    def __init__(self, path):
+        self.path = path
+        self.sheet = PhotoImage(file=self.path)
+        self.logo = self.get_icon(0, 0, 63, 63)
+        self.trash_closed = self.get_icon(64, 0, 63, 63).subsample(2, 2)
+        self.trash_opened = self.get_icon(128, 0, 63, 63).subsample(2, 2)
+
+    def get_icon(self, x, y, width, height):
+        icon = PhotoImage()
+        icon.tk.call(icon, 'copy', self.sheet, '-from', x, y, x + width, y + height, '-to', 0, 0)
+        return icon
 
 
 popup_info = PopupInfo()
