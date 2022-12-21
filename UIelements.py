@@ -206,9 +206,8 @@ class IconSheet:
 
     def get_icon(self, x, y, width, height):
         icon = PhotoImage()
-        icon.tk.call(icon, 'copy', self.sheet, '-from', 0, 0, 64, 64, '-to', 0, 0)
+        icon.tk.call(icon, 'copy', self.sheet, '-from', x, y, x + width, y + height, '-to', 0, 0)
         return icon
-
 
 
 popup_info = PopupInfo()
