@@ -15,8 +15,6 @@ class Window(ctk.CTk):
         self.protocol("WM_DELETE_WINDOW")
 
         self.icons = IconSheet('assets/iconsheet.png')
-        self.update_idletasks()
-        self.icons.load_icons()
 
         # Banner image (top left)
         self.top_frame = Frame(self, width=500, height=200)
@@ -191,13 +189,10 @@ class PopupInfo:
 class IconSheet:
     def __init__(self, path):
         self.path = path
-        self.sheet = PhotoImage(self.path)
-
-    def load_icons(self):
-        """ Must be called after the sheet is loaded """
-        print(self.sheet.width(), self.sheet.height())
-        print(self.sheet)
-        self.logo = self.get_icon(0, 0, 64, 64)
+        self.sheet = PhotoImage(file=self.path)
+        self.logo = self.get_icon(0, 0, 63, 63)
+        self.trash_closed = self.get_icon(64, 0, 63, 63)
+        self.trash_opened = self.get_icon(128, 0, 63, 63)
 
     def get_icon(self, x, y, width, height):
         icon = PhotoImage()
