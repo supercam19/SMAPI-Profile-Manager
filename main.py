@@ -14,7 +14,7 @@ class Profile:
         self.prof_frame.pack_propagate(False)
         self.prof_title = tk.CTkLabel(self.prof_frame, text=self.name, bg="gray", text_font=("Arial", 12))
         self.prof_button = Button(self.prof_frame, text="\U000025B6", fg_color="gray21", text_font=("Arial", 24), text_color='white', hover_color='gray21', width=40)
-        self.prof_delete = Button(self.prof_frame, text="\U0001F5D1", fg_color="gray21", hover_color='gray21', width=40, text_font=("Arial", 14))
+        self.prof_delete = Button(self.prof_frame, width=40, image=PhotoImage('assets/trash_can.png', width=40, height=40))
         self.prof_button.configure(command=self.select_profile)
         self.prof_delete.configure(command=self.delete_profile)
 
