@@ -90,7 +90,7 @@ class Button(ctk.CTkButton):
         self.configure(borderwidth=self.border_radius)
         self.command = kwargs.get("command", None)
         self.configure(command=self.command)
-        self.image = kwargs.get("image", None)
+        self.image_default = kwargs.get("image", None)
         self.configure(image=self.image)
         self.padding = kwargs.get("padding", (0, 0))
         self.configure(padx=self.padding[0], pady=self.padding[1])
@@ -109,14 +109,14 @@ class Button(ctk.CTkButton):
     def on_enter(self, event=None):
         if self.type == 'text':
             self.configure(text_color="gray45")
-        elif self.type == 'image':
+        elif self.type == 'button':
             self.configure(image=self.hover_image)
 
     def leave(self, event=None):
         if self.type == 'text':
             self.configure(text_color=self.text_color_default)
-        elif self.type == 'image':
-            self.configure(image=self.image)
+        elif self.type == 'button':
+            self.configure(image=self.image_default)
 
 
 class Popup:
