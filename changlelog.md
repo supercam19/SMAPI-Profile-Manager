@@ -1,6 +1,7 @@
 # SMAPI Profile Manager Changelog
 
-## Update [v1.1.2] (???)
+## UI Update pt2 [v1.1.2] (Dec 21, 2022)
+This update unintentionally ended up pretty much being a continuation of the UI Update
 
 ### Additions
  - Added an icon-sheet loader which will improve the UI in the future (#9)
@@ -9,6 +10,7 @@
 
 ### Changes
  - New delete profile button icon, along with a hover animation (#9)
+ - Several changes to the README
 
 ## UI Update [v1.1.1] (Dec 16, 2022) 
 A smaller update focused mostly on the user interface of the app
