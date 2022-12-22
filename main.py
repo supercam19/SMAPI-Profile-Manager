@@ -10,7 +10,7 @@ class Profile:
     def __init__(self, name, path):
         self.name = name
         self.path = path.rstrip("\n")
-        self.prof_frame = tk.CTkFrame(window.profiles_list, width=480, height=30)
+        self.prof_frame = tk.CTkFrame(window.profiles_list, width=480, height=32)
         self.prof_frame.pack_propagate(False)
         self.prof_title = tk.CTkLabel(self.prof_frame, text=self.name, bg="gray", text_font=("Arial", 12))
         self.prof_button = Button(self.prof_frame, text="\U000025B6", fg_color="gray21", text_font=("Arial", 24), text_color='white', hover_color='gray21', width=40)
