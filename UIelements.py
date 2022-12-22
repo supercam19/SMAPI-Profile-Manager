@@ -11,10 +11,10 @@ class Window(ctk.CTk):
         self.title("SMAPI Mod Manager")
         self.geometry("500x400")
         self.resizable(False, False)
-        self.iconphoto(True, PhotoImage(file="assets/logo.png"))
         self.protocol("WM_DELETE_WINDOW")
 
         self.icons = IconSheet('assets/iconsheet.png')
+        self.iconphoto(True, self.icons.logo)
 
         # Banner image (top left)
         self.top_frame = Frame(self, width=500, height=200)

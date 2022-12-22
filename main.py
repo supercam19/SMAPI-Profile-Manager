@@ -113,9 +113,9 @@ def check_files():
         background_img = requests.get('https://github.com/supercam19/SMAPI-Profile-Manager/blob/main/assets/background.png?raw=true')
         with open('assets/background.png', 'wb') as f:
             f.write(background_img.content)
-    if not os.path.exists('assets/logo.png'):
-        icon_img = requests.get('https://github.com/supercam19/SMAPI-Profile-Manager/blob/main/assets/logo.png?raw=true')
-        with open('assets/logo.png', 'wb') as f:
+    if not os.path.exists('assets/iconsheet.png'):
+        icon_img = requests.get('https://github.com/supercam19/SMAPI-Profile-Manager/blob/main/assets/iconsheet.png?raw=true')
+        with open('assets/iconsheet.png', 'wb') as f:
             f.write(icon_img.content)
 
 
