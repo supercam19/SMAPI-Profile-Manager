@@ -17,12 +17,13 @@ Where <path\to\profile\manager> is the path to the folder of the profile manager
 ## How to use
 The profile manager is a very simple program that does most of the work for you. When you open the program for the first time, you can add a profile using the blue `+` button in the top right.
 
-This will prompt you to choose a folder, which will be one of your mod profiles. (Please note that at the moment the folder has to be in your Stardew Valley install folder!)Select the folder and the profile manager will prompt you to give it a name.
+This will prompt you to choose a folder, which will be one of your mod profiles. (Please note that the folder has to be in your Stardew Valley install folder) Select the folder and the profile manager will prompt you to give it a name.
 
-Once that is done, you can repeat the process for as many different profiles as you wish You can then launch the game with different profiles using their launch button, or delete the profile with the delete button.
+Once that is done, you can repeat the process for as many different profiles as you wish. You can then launch the game with different profiles using their launch button, or delete the profile with the delete button.
 
 ## Restrictions
 - The folders of mods when adding profiles currently need to be inside the Stardew Valley folder, this will be fixed soon.
+- The profile manager will only work on Windows (confirmed on Windows 10 only) and will likely never come to other operating systems
 
 ## Modifying the program
 The external packages for this program are [CustomTkinter](https://github.com/TomSchimansky/CustomTkinter), which can be installed with:<br>
@@ -32,3 +33,8 @@ And [requests](https://pypi.org/project/requests/), which can be installed with:
 
 When building the program back into an exe file, you can use the build.bat file, but be sure to replace the file path to the customtkinter with the one shown when you run<br>
 `pip show customtkinter`
+<br> {Note: You can use the dev_build.bat file to build the program with a python console open}
+<br> {Note: The provided batch files for building the program require [pyinstaller](https://pyinstaller.org/en/stable/) to be installed}
+
+All custom icons for the program are found in assets/iconsheet.png. The icons are 64x64 pixels.
+<br> If you use paint.net, you can use the provided .pdn file to edit the iconsheet with tile gridlines included.
