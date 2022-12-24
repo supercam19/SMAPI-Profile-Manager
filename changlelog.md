@@ -2,6 +2,9 @@
 
 ## Update [v1.1.3] (???)
 
+## Changes
+ - Profile names now have a tooltip incase their name is too long to fit in the window
+
 ### Fixes
  - Fixed long profiles names hiding the launch and delete buttons
  - Fixed profile names > ~20 characters not being aligned with shorter ones
