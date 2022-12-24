@@ -12,9 +12,13 @@ class Profile:
         self.path = path.rstrip("\n")
         self.prof_frame = tk.CTkFrame(window.profiles_list, width=480, height=32)
         self.prof_frame.pack_propagate(False)
-        self.prof_title = tk.CTkLabel(self.prof_frame, text=self.name, bg="gray", text_font=("Arial", 12))
-        self.prof_button = Button(self.prof_frame, text="\U000025B6", fg_color="gray21", text_font=("Arial", 24), text_color='white', hover_color='gray21', width=40)
-        self.prof_delete = Button(self.prof_frame, width=40, image=window.icons.trash_closed, height=40, type='button', hover_image=window.icons.trash_opened)
+        self.left_frame = tk.CTkFrame(self.prof_frame, width=380, height=32, fg_color='gray21', bg_color='gray21')
+        self.left_frame.pack_propagate(False)
+        self.right_frame = tk.CTkFrame(self.prof_frame, width=100, height=32, fg_color='gray21', bg_color='gray21')
+        self.right_frame.pack_propagate(False)
+        self.prof_title = tk.CTkLabel(self.left_frame, text=self.name, fg_color="gray21", text_font=("Arial", 12), anchor='w')
+        self.prof_button = Button(self.right_frame, text="\U000025B6", fg_color="gray21", text_font=("Arial", 24), text_color='white', hover_color='gray21', width=40)
+        self.prof_delete = Button(self.right_frame, width=40, image=window.icons.trash_closed, height=40, type='button', hover_image=window.icons.trash_opened)
         self.prof_button.configure(command=self.select_profile)
         self.prof_delete.configure(command=self.delete_profile)
 
@@ -25,7 +29,9 @@ class Profile:
         global profile_number
         profile_number += 1
         self.prof_frame.pack(pady=2)
-        self.prof_title.pack(side=tk.LEFT)
+        self.left_frame.pack(side='left', padx=(10, 0))
+        self.right_frame.pack(side='right')
+        self.prof_title.pack(side=tk.LEFT, padx=(20, 10))
         self.prof_button.pack(side=tk.RIGHT, padx=(2, 4))
         self.prof_delete.pack(side=tk.RIGHT)
         if 'warning_label' in globals(): warning_label.pack_forget()
@@ -145,6 +151,9 @@ if __name__ == '__main__':
     if not profiles:
         warning_label = tk.CTkLabel(window.profiles_list, text="No profiles found, use the + button to add a profile")
         warning_label.pack(pady=20, padx=100)
+
+    test = Profile("G"*64, "C:/Users/Supercam19/Desktop/Mods")
+    test.draw_profile()
 
     window.mainloop()
 
