@@ -152,8 +152,5 @@ if __name__ == '__main__':
         warning_label = tk.CTkLabel(window.profiles_list, text="No profiles found, use the + button to add a profile")
         warning_label.pack(pady=20, padx=100)
 
-    test = Profile("G"*64, "C:/Users/Supercam19/Desktop/Mods")
-    test.draw_profile()
-
     window.mainloop()
 

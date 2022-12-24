@@ -1,5 +1,11 @@
 # SMAPI Profile Manager Changelog
 
+## Update [v1.1.3] (???)
+
+### Fixes
+ - Fixed long profiles names hiding the launch and delete buttons
+ - Fixed profile names > ~20 characters not being aligned with shorter ones
+
 ## UI Update pt2 [v1.1.2] (Dec 21, 2022)
 This update unintentionally ended up pretty much being a continuation of the UI Update
 
