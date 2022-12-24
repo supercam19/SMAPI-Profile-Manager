@@ -3,6 +3,7 @@
 ## Update [v1.1.3] (???)
 
 ## Changes
+ - Profile names are now limited to 100 characters
  - Profile names now have a tooltip incase their name is too long to fit in the window
 
 ### Fixes
