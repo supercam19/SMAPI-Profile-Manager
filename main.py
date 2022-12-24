@@ -131,7 +131,7 @@ def check_files():
 profiles = []
 profile_number = 0
 name_input = ''
-VERSION = "v1.1.2"
+VERSION = "v1.1.3"
 
 if __name__ == '__main__':
     check_files()
