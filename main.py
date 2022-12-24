@@ -24,6 +24,7 @@ class Profile:
 
         self.launch_tooltip = Tooltip(self.prof_button, "Launch the game with this profile")
         self.delete_tooltip = Tooltip(self.prof_delete, "Delete this profile")
+        self.name_tooltip = Tooltip(self.prof_title, self.name)
 
     def draw_profile(self):
         global profile_number
