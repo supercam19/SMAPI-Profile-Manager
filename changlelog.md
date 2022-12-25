@@ -1,5 +1,7 @@
 # SMAPI Profile Manager Changelog
 
+## Round Tooltip Edges [v1.1.4] (???)
+
 ## Update [v1.1.3] (Dec 24, 2022)
 Very small update fixing issues with profile names and how they display in the program.
 
