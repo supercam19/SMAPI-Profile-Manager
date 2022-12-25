@@ -175,11 +175,10 @@ class Tooltip:
         self.tw = ctk.CTkToplevel(self.widget)
         # Leaves only the label and removes the app window
         self.tw.wm_overrideredirect(True)
-        self.tw.wm_attributes('-transparentcolor', 'yellow')
         self.tw.wm_geometry(f'+{x}+{y}')
-        self.frame = ctk.CTkFrame(self.tw, bg_color="yellow", relief='solid', borderwidth=0)
-        self.frame.pack()
-        label = ctk.CTkLabel(self.frame, text=self.text)
+        self.tw.wm_attributes('-transparentcolor', 'yellow')
+        self.tw.configure(bg="yellow")
+        label = ctk.CTkLabel(self.tw, text=self.text, corner_radius=10, bg_color='yellow', fg_color='gray21')
         label.pack(padx=1, pady=1)
 
     def hide_tip(self):
