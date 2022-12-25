@@ -12,7 +12,6 @@ class Window(ctk.CTk):
         self.geometry("500x400")
         self.resizable(False, False)
         self.protocol("WM_DELETE_WINDOW")
-        self.wm_attributes("-transparentcolor", "yellow")
 
         self.icons = IconSheet('assets/iconsheet.png')
         self.iconphoto(True, self.icons.logo)
@@ -176,8 +175,9 @@ class Tooltip:
         self.tw = ctk.CTkToplevel(self.widget)
         # Leaves only the label and removes the app window
         self.tw.wm_overrideredirect(True)
+        self.tw.wm_attributes('-transparentcolor', 'yellow')
         self.tw.wm_geometry(f'+{x}+{y}')
-        label = ctk.CTkLabel(self.tw, text=self.text)
+        label = ctk.CTkLabel(self.tw, text=self.text, bg_color='yellow')
         label.pack(padx=1, pady=1)
 
     def hide_tip(self):
