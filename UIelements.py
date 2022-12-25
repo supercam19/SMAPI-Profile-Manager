@@ -12,6 +12,7 @@ class Window(ctk.CTk):
         self.geometry("500x400")
         self.resizable(False, False)
         self.protocol("WM_DELETE_WINDOW")
+        self.wm_attributes("-transparentcolor", "yellow")
 
         self.icons = IconSheet('assets/iconsheet.png')
         self.iconphoto(True, self.icons.logo)
@@ -211,3 +212,4 @@ class IconSheet:
 
 
 popup_info = PopupInfo()
+
