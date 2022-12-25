@@ -177,7 +177,9 @@ class Tooltip:
         self.tw.wm_overrideredirect(True)
         self.tw.wm_attributes('-transparentcolor', 'yellow')
         self.tw.wm_geometry(f'+{x}+{y}')
-        label = ctk.CTkLabel(self.tw, text=self.text, bg_color='yellow')
+        self.frame = ctk.CTkFrame(self.tw, bg_color="yellow", relief='solid', borderwidth=0)
+        self.frame.pack()
+        label = ctk.CTkLabel(self.frame, text=self.text)
         label.pack(padx=1, pady=1)
 
     def hide_tip(self):
