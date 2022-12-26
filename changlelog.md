@@ -3,7 +3,7 @@
 ## Round Tooltip Edges [v1.1.4] (???)
 
 ### Changes
- - Tooltips now have rounded edges
+ - Tooltips now have rounded edges (#16)
  - Made the colour of tooltips brighter so it wouldn't blend in with the background
 
 ## Update [v1.1.3] (Dec 24, 2022)
