@@ -170,8 +170,8 @@ class Tooltip:
     def show_tip(self, event=None):
         x = y = 0
         x, y, cx, cy = self.widget.bbox("insert")
-        x += self.widget.winfo_pointerx() + 10
-        y += self.widget.winfo_pointery() + 10
+        x += self.widget.winfo_pointerx() + 1
+        y += self.widget.winfo_pointery() + 1
         self.tw = ctk.CTkToplevel(self.widget)
         # Leaves only the label and removes the app window
         self.tw.wm_overrideredirect(True)
