@@ -5,7 +5,6 @@ import tkinter
 from webbrowser import open as open_url
 
 
-
 class Window(ctk.CTk):
     def __init__(self):
         super().__init__()
@@ -13,6 +12,8 @@ class Window(ctk.CTk):
         self.geometry("500x400")
         self.resizable(False, False)
         self.protocol("WM_DELETE_WINDOW")
+
+        self.bind("<Configure>", self.refresh)
 
         self.icons = IconSheet('assets/iconsheet.png')
         self.iconphoto(True, self.icons.logo)
@@ -53,6 +54,9 @@ class Window(ctk.CTk):
         self.scrollbar.pack(side="right", fill="y")
         self.profiles_list.bind("<Configure>", lambda e: self.canvas.configure(scrollregion=self.canvas.bbox("all")))
         self.canvas.configure(scrollregion=self.canvas.bbox("all"))
+
+    def refresh(self, event=None):
+        print('refresh')
 
 
 
