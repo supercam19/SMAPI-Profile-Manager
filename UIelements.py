@@ -176,9 +176,14 @@ class Tooltip:
         # Leaves only the label and removes the app window
         self.tw.wm_overrideredirect(True)
         self.tw.wm_geometry(f'+{x}+{y}')
-        self.tw.wm_attributes('-transparentcolor', 'yellow')
-        self.tw.configure(bg="yellow")
-        label = ctk.CTkLabel(self.tw, text=self.text, corner_radius=10, bg_color='yellow', fg_color='gray21')
+        """
+        The background colour and the foreground colour need to be really similar because the label widget
+        has un-removable anti-aliasing that makes the colors blend -> there will be different colour pixels
+        on the edge of the label.
+        """
+        self.tw.wm_attributes('-transparentcolor', '#555555')
+        self.tw.configure(bg="#555555")
+        label = ctk.CTkLabel(self.tw, text=self.text, corner_radius=10, bg_color='#555555', fg_color='#545454')
         label.pack(padx=1, pady=1)
 
     def hide_tip(self):
