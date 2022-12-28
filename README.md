@@ -1,5 +1,12 @@
 # SMAPI-Profile-Manager
- Allows you to quickly switch between different Stardew Valley mod profiles
+ 
+## IMPORTANT
+ The app window will only display properly if your display scaling is set to 150% in windows Settings>System>Display>Scale and layout<br>
+ A fix for this is issue is currently in the works
+ 
+## 
+
+Allows you to quickly switch between different Stardew Valley mod profiles
 
 ![Preview](assets/preview.png)
 
