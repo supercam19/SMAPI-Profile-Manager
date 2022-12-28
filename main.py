@@ -41,7 +41,7 @@ class Profile:
 
     def select_profile(self):
         print(f'\"{settings["smapi_path"]}\" \"{self.path}\"')
-        cmd = f'\"{settings["smapi_path"]}\" --mods-path \"{self.path}\"'
+        cmd = f'start cmd /c \"\"{settings["smapi_path"]}\" --mods-path \"{self.path}\"\"'
         call(cmd, shell=True)
 
     def delete_profile(self):
