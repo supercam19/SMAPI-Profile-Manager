@@ -1,5 +1,13 @@
 # SMAPI Profile Manager Changelog
 
+# Core Update [v1.2.0] (???)
+
+### Additions
+ - Implemented a new way of loading and saving profiles, leading to fewer errors and less file clutter (#18)
+
+### Changes
+ - Mod profiles can now be imported from anywhere on your computer (#18)
+
 ## Round Tooltip Edges [v1.1.4] (Dec 27, 2022)
 Fixed critical issue where the app window would not display properly if your display scaling was not set to 150%, aswell as finally added rounded edges to tooltips.
 
