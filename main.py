@@ -40,7 +40,6 @@ class Profile:
         if 'warning_label' in globals(): warning_label.pack_forget()
 
     def select_profile(self):
-        print(f'\"{settings["smapi_path"]}\" \"{self.path}\"')
         cmd = f'start cmd /c \"\"{settings["smapi_path"]}\" --mods-path \"{self.path}\"\"'
         call(cmd, shell=True)
 
@@ -50,12 +49,10 @@ class Profile:
         self.prof_button.destroy()
         self.prof_delete.destroy()
         # Remove the profile from the text file
-        with open('profiles.txt', 'r') as f:
-            lines = f.readlines()
-        with open('profiles.txt', 'w') as f:
-            for line in lines:
-                if not line.startswith(self.name):
-                    f.write(line)
+        for profile in profiles_data:
+            if profile['name'] == self.name:
+                profiles_data.remove(profile)
+        save_profile(profiles_data)
 
 
 def add_profile():
@@ -69,7 +66,7 @@ def add_profile():
     prof_name = prof_name[:100] if len(prof_name) > 100 else prof_name
     profiles.append(Profile(prof_name, prof_path))
     profiles[-1].draw_profile()
-    save_profile(prof_name, prof_path)
+    save_profile(profiles_data)
 
 
 def save_profile(data):
@@ -79,16 +76,12 @@ def save_profile(data):
 
 
 def load_profiles():
-    # Load the users profiles from the profiles.txt file
     with open('profiles.json', 'r') as f:
         try:
             profiles_json = json.load(f)
         except json.decoder.JSONDecodeError:
             return []
     return profiles_json
-
-    # profiles.append(Profile(prof_name, prof_path))
-    # profiles[-1].draw_profile()
 
 
 def convert_legacy_profiles():
@@ -144,6 +137,7 @@ VERSION = "v1.1.4"
 if __name__ == '__main__':
     check_files()
     settings = load_settings()
+    profiles_data = []
     # Initialize the TK window
     tk.set_appearance_mode("dark")
     windll.user32.SetProcessDPIAware()
@@ -164,9 +158,6 @@ if __name__ == '__main__':
     for profile in profiles_data:
         profiles.append(Profile(profile['name'], profile['path']))
         profiles[-1].draw_profile()
-
-    profiles_data.append({"name": "test", "path": "test"})
-    save_profile(profiles_data)
 
     if not profiles:
         warning_label = tk.CTkLabel(window.profiles_list, text="No profiles found, use the + button to add a profile")
