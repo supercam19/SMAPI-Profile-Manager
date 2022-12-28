@@ -5,7 +5,6 @@ import tkinter
 from webbrowser import open as open_url
 
 
-
 class Window(ctk.CTk):
     def __init__(self):
         super().__init__()
