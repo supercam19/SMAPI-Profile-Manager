@@ -23,7 +23,6 @@ This will prompt you to choose a folder, which will be one of your mod profiles.
 Once that is done, you can repeat the process for as many different profiles as you wish. You can then launch the game with different profiles using their launch button, or delete the profile with the delete button.
 
 ## Restrictions
-- The folders of mods when adding profiles currently need to be inside the Stardew Valley folder, this will be fixed soon.
 - The profile manager will only work on Windows (confirmed on Windows 10 only) and will likely never come to other operating systems
 
 ## Modifying the program

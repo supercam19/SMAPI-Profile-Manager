@@ -5,6 +5,7 @@ from UIelements import *
 import requests
 import json
 from ctypes import windll
+from subprocess import call
 
 
 class Profile:
@@ -39,18 +40,9 @@ class Profile:
         if 'warning_label' in globals(): warning_label.pack_forget()
 
     def select_profile(self):
-        os.chdir(os.path.dirname(settings['smapi_path']))
-        # Find the name of the profile being disabled
-        try:
-            with open('Mods/profile.txt', 'r') as f:
-                prof_name = f.read()
-            os.system(f'ren "Mods" "Mods_{prof_name}"')
-        except FileNotFoundError:
-            pass
-
-        os.system(f'ren "Mods_{self.name.upper()}" "Mods"')
-
-        os.system(f'START "" "{settings["smapi_path"]}"')
+        print(f'\"{settings["smapi_path"]}\" \"{self.path}\"')
+        cmd = f'start cmd /c \"\"{settings["smapi_path"]}\" --mods-path \"{self.path}\"\"'
+        call(cmd, shell=True)
 
     def delete_profile(self):
         self.prof_frame.destroy()
@@ -75,9 +67,6 @@ def add_profile():
     prof_name = str(popup_info)
     # set prof_name to the first 100 characters of itself if it is longer than 100 characters
     prof_name = prof_name[:100] if len(prof_name) > 100 else prof_name
-    with open(f'{prof_path}\\profile.txt', 'w') as f:
-        f.write(prof_name.upper())
-    os.system(f'ren "{prof_path}" "Mods_{prof_name.upper()}"')
     profiles.append(Profile(prof_name, prof_path))
     profiles[-1].draw_profile()
     save_profile(prof_name, prof_path)
@@ -119,6 +108,8 @@ def check_files():
             f.write('{}')
     if not os.path.exists('assets'):
         os.mkdir('assets')
+    if not os.path.exists('profiles'):
+        os.mkdir('profiles')
     if not os.path.exists('assets/background.png'):
         background_img = requests.get('https://github.com/supercam19/SMAPI-Profile-Manager/blob/main/assets/background.png?raw=true')
         with open('assets/background.png', 'wb') as f:
