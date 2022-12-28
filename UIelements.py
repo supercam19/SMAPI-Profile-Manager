@@ -22,7 +22,7 @@ class Window(ctk.CTk):
         self.top_frame.pack(fill="both", expand=True, side="top", anchor="w")
         self.banner = PhotoImage(file="assets/background.png")
         self.banner_label = ctk.CTkLabel(self.top_frame, image=self.banner, width=400, height=200, anchor='nw')
-        self.banner_label.pack(side="left", fill="x")
+        self.banner_label.pack(side="left")
 
         # Control buttons (top right)
         self.control_frame = Frame(self.top_frame, width=100, height=200)
@@ -37,6 +37,7 @@ class Window(ctk.CTk):
         self.github_button.pack(pady=5, anchor="n")
         self.version_label = ctk.CTkLabel(self.control_frame, text="Version: " + VERSION, width=100, height=20, text_font=("Arial", 7))
         self.version_label.pack(side="bottom", fill="x", pady=5)
+        self.control_frame.lift()
 
         # Profiles list (bottom)
         self.canvas = ctk.CTkCanvas(self, bd=0)
@@ -52,8 +53,6 @@ class Window(ctk.CTk):
         self.scrollbar.pack(side="right", fill="y")
         self.profiles_list.bind("<Configure>", lambda e: self.canvas.configure(scrollregion=self.canvas.bbox("all")))
         self.canvas.configure(scrollregion=self.canvas.bbox("all"))
-
-
 
 
 class Frame(ctk.CTkFrame):

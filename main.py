@@ -4,6 +4,7 @@ import customtkinter as tk
 from UIelements import *
 import requests
 import json
+from ctypes import windll
 
 
 class Profile:
@@ -138,6 +139,7 @@ if __name__ == '__main__':
     settings = load_settings()
     # Initialize the TK window
     tk.set_appearance_mode("dark")
+    windll.user32.SetProcessDPIAware()
     window = Window()
     window.add_prof_button.configure(command=add_profile)
 
