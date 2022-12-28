@@ -5,6 +5,8 @@ from UIelements import *
 import requests
 import json
 from ctypes import windll
+import win32com.client
+import subprocess
 
 
 class Profile:
@@ -39,18 +41,9 @@ class Profile:
         if 'warning_label' in globals(): warning_label.pack_forget()
 
     def select_profile(self):
-        os.chdir(os.path.dirname(settings['smapi_path']))
-        # Find the name of the profile being disabled
-        try:
-            with open('Mods/profile.txt', 'r') as f:
-                prof_name = f.read()
-            os.system(f'ren "Mods" "Mods_{prof_name}"')
-        except FileNotFoundError:
-            pass
-
-        os.system(f'ren "Mods_{self.name.upper()}" "Mods"')
-
-        os.system(f'START "" "{settings["smapi_path"]}"')
+        print(f'\"{settings["smapi_path"]}\" \"{self.path}\"')
+        cmd = f'\"{settings["smapi_path"]}\" --mods-path \"{self.path}\"'
+        subprocess.call(cmd, shell=True)
 
     def delete_profile(self):
         self.prof_frame.destroy()
@@ -119,6 +112,8 @@ def check_files():
             f.write('{}')
     if not os.path.exists('assets'):
         os.mkdir('assets')
+    if not os.path.exists('profiles'):
+        os.mkdir('profiles')
     if not os.path.exists('assets/background.png'):
         background_img = requests.get('https://github.com/supercam19/SMAPI-Profile-Manager/blob/main/assets/background.png?raw=true')
         with open('assets/background.png', 'wb') as f:
@@ -141,7 +136,7 @@ if __name__ == '__main__':
     tk.set_appearance_mode("dark")
     windll.user32.SetProcessDPIAware()
     window = Window()
-    window.add_prof_button.configure(command=add_profile)
+    window.add_prof_button.configure(command=new_profile)
 
     if 'smapi_path' not in settings or not os.path.exists(settings['smapi_path']):
         if os.path.exists('C:/Program Files (x86)/Steam/steamapps/common/Stardew Valley/StardewModdingAPI.exe'):
