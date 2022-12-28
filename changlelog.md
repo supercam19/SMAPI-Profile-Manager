@@ -5,7 +5,7 @@ Fixed critical issue where the app window would not display properly if your dis
 
 ### Changes
  - Tooltips now have rounded edges (#16)
- - Made the colour of tooltips brighter so it wouldn't blend in with the background
+ - Made the colour of tooltips brighter so it won't blend in with the background
 
 ### Fixes
  - Fixed issue where the app window would not display properly if your display scaling was not set to 150% (#17)
