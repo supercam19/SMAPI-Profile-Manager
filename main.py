@@ -72,19 +72,29 @@ def add_profile():
     save_profile(prof_name, prof_path)
 
 
-def save_profile(name, path):
-    # Write the name and path of the profile to the profiles.txt file
-    with open('profiles.txt', 'a') as f:
-        f.write(f'{name};{path}\n')
+def save_profile(data):
+    with open('profiles.json', 'a') as f:
+        f.truncate(0)
+        json.dump(data, f, indent=4)
 
 
 def load_profiles():
     # Load the users profiles from the profiles.txt file
-    with open('profiles.txt', 'r') as f:
-        for line in f:
-            prof_name, prof_path = line.split(';')
-            profiles.append(Profile(prof_name, prof_path))
-            profiles[-1].draw_profile()
+    with open('profiles.json', 'r') as f:
+        try:
+            profiles_json = json.load(f)
+        except json.decoder.JSONDecodeError:
+            return []
+    return profiles_json
+
+    # profiles.append(Profile(prof_name, prof_path))
+    # profiles[-1].draw_profile()
+
+
+# def load_legacy_profiles():
+#     with open('profiles.txt', 'r') as f:
+#         for line in f:
+#             prof_name, prof_path = line.split(';')
 
 
 def load_settings():
@@ -95,14 +105,14 @@ def load_settings():
 
 def save_settings():
     with open('settings.json', 'w') as f:
-        json.dump(settings, f)
+        json.dump(settings, f, indent=4)
 
 
 def check_files():
     # Check if critical files are missing, if so, download/create them
     if not os.path.exists('profiles.json'):
         with open('profiles.json', 'w') as f:
-            f.write('{}')
+            f.write('')
     if not os.path.exists('settings.json'):
         with open('settings.json', 'w') as f:
             f.write('{}')
@@ -143,7 +153,14 @@ if __name__ == '__main__':
             settings['smapi_path'] = filedialog.askopenfilename(title="Select StardewModdingAPI.exe", filetypes=[("StardewModdingAPI.exe", "*.exe")])
         save_settings()
 
-    load_profiles()
+    profiles_data = load_profiles()
+    for profile in profiles_data:
+        profiles.append(Profile(profile['name'], profile['path']))
+        profiles[-1].draw_profile()
+
+    profiles_data.append({"name": "test", "path": "test"})
+    save_profile(profiles_data)
+
     if not profiles:
         warning_label = tk.CTkLabel(window.profiles_list, text="No profiles found, use the + button to add a profile")
         warning_label.pack(pady=20, padx=100)
