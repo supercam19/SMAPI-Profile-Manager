@@ -1,6 +1,6 @@
 # SMAPI Profile Manager Changelog
 
-## Round Tooltip Edges [v1.1.4] (???)
+## Round Tooltip Edges [v1.1.4] (Dec 27, 2022)
 Fixed critical issue where the app window would not display properly if your display scaling was not set to 150%, aswell as finally added rounded edges to tooltips.
 
 ### Changes
