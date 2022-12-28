@@ -67,8 +67,6 @@ def add_profile():
     prof_name = str(popup_info)
     # set prof_name to the first 100 characters of itself if it is longer than 100 characters
     prof_name = prof_name[:100] if len(prof_name) > 100 else prof_name
-    with open(f'{prof_path}\\profile.txt', 'w') as f:
-        f.write(prof_name.upper())
     profiles.append(Profile(prof_name, prof_path))
     profiles[-1].draw_profile()
     save_profile(prof_name, prof_path)
