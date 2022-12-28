@@ -100,9 +100,9 @@ def save_settings():
 
 def check_files():
     # Check if critical files are missing, if so, download/create them
-    if not os.path.exists('profiles.txt'):
-        with open('profiles.txt', 'w') as f:
-            f.write('')
+    if not os.path.exists('profiles.json'):
+        with open('profiles.json', 'w') as f:
+            f.write('{}')
     if not os.path.exists('settings.json'):
         with open('settings.json', 'w') as f:
             f.write('{}')
