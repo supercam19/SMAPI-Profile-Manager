@@ -9,7 +9,7 @@ class Window(ctk.CTk):
     def __init__(self):
         super().__init__()
         self.title("SMAPI Mod Manager")
-        self.geometry("500x400-1200+1200")
+        self.geometry("500x400")
         self.resizable(False, False)
         self.protocol("WM_DELETE_WINDOW")
 
@@ -20,6 +20,9 @@ class Window(ctk.CTk):
         self.top_frame = Frame(self, width=500, height=200)
         self.top_frame.propagate(False)
         self.top_frame.pack(fill="both", expand=True, side="top", anchor="w")
+        self.banner = PhotoImage(file="assets/background.png")
+        self.banner_label = ctk.CTkLabel(self.top_frame, image=self.banner, width=400, height=200, anchor='nw')
+        self.banner_label.pack(side="left")
 
         # Control buttons (top right)
         self.control_frame = Frame(self.top_frame, width=100, height=200)
@@ -35,10 +38,6 @@ class Window(ctk.CTk):
         self.version_label = ctk.CTkLabel(self.control_frame, text="Version: " + VERSION, width=100, height=20, text_font=("Arial", 7))
         self.version_label.pack(side="bottom", fill="x", pady=5)
         self.control_frame.lift()
-
-        self.banner = PhotoImage(file="assets/background.png")
-        self.banner_label = ctk.CTkLabel(self.top_frame, image=self.banner, width=400, height=200, anchor='nw')
-        self.banner_label.pack(side="left")
 
         # Profiles list (bottom)
         self.canvas = ctk.CTkCanvas(self, bd=0)
