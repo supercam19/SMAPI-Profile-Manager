@@ -5,8 +5,7 @@ from UIelements import *
 import requests
 import json
 from ctypes import windll
-import win32com.client
-import subprocess
+from subprocess import call
 
 
 class Profile:
@@ -43,7 +42,7 @@ class Profile:
     def select_profile(self):
         print(f'\"{settings["smapi_path"]}\" \"{self.path}\"')
         cmd = f'\"{settings["smapi_path"]}\" --mods-path \"{self.path}\"'
-        subprocess.call(cmd, shell=True)
+        call(cmd, shell=True)
 
     def delete_profile(self):
         self.prof_frame.destroy()
@@ -136,7 +135,7 @@ if __name__ == '__main__':
     tk.set_appearance_mode("dark")
     windll.user32.SetProcessDPIAware()
     window = Window()
-    window.add_prof_button.configure(command=new_profile)
+    window.add_prof_button.configure(command=add_profile)
 
     if 'smapi_path' not in settings or not os.path.exists(settings['smapi_path']):
         if os.path.exists('C:/Program Files (x86)/Steam/steamapps/common/Stardew Valley/StardewModdingAPI.exe'):
