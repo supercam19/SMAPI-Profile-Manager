@@ -69,7 +69,6 @@ def add_profile():
     prof_name = prof_name[:100] if len(prof_name) > 100 else prof_name
     with open(f'{prof_path}\\profile.txt', 'w') as f:
         f.write(prof_name.upper())
-    os.system(f'ren "{prof_path}" "Mods_{prof_name.upper()}"')
     profiles.append(Profile(prof_name, prof_path))
     profiles[-1].draw_profile()
     save_profile(prof_name, prof_path)
