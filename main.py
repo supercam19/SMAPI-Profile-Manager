@@ -91,10 +91,16 @@ def load_profiles():
     # profiles[-1].draw_profile()
 
 
-# def load_legacy_profiles():
-#     with open('profiles.txt', 'r') as f:
-#         for line in f:
-#             prof_name, prof_path = line.split(';')
+def convert_legacy_profiles():
+    """
+    Automatically converts profiles stored in the old format to the new format
+    """
+    with open('profiles.txt', 'r') as f:
+        for line in f:
+            prof_name, prof_path = line.split(';')
+            profiles_data.append({'name': prof_name, 'path': prof_path})
+    save_profile(profiles_data)
+    os.remove('profiles.txt')
 
 
 def load_settings():
@@ -153,6 +159,7 @@ if __name__ == '__main__':
             settings['smapi_path'] = filedialog.askopenfilename(title="Select StardewModdingAPI.exe", filetypes=[("StardewModdingAPI.exe", "*.exe")])
         save_settings()
 
+    if os.path.exists('profiles.txt'): convert_legacy_profiles()
     profiles_data = load_profiles()
     for profile in profiles_data:
         profiles.append(Profile(profile['name'], profile['path']))
