@@ -209,6 +209,8 @@ class IconSheet:
         self.logo = self.get_icon(0, 0, 63, 63)
         self.trash_closed = self.get_icon(64, 0, 63, 63).subsample(2, 2)
         self.trash_opened = self.get_icon(128, 0, 63, 63).subsample(2, 2)
+        self.gear = self.get_icon(192, 0, 63, 63).subsample(2, 2)
+        self.gear_dark = self.get_icon(0, 64, 63, 63).subsample(2, 2)
 
     def get_icon(self, x, y, width, height):
         icon = PhotoImage()
