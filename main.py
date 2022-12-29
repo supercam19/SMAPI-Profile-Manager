@@ -6,6 +6,7 @@ import requests
 import json
 from ctypes import windll
 from subprocess import call
+from time import time
 
 
 class Profile:
@@ -40,7 +41,10 @@ class Profile:
         if 'warning_label' in globals(): warning_label.pack_forget()
 
     def select_profile(self):
-        print(f'\"{settings["smapi_path"]}\" \"{self.path}\"')
+        for profile in profiles_data:
+            if profile['name'] == self.name:
+                profile['last-launch'] = int(time())
+                save_profile(profiles_data)
         cmd = f'start cmd /c \"\"{settings["smapi_path"]}\" --mods-path \"{self.path}\"\"'
         call(cmd, shell=True)
 
@@ -50,12 +54,10 @@ class Profile:
         self.prof_button.destroy()
         self.prof_delete.destroy()
         # Remove the profile from the text file
-        with open('profiles.txt', 'r') as f:
-            lines = f.readlines()
-        with open('profiles.txt', 'w') as f:
-            for line in lines:
-                if not line.startswith(self.name):
-                    f.write(line)
+        for profile in profiles_data:
+            if profile['name'] == self.name:
+                profiles_data.remove(profile)
+        save_profile(profiles_data)
 
 
 def add_profile():
@@ -69,22 +71,35 @@ def add_profile():
     prof_name = prof_name[:100] if len(prof_name) > 100 else prof_name
     profiles.append(Profile(prof_name, prof_path))
     profiles[-1].draw_profile()
-    save_profile(prof_name, prof_path)
+    profiles_data.append({'name': prof_name, 'path': prof_path, 'created': int(time())})
+    save_profile(profiles_data)
 
 
-def save_profile(name, path):
-    # Write the name and path of the profile to the profiles.txt file
-    with open('profiles.txt', 'a') as f:
-        f.write(f'{name};{path}\n')
+def save_profile(data):
+    with open('profiles.json', 'a') as f:
+        f.truncate(0)
+        json.dump(data, f, indent=4)
 
 
 def load_profiles():
-    # Load the users profiles from the profiles.txt file
+    with open('profiles.json', 'r') as f:
+        try:
+            profiles_json = json.load(f)
+        except json.decoder.JSONDecodeError:
+            return []
+    return profiles_json
+
+
+def convert_legacy_profiles():
+    """
+    Automatically converts profiles stored in the old format to the new format
+    """
     with open('profiles.txt', 'r') as f:
         for line in f:
             prof_name, prof_path = line.split(';')
-            profiles.append(Profile(prof_name, prof_path))
-            profiles[-1].draw_profile()
+            profiles_data.append({'name': prof_name, 'path': prof_path, 'created': int(time())})
+    save_profile(profiles_data)
+    os.remove('profiles.txt')
 
 
 def load_settings():
@@ -95,13 +110,13 @@ def load_settings():
 
 def save_settings():
     with open('settings.json', 'w') as f:
-        json.dump(settings, f)
+        json.dump(settings, f, indent=4)
 
 
 def check_files():
     # Check if critical files are missing, if so, download/create them
-    if not os.path.exists('profiles.txt'):
-        with open('profiles.txt', 'w') as f:
+    if not os.path.exists('profiles.json'):
+        with open('profiles.json', 'w') as f:
             f.write('')
     if not os.path.exists('settings.json'):
         with open('settings.json', 'w') as f:
@@ -128,6 +143,7 @@ VERSION = "v1.1.4"
 if __name__ == '__main__':
     check_files()
     settings = load_settings()
+    profiles_data = []
     # Initialize the TK window
     tk.set_appearance_mode("dark")
     windll.user32.SetProcessDPIAware()
@@ -143,7 +159,12 @@ if __name__ == '__main__':
             settings['smapi_path'] = filedialog.askopenfilename(title="Select StardewModdingAPI.exe", filetypes=[("StardewModdingAPI.exe", "*.exe")])
         save_settings()
 
-    load_profiles()
+    if os.path.exists('profiles.txt'): convert_legacy_profiles()
+    profiles_data = load_profiles()
+    for profile in profiles_data:
+        profiles.append(Profile(profile['name'], profile['path']))
+        profiles[-1].draw_profile()
+
     if not profiles:
         warning_label = tk.CTkLabel(window.profiles_list, text="No profiles found, use the + button to add a profile")
         warning_label.pack(pady=20, padx=100)
