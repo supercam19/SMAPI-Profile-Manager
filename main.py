@@ -6,6 +6,7 @@ import requests
 import json
 from ctypes import windll
 from subprocess import call
+from time import time
 
 
 class Profile:
@@ -66,6 +67,7 @@ def add_profile():
     prof_name = prof_name[:100] if len(prof_name) > 100 else prof_name
     profiles.append(Profile(prof_name, prof_path))
     profiles[-1].draw_profile()
+    profiles_data.append({'name': prof_name, 'path': prof_path, 'created': int(time())})
     save_profile(profiles_data)
 
 
@@ -91,7 +93,7 @@ def convert_legacy_profiles():
     with open('profiles.txt', 'r') as f:
         for line in f:
             prof_name, prof_path = line.split(';')
-            profiles_data.append({'name': prof_name, 'path': prof_path})
+            profiles_data.append({'name': prof_name, 'path': prof_path, 'created': int(time())})
     save_profile(profiles_data)
     os.remove('profiles.txt')
 
