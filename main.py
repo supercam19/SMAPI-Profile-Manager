@@ -20,13 +20,12 @@ class Profile:
         self.right_frame = tk.CTkFrame(self.prof_frame, width=140, height=32, fg_color='gray21', bg_color='gray21')
         self.right_frame.pack_propagate(False)
         self.prof_title = tk.CTkLabel(self.left_frame, text=self.name, fg_color="gray21", text_font=("Arial", 12), anchor='w')
-        self.prof_button = Button(self.right_frame, text="\U000025B6", fg_color="gray21", text_font=("Arial", 24), text_color='white', hover_color='gray21', width=32)
+        self.prof_button = Button(self.right_frame, text="\U000025B6", fg_color="gray21", text_font=("Arial", 24), text_color='white', hover_color='gray21', width=32, command=self.select_profile)
         self.prof_edit = Button(self.right_frame, image=window.icons.gear, fg_color="gray21", height=40, type='button', text_color='white', hover_image=window.icons.gear_dark, width=32)
-        self.prof_delete = Button(self.right_frame, width=32, image=window.icons.trash_closed, height=40, type='button', hover_image=window.icons.trash_opened)
-        self.prof_button.configure(command=self.select_profile)
-        self.prof_delete.configure(command=self.delete_profile)
+        self.prof_delete = Button(self.right_frame, width=32, image=window.icons.trash_closed, height=40, type='button', hover_image=window.icons.trash_opened, command=self.delete_profile)
 
         self.launch_tooltip = Tooltip(self.prof_button, "Launch the game with this profile")
+        self.edit_tooltip = Tooltip(self.prof_edit, "Edit this profile")
         self.delete_tooltip = Tooltip(self.prof_delete, "Delete this profile")
         self.name_tooltip = Tooltip(self.prof_title, self.name)
 
