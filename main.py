@@ -41,6 +41,10 @@ class Profile:
         if 'warning_label' in globals(): warning_label.pack_forget()
 
     def select_profile(self):
+        for profile in profiles_data:
+            if profile['name'] == self.name:
+                profile['last-launch'] = int(time())
+                save_profile(profiles_data)
         cmd = f'start cmd /c \"\"{settings["smapi_path"]}\" --mods-path \"{self.path}\"\"'
         call(cmd, shell=True)
 
