@@ -25,6 +25,9 @@ Once that is done, you can repeat the process for as many different profiles as 
 ## Restrictions
 - The profile manager will only work on Windows (confirmed on Windows 10 only) and will likely never come to other operating systems
 
+## Attibutions
+<a href="https://www.flaticon.com/free-icons/gear" title="gear icons">Gear icons created by Freepik - Flaticon</a>
+
 ## Modifying the program
 The external packages for this program are [CustomTkinter](https://github.com/TomSchimansky/CustomTkinter), which can be installed with:<br>
 `pip install customtkinter`</br>
