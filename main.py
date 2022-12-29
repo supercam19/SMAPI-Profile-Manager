@@ -41,10 +41,7 @@ class Profile:
         if 'warning_label' in globals(): warning_label.pack_forget()
 
     def select_profile(self):
-        for profile in profiles_data:
-            if profile['name'] == self.name:
-                profile['last-launch'] = int(time())
-                save_profile(profiles_data)
+        edit_saved_profile(self.name, int(time()), key='last_used')
         cmd = f'start cmd /c \"\"{settings["smapi_path"]}\" --mods-path \"{self.path}\"\"'
         call(cmd, shell=True)
 
@@ -54,9 +51,7 @@ class Profile:
         self.prof_button.destroy()
         self.prof_delete.destroy()
         # Remove the profile from the text file
-        for profile in profiles_data:
-            if profile['name'] == self.name:
-                profiles_data.remove(profile)
+        edit_saved_profile(self.name, action='delete')
         save_profile(profiles_data)
 
 
@@ -79,6 +74,31 @@ def save_profile(data):
     with open('profiles.json', 'a') as f:
         f.truncate(0)
         json.dump(data, f, indent=4)
+
+
+def edit_saved_profile(profile_name,  new_value=None, key=None, action='edit'):
+    """
+    Edits a saved profile
+    :param profile_name: The name value of the profile to edit
+    :param new_value: The new value to set the key to.
+    :param key: The key to edit. If None, it will try to replace the entire profile
+    :param action: The action to perform. Can be 'edit' or 'delete'
+    """
+    if action == 'edit':
+        for profile in profiles_data:
+            if profile['name'] == profile_name:
+                if key is None:
+                    profile = new_value
+                else:
+                    profile[key] = new_value
+            save_profile(profiles_data)
+    elif action == 'delete':
+        for profile in profiles_data:
+            if profile['name'] == profile_name:
+                profiles_data.remove(profile)
+        save_profile(profiles_data)
+    else:
+        raise ValueError("Action must be either 'edit' or 'delete'")
 
 
 def load_profiles():
