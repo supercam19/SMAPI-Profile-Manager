@@ -10,9 +10,10 @@ from time import time
 
 
 class Profile:
-    def __init__(self, name, path):
-        self.name = name
-        self.path = path.rstrip("\n")
+    def __init__(self, info):
+        self.name = info['name']
+        self.path = info['path'].rstrip("\n")
+        self.prof_info = info # all other profile information
         self.prof_frame = tk.CTkFrame(window.profiles_list, width=480, height=32)
         self.prof_frame.pack_propagate(False)
         self.left_frame = tk.CTkFrame(self.prof_frame, width=320, height=32, fg_color='gray21', bg_color='gray21')
@@ -21,7 +22,7 @@ class Profile:
         self.right_frame.pack_propagate(False)
         self.prof_title = tk.CTkLabel(self.left_frame, text=self.name, fg_color="gray21", text_font=("Arial", 12), anchor='w')
         self.prof_button = Button(self.right_frame, text="\U000025B6", fg_color="gray21", text_font=("Arial", 24), text_color='white', hover_color='gray21', width=32, command=self.select_profile)
-        self.prof_edit = Button(self.right_frame, image=window.icons.gear, fg_color="gray21", height=40, type='button', text_color='white', hover_image=window.icons.gear_dark, width=32)
+        self.prof_edit = Button(self.right_frame, image=window.icons.gear, fg_color="gray21", height=40, type='button', text_color='white', hover_image=window.icons.gear_dark, width=32, command=self.edit_profile)
         self.prof_delete = Button(self.right_frame, width=32, image=window.icons.trash_closed, height=40, type='button', hover_image=window.icons.trash_opened, command=self.delete_profile)
 
         self.launch_tooltip = Tooltip(self.prof_button, "Launch the game with this profile")
@@ -46,6 +47,9 @@ class Profile:
         cmd = f'start cmd /c \"\"{settings["smapi_path"]}\" --mods-path \"{self.path}\"\"'
         call(cmd, shell=True)
 
+    def edit_profile(self):
+        editor = ProfileEditor(window, self.prof_info)
+
     def delete_profile(self):
         self.prof_frame.destroy()
         self.prof_title.destroy()
@@ -65,7 +69,7 @@ def add_profile():
     prof_name = str(popup_info)
     # set prof_name to the first 100 characters of itself if it is longer than 100 characters
     prof_name = prof_name[:100] if len(prof_name) > 100 else prof_name
-    profiles.append(Profile(prof_name, prof_path))
+    profiles.append(Profile({'name': prof_name, 'path': prof_path, 'created': int(time())}))
     profiles[-1].draw_profile()
     profiles_data.append({'name': prof_name, 'path': prof_path, 'created': int(time())})
     save_profile(profiles_data)
@@ -183,7 +187,8 @@ if __name__ == '__main__':
     if os.path.exists('profiles.txt'): convert_legacy_profiles()
     profiles_data = load_profiles()
     for profile in profiles_data:
-        profiles.append(Profile(profile['name'], profile['path']))
+        # For each profile, create a Profile object with all its data from profiles.json
+        profiles.append(Profile(profile))
         profiles[-1].draw_profile()
 
     if not profiles:

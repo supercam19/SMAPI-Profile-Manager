@@ -139,6 +139,34 @@ class Popup:
         self.popup.destroy()
 
 
+class ProfileEditor:
+    def __init__(self, root, profile_data):
+        self.prof_info = profile_data
+        self.protected_values = ('created', 'last_launched')  # Do not allow user to modify these
+        self.editor = ctk.CTkToplevel(root, bg="gray18")
+        self.editor.title("Profile Editor - " + self.prof_info['name'])
+        self.editor.geometry('300x140')
+
+        self.name_frame = Frame(self.editor, width=300, height=100)
+        self.name_frame.pack()
+        self.name_label = ctk.CTkLabel(self.name_frame, text="Name:", width=30).pack(side="left", padx=10)
+        self.name_entry = ctk.CTkEntry(self.name_frame, width=240)
+        self.name_entry.insert(0, self.prof_info['name'])
+        self.name_entry.pack(pady=10, side='right', padx=(0, 10))
+
+        self.path_frame = Frame(self.editor, width=300, height=100)
+        self.path_frame.pack()
+        self.path_label = ctk.CTkLabel(self.path_frame, text="Path:", width=30).pack(side="left", padx=10)
+        self.path_entry = ctk.CTkEntry(self.path_frame, width=240)
+        self.path_entry.insert(0, self.prof_info['path'])
+        self.path_entry.pack(pady=10, side='right', padx=(0, 10))
+
+        self.apply_button = ctk.CTkButton(self.editor, text="Apply", command=self.apply_changes, width=10).pack(pady=10)
+
+    def apply_changes(self):
+        popup_info.change({"name": self.name_entry.get(), "path": self.path_entry.get(), "created": self.prof_info['created'], "last_launched": self.prof_info['last_launched']})
+
+
 class Tooltip:
     def __init__(self, widget, text):
         self.wait_time = 500  # milliseconds
@@ -216,7 +244,6 @@ class IconSheet:
         icon = PhotoImage()
         icon.tk.call(icon, 'copy', self.sheet, '-from', x, y, x + width, y + height, '-to', 0, 0)
         return icon
-
 
 popup_info = PopupInfo()
 
