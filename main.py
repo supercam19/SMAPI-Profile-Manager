@@ -21,7 +21,7 @@ class Profile:
         self.right_frame.pack_propagate(False)
         self.prof_title = tk.CTkLabel(self.left_frame, text=self.name, fg_color="gray21", text_font=("Arial", 12), anchor='w')
         self.prof_button = Button(self.right_frame, text="\U000025B6", fg_color="gray21", text_font=("Arial", 24), text_color='white', hover_color='gray21', width=40)
-        self.prof_edit = Button(self.right_frame, text="\U00002699", fg_color="gray21", text_font=("Arial", 11), text_color='white', hover_color='gray21', width=40)
+        self.prof_edit = Button(self.right_frame, image=window.icons.gear, fg_color="gray21", height=40, type='button', text_color='white', hover_image=window.icons.gear_dark, width=40)
         self.prof_delete = Button(self.right_frame, width=40, image=window.icons.trash_closed, height=40, type='button', hover_image=window.icons.trash_opened)
         self.prof_button.configure(command=self.select_profile)
         self.prof_delete.configure(command=self.delete_profile)
