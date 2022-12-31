@@ -1,7 +1,7 @@
 import customtkinter as ctk
 from tkinter import PhotoImage
 from main import VERSION
-import tkinter
+from tkinter import filedialog
 from webbrowser import open as open_url
 
 
@@ -140,8 +140,9 @@ class Popup:
 
 
 class ProfileEditor:
-    def __init__(self, root, profile_data):
+    def __init__(self, root, profile_data, callback):
         self.prof_info = profile_data
+        self.callback = callback
         self.protected_values = ('created', 'last_launched')  # Do not allow user to modify these
         self.editor = ctk.CTkToplevel(root, bg="gray18")
         self.editor.title("Profile Editor - " + self.prof_info['name'])
@@ -157,14 +158,21 @@ class ProfileEditor:
         self.path_frame = Frame(self.editor, width=300, height=100)
         self.path_frame.pack()
         self.path_label = ctk.CTkLabel(self.path_frame, text="Path:", width=30).pack(side="left", padx=10)
-        self.path_entry = ctk.CTkEntry(self.path_frame, width=240)
+        self.path_entry = ctk.CTkEntry(self.path_frame, width=210)
         self.path_entry.insert(0, self.prof_info['path'])
-        self.path_entry.pack(pady=10, side='right', padx=(0, 10))
+        self.path_entry.pack(pady=10, side='left')
+        self.path_button = ctk.CTkButton(self.path_frame, text="...", width=5, command=self.browse_path).pack(padx=(5, 10), side='right')
 
         self.apply_button = ctk.CTkButton(self.editor, text="Apply", command=self.apply_changes, width=10).pack(pady=10)
 
     def apply_changes(self):
-        popup_info.change({"name": self.name_entry.get(), "path": self.path_entry.get(), "created": self.prof_info['created'], "last_launched": self.prof_info['last_launched']})
+        self.callback({'name': self.name_entry.get(), 'path': self.path_entry.get(), 'created': self.prof_info['created'], 'last_launched': self.prof_info['last_launched']})
+        self.editor.destroy()
+
+    def browse_path(self):
+        new_path = filedialog.askdirectory()
+        self.path_entry.delete(0, 'end')
+        self.path_entry.insert(0, new_path)
 
 
 class Tooltip:
@@ -225,8 +233,11 @@ class PopupInfo:
     def __str__(self):
         return self.info
 
-    def change(self, info):
-        assert isinstance(info, str)
+    def __dict__(self):
+        return self.info
+
+    def change(self, info, format=str):
+        assert isinstance(info, format)
         self.info = info
 
 

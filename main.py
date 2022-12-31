@@ -14,6 +14,7 @@ class Profile:
         self.name = info['name']
         self.path = info['path'].rstrip("\n")
         self.prof_info = info # all other profile information
+        if 'last_launched' not in self.prof_info: self.prof_info['last_launched'] = -1
         self.prof_frame = tk.CTkFrame(window.profiles_list, width=480, height=32)
         self.prof_frame.pack_propagate(False)
         self.left_frame = tk.CTkFrame(self.prof_frame, width=320, height=32, fg_color='gray21', bg_color='gray21')
@@ -48,7 +49,14 @@ class Profile:
         call(cmd, shell=True)
 
     def edit_profile(self):
-        editor = ProfileEditor(window, self.prof_info)
+        editor = ProfileEditor(window, self.prof_info, self.load_changed_info)
+        window.wait_window(editor.editor)
+        edit_saved_profile(self.name, self.prof_info, action='edit')
+        self.name = self.prof_info['name']
+        self.path = self.prof_info['path'].rstrip("\n")
+
+    def load_changed_info(self, info):
+        self.prof_info = info
 
     def delete_profile(self):
         self.prof_frame.destroy()
@@ -89,13 +97,16 @@ def edit_saved_profile(profile_name,  new_value=None, key=None, action='edit'):
     :param key: The key to edit. If None, it will try to replace the entire profile
     :param action: The action to perform. Can be 'edit' or 'delete'
     """
+    print('Profile edit requested')
     if action == 'edit':
         for profile in profiles_data:
             if profile['name'] == profile_name:
                 if key is None:
                     profile = new_value
+                    print('Profile completely edited')
                 else:
                     profile[key] = new_value
+                    print('Profile key {0} edited'.format(key))
             save_profile(profiles_data)
     elif action == 'delete':
         for profile in profiles_data:
