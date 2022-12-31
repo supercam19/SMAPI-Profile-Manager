@@ -5,6 +5,7 @@
 ### Additions
  - Profiles can now be edited, and an editor has been added to the UI (#20)
  - Implemented a new way of loading and saving profiles, leading to fewer errors and less file clutter (#18)
+ - 
 
 ### Changes
  - Mod profiles can now be imported from anywhere on your computer (#18)
