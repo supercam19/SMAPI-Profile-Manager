@@ -98,19 +98,14 @@ def edit_saved_profile(profile_name,  new_value=None, key=None, action='edit'):
     :param key: The key to edit. If None, it will try to replace the entire profile
     :param action: The action to perform. Can be 'edit' or 'delete'
     """
-    print('Profile edit requested')
     if action == 'edit':
         for i, profile in enumerate(profiles_data):
             if profile['name'] == profile_name:
                 if key is None:
                     profiles_data[i] = new_value
-                    print('Profile completely edited')
-                    print(profile)
-                    print(profiles_data)
                 else:
                     profile[key] = new_value
                     profiles_data[i] = profile
-                    print('Profile key {0} edited'.format(key))
             save_profile(profiles_data)
     elif action == 'delete':
         for profile in profiles_data:
