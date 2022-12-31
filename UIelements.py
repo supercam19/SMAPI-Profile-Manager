@@ -1,7 +1,7 @@
 import customtkinter as ctk
 from tkinter import PhotoImage
 from main import VERSION
-import tkinter
+from tkinter import filedialog
 from webbrowser import open as open_url
 
 
@@ -139,6 +139,44 @@ class Popup:
         self.popup.destroy()
 
 
+class ProfileEditor:
+    def __init__(self, root, profile_data, callback):
+        self.prof_info = profile_data
+        self.callback = callback
+        self.protected_values = ('created', 'last_launched')  # Do not allow user to modify these
+        self.editor = ctk.CTkToplevel(root, bg="gray18")
+        self.editor.title("Profile Editor - " + self.prof_info['name'])
+        self.editor.geometry('300x140')
+
+        self.name_frame = Frame(self.editor, width=300, height=100)
+        self.name_frame.pack()
+        self.name_label = ctk.CTkLabel(self.name_frame, text="Name:", width=30).pack(side="left", padx=10)
+        self.name_entry = ctk.CTkEntry(self.name_frame, width=240)
+        self.name_entry.insert(0, self.prof_info['name'])
+        self.name_entry.pack(pady=10, side='right', padx=(0, 10))
+
+        self.path_frame = Frame(self.editor, width=300, height=100)
+        self.path_frame.pack()
+        self.path_label = ctk.CTkLabel(self.path_frame, text="Path:", width=30).pack(side="left", padx=10)
+        self.path_entry = ctk.CTkEntry(self.path_frame, width=210)
+        self.path_entry.insert(0, self.prof_info['path'])
+        self.path_entry.pack(pady=10, side='left')
+        self.path_button = ctk.CTkButton(self.path_frame, text="...", width=5, command=self.browse_path).pack(padx=(5, 10), side='right')
+
+        self.apply_button = ctk.CTkButton(self.editor, text="Apply", command=self.apply_changes, width=10).pack(pady=10)
+
+    def apply_changes(self):
+        self.callback({'name': self.name_entry.get(), 'path': self.path_entry.get(), 'created': self.prof_info['created'], 'last_launched': self.prof_info['last_launched']})
+        self.editor.destroy()
+
+    def browse_path(self):
+        new_path = filedialog.askdirectory()
+        self.editor.attributes('-topmost', True)
+        self.path_entry.delete(0, 'end')
+        self.path_entry.insert(0, new_path)
+        self.editor.attributes('-topmost', False)
+
+
 class Tooltip:
     def __init__(self, widget, text):
         self.wait_time = 500  # milliseconds
@@ -197,8 +235,11 @@ class PopupInfo:
     def __str__(self):
         return self.info
 
-    def change(self, info):
-        assert isinstance(info, str)
+    def __dict__(self):
+        return self.info
+
+    def change(self, info, format=str):
+        assert isinstance(info, format)
         self.info = info
 
 
@@ -209,12 +250,13 @@ class IconSheet:
         self.logo = self.get_icon(0, 0, 63, 63)
         self.trash_closed = self.get_icon(64, 0, 63, 63).subsample(2, 2)
         self.trash_opened = self.get_icon(128, 0, 63, 63).subsample(2, 2)
+        self.gear = self.get_icon(192, 0, 63, 63).subsample(2, 2)
+        self.gear_dark = self.get_icon(0, 64, 63, 63).subsample(2, 2)
 
     def get_icon(self, x, y, width, height):
         icon = PhotoImage()
         icon.tk.call(icon, 'copy', self.sheet, '-from', x, y, x + width, y + height, '-to', 0, 0)
         return icon
-
 
 popup_info = PopupInfo()
 

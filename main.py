@@ -10,22 +10,24 @@ from time import time
 
 
 class Profile:
-    def __init__(self, name, path):
-        self.name = name
-        self.path = path.rstrip("\n")
+    def __init__(self, info):
+        self.name = info['name']
+        self.path = info['path'].rstrip("\n")
+        self.prof_info = info # all other profile information
+        if 'last_launched' not in self.prof_info: self.prof_info['last_launched'] = -1
         self.prof_frame = tk.CTkFrame(window.profiles_list, width=480, height=32)
         self.prof_frame.pack_propagate(False)
-        self.left_frame = tk.CTkFrame(self.prof_frame, width=380, height=32, fg_color='gray21', bg_color='gray21')
+        self.left_frame = tk.CTkFrame(self.prof_frame, width=320, height=32, fg_color='gray21', bg_color='gray21')
         self.left_frame.pack_propagate(False)
-        self.right_frame = tk.CTkFrame(self.prof_frame, width=100, height=32, fg_color='gray21', bg_color='gray21')
+        self.right_frame = tk.CTkFrame(self.prof_frame, width=140, height=32, fg_color='gray21', bg_color='gray21')
         self.right_frame.pack_propagate(False)
         self.prof_title = tk.CTkLabel(self.left_frame, text=self.name, fg_color="gray21", text_font=("Arial", 12), anchor='w')
-        self.prof_button = Button(self.right_frame, text="\U000025B6", fg_color="gray21", text_font=("Arial", 24), text_color='white', hover_color='gray21', width=40)
-        self.prof_delete = Button(self.right_frame, width=40, image=window.icons.trash_closed, height=40, type='button', hover_image=window.icons.trash_opened)
-        self.prof_button.configure(command=self.select_profile)
-        self.prof_delete.configure(command=self.delete_profile)
+        self.prof_button = Button(self.right_frame, text="\U000025B6", fg_color="gray21", text_font=("Arial", 24), text_color='white', hover_color='gray21', width=32, command=self.select_profile)
+        self.prof_edit = Button(self.right_frame, image=window.icons.gear, fg_color="gray21", height=40, type='button', text_color='white', hover_image=window.icons.gear_dark, width=32, command=self.edit_profile)
+        self.prof_delete = Button(self.right_frame, width=32, image=window.icons.trash_closed, height=40, type='button', hover_image=window.icons.trash_opened, command=self.delete_profile)
 
         self.launch_tooltip = Tooltip(self.prof_button, "Launch the game with this profile")
+        self.edit_tooltip = Tooltip(self.prof_edit, "Edit this profile")
         self.delete_tooltip = Tooltip(self.prof_delete, "Delete this profile")
         self.name_tooltip = Tooltip(self.prof_title, self.name)
 
@@ -34,19 +36,28 @@ class Profile:
         profile_number += 1
         self.prof_frame.pack(pady=2)
         self.left_frame.pack(side='left', padx=(10, 0))
-        self.right_frame.pack(side='right')
         self.prof_title.pack(side=tk.LEFT, padx=(20, 10))
-        self.prof_button.pack(side=tk.RIGHT, padx=(2, 4))
+        self.prof_button.pack(side=tk.RIGHT, padx=(1, 2))
+        self.prof_edit.pack(side=tk.RIGHT, padx=(1, 0))
         self.prof_delete.pack(side=tk.RIGHT)
+        self.right_frame.pack(side='right')
         if 'warning_label' in globals(): warning_label.pack_forget()
 
     def select_profile(self):
-        for profile in profiles_data:
-            if profile['name'] == self.name:
-                profile['last-launch'] = int(time())
-                save_profile(profiles_data)
+        edit_saved_profile(self.name, int(time()), key='last_used')
         cmd = f'start cmd /c \"\"{settings["smapi_path"]}\" --mods-path \"{self.path}\"\"'
         call(cmd, shell=True)
+
+    def edit_profile(self):
+        editor = ProfileEditor(window, self.prof_info, self.load_changed_info)
+        window.wait_window(editor.editor)
+        edit_saved_profile(self.name, self.prof_info, action='edit')
+        self.name = self.prof_info['name']
+        self.path = self.prof_info['path'].rstrip("\n")
+        self.prof_title.configure(text=self.name)
+
+    def load_changed_info(self, info):
+        self.prof_info = info
 
     def delete_profile(self):
         self.prof_frame.destroy()
@@ -54,9 +65,7 @@ class Profile:
         self.prof_button.destroy()
         self.prof_delete.destroy()
         # Remove the profile from the text file
-        for profile in profiles_data:
-            if profile['name'] == self.name:
-                profiles_data.remove(profile)
+        edit_saved_profile(self.name, action='delete')
         save_profile(profiles_data)
 
 
@@ -69,7 +78,7 @@ def add_profile():
     prof_name = str(popup_info)
     # set prof_name to the first 100 characters of itself if it is longer than 100 characters
     prof_name = prof_name[:100] if len(prof_name) > 100 else prof_name
-    profiles.append(Profile(prof_name, prof_path))
+    profiles.append(Profile({'name': prof_name, 'path': prof_path, 'created': int(time())}))
     profiles[-1].draw_profile()
     profiles_data.append({'name': prof_name, 'path': prof_path, 'created': int(time())})
     save_profile(profiles_data)
@@ -79,6 +88,32 @@ def save_profile(data):
     with open('profiles.json', 'a') as f:
         f.truncate(0)
         json.dump(data, f, indent=4)
+
+
+def edit_saved_profile(profile_name,  new_value=None, key=None, action='edit'):
+    """
+    Edits a saved profile
+    :param profile_name: The name value of the profile to edit
+    :param new_value: The new value to set the key to.
+    :param key: The key to edit. If None, it will try to replace the entire profile
+    :param action: The action to perform. Can be 'edit' or 'delete'
+    """
+    if action == 'edit':
+        for i, profile in enumerate(profiles_data):
+            if profile['name'] == profile_name:
+                if key is None:
+                    profiles_data[i] = new_value
+                else:
+                    profile[key] = new_value
+                    profiles_data[i] = profile
+            save_profile(profiles_data)
+    elif action == 'delete':
+        for profile in profiles_data:
+            if profile['name'] == profile_name:
+                profiles_data.remove(profile)
+        save_profile(profiles_data)
+    else:
+        raise ValueError("Action must be either 'edit' or 'delete'")
 
 
 def load_profiles():
@@ -162,7 +197,8 @@ if __name__ == '__main__':
     if os.path.exists('profiles.txt'): convert_legacy_profiles()
     profiles_data = load_profiles()
     for profile in profiles_data:
-        profiles.append(Profile(profile['name'], profile['path']))
+        # For each profile, create a Profile object with all its data from profiles.json
+        profiles.append(Profile(profile))
         profiles[-1].draw_profile()
 
     if not profiles:
