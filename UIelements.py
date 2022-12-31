@@ -171,8 +171,10 @@ class ProfileEditor:
 
     def browse_path(self):
         new_path = filedialog.askdirectory()
+        self.editor.attributes('-topmost', True)
         self.path_entry.delete(0, 'end')
         self.path_entry.insert(0, new_path)
+        self.editor.attributes('-topmost', False)
 
 
 class Tooltip:
