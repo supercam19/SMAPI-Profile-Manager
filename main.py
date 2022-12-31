@@ -100,13 +100,16 @@ def edit_saved_profile(profile_name,  new_value=None, key=None, action='edit'):
     """
     print('Profile edit requested')
     if action == 'edit':
-        for profile in profiles_data:
+        for i, profile in enumerate(profiles_data):
             if profile['name'] == profile_name:
                 if key is None:
-                    profile = new_value
+                    profiles_data[i] = new_value
                     print('Profile completely edited')
+                    print(profile)
+                    print(profiles_data)
                 else:
                     profile[key] = new_value
+                    profiles_data[i] = profile
                     print('Profile key {0} edited'.format(key))
             save_profile(profiles_data)
     elif action == 'delete':
