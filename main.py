@@ -195,11 +195,10 @@ if __name__ == '__main__':
 
     if os.path.exists('profiles.txt'): convert_legacy_profiles()
     profiles_data = load_profiles()
-    profiles_data.insert(0, {'name': 'Unmodded', 'force_smapi': False, 'special': 'unmodded'})
+    if 'force_smapi' not in profiles_data[0]: profiles_data.insert(0, {'name': 'Unmodded', 'force_smapi': False, 'special': 'unmodded'})
     for profile in profiles_data:
         profiles.append(Profile(profile))
         profiles[-1].draw_profile()
-
 
     if not profiles:
         warning_label = tk.CTkLabel(window.profiles_list, text="No profiles found, use the + button to add a profile")
