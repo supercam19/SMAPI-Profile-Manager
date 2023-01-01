@@ -194,11 +194,11 @@ if __name__ == '__main__':
 
     if os.path.exists('profiles.txt'): convert_legacy_profiles()
     profiles_data = load_profiles()
-    profiles_data.insert(0, Profile({'name': 'Unmodded', 'force_smapi': False, 'special': 'unmodded'}))
+    profiles_data.insert(0, {'name': 'Unmodded', 'force_smapi': False, 'special': 'unmodded'})
     for profile in profiles_data:
-        # For each profile, create a Profile object with all its data from profiles.json
         profiles.append(Profile(profile))
         profiles[-1].draw_profile()
+
 
     if not profiles:
         warning_label = tk.CTkLabel(window.profiles_list, text="No profiles found, use the + button to add a profile")

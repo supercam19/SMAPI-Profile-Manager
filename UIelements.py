@@ -155,13 +155,15 @@ class ProfileEditor:
         self.name_entry.insert(0, self.prof_info['name'])
         self.name_entry.pack(pady=10, side='right', padx=(0, 10))
 
-        self.path_frame = Frame(self.editor, width=300, height=100)
-        self.path_frame.pack()
-        self.path_label = ctk.CTkLabel(self.path_frame, text="Path:", width=30).pack(side="left", padx=10)
-        self.path_entry = ctk.CTkEntry(self.path_frame, width=210)
-        self.path_entry.insert(0, self.prof_info['path'])
-        self.path_entry.pack(pady=10, side='left')
-        self.path_button = ctk.CTkButton(self.path_frame, text="...", width=5, command=self.browse_path).pack(padx=(5, 10), side='right')
+        if self.prof_info['special'] != 'unmodded':
+            self.path_frame = Frame(self.editor, width=300, height=100)
+            self.path_frame.pack()
+            self.path_label = ctk.CTkLabel(self.path_frame, text="Path:", width=30).pack(side="left", padx=10)
+            self.path_entry = ctk.CTkEntry(self.path_frame, width=210)
+            self.path_entry.insert(0, self.prof_info['path'])
+            self.path_entry.pack(pady=10, side='left')
+            self.path_button = ctk.CTkButton(self.path_frame, text="...", width=5, command=self.browse_path).pack(padx=(5, 10), side='right')
+        
 
         self.apply_button = ctk.CTkButton(self.editor, text="Apply", command=self.apply_changes, width=10).pack(pady=10)
 
