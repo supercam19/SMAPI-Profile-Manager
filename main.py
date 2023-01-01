@@ -45,8 +45,21 @@ class Profile:
 
     def select_profile(self):
         edit_saved_profile(self.name, int(time()), key='last_used')
-        cmd = f'start cmd /c \"\"{settings["smapi_path"]}\" --mods-path \"{self.path}\"\"'
-        call(cmd, shell=True)
+        if self.special != 'unmodded':
+            cmd = f'start cmd /c \"\"{settings["smapi_path"]}\" --mods-path \"{self.path}\"\"'
+            call(cmd, shell=True)
+        else:
+            if bool(self.prof_info['force_smapi']):
+                call(f'start cmd /c \"\"{settings["smapi_path"]}\"', shell=True)
+                return
+            game_path = settings['smapi_path']
+            game_path = os.path.dirname(game_path)
+            if os.path.exists(game_path + '/Stardew Valley.exe'):
+                cmd = f'start cmd /c \"\"{game_path}/Stardew Valley.exe\"\"'
+                call(cmd)
+            else:
+                cmd = f'start cmd /c \"\"{settings["smapi_path"]}\"'
+                call(cmd, shell=True)
 
     def edit_profile(self):
         editor = ProfileEditor(window, self.prof_info, self.load_changed_info)
