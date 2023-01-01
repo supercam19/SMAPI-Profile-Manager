@@ -167,7 +167,10 @@ class ProfileEditor:
         self.apply_button = ctk.CTkButton(self.editor, text="Apply", command=self.apply_changes, width=10).pack(pady=10)
 
     def apply_changes(self):
-        self.callback({'name': self.name_entry.get(), 'path': self.path_entry.get(), 'created': self.prof_info['created'], 'last_launched': self.prof_info['last_launched']})
+        if self.prof_info['special'] == None:
+            self.callback({'name': self.name_entry.get(), 'path': self.path_entry.get(), 'created': self.prof_info['created'], 'last_launched': self.prof_info['last_launched'], 'special': None})
+        elif self.prof_info['special'] == 'unmodded':
+            self.callback({'name': self.name_entry.get(), 'special': 'unmodded', 'force_smapi': False, 'last_launched': self.prof_info['last_launched']})
         self.editor.destroy()
 
     def browse_path(self):

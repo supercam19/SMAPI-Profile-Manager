@@ -53,7 +53,7 @@ class Profile:
         window.wait_window(editor.editor)
         edit_saved_profile(self.name, self.prof_info, action='edit')
         self.name = self.prof_info['name']
-        self.path = self.prof_info['path'].rstrip("\n")
+        if 'path' in self.prof_info: self.path = self.prof_info['path'].rstrip("\n")
         self.prof_title.configure(text=self.name)
 
     def load_changed_info(self, info):
