@@ -146,7 +146,6 @@ class ProfileEditor:
         self.protected_values = ('created', 'last_launched')  # Do not allow user to modify these
         self.editor = ctk.CTkToplevel(root, bg="gray18")
         self.editor.title("Profile Editor - " + self.prof_info['name'])
-        self.editor.geometry('300x140')
 
         self.name_frame = Frame(self.editor, width=300, height=100)
         self.name_frame.pack()
@@ -155,18 +154,30 @@ class ProfileEditor:
         self.name_entry.insert(0, self.prof_info['name'])
         self.name_entry.pack(pady=10, side='right', padx=(0, 10))
 
-        self.path_frame = Frame(self.editor, width=300, height=100)
-        self.path_frame.pack()
-        self.path_label = ctk.CTkLabel(self.path_frame, text="Path:", width=30).pack(side="left", padx=10)
-        self.path_entry = ctk.CTkEntry(self.path_frame, width=210)
-        self.path_entry.insert(0, self.prof_info['path'])
-        self.path_entry.pack(pady=10, side='left')
-        self.path_button = ctk.CTkButton(self.path_frame, text="...", width=5, command=self.browse_path).pack(padx=(5, 10), side='right')
+        if self.prof_info['special'] != 'unmodded':
+            self.path_frame = Frame(self.editor, width=300, height=100)
+            self.path_frame.pack()
+            self.path_label = ctk.CTkLabel(self.path_frame, text="Path:", width=30).pack(side="left", padx=10)
+            self.path_entry = ctk.CTkEntry(self.path_frame, width=210)
+            self.path_entry.insert(0, self.prof_info['path'])
+            self.path_entry.pack(pady=10, side='left')
+            self.path_button = ctk.CTkButton(self.path_frame, text="...", width=5, command=self.browse_path).pack(padx=(5, 10), side='right')
+        elif self.prof_info['special'] == 'unmodded':
+            self.force_frame = Frame(self.editor, width=300, height=100)
+            self.force_frame.pack()
+            self.force_label = ctk.CTkLabel(self.force_frame, text="Force SMAPI:", width=30).pack(side="left", padx=10)
+            # create a checkbox
+            self.force_check = ctk.CTkCheckBox(self.force_frame, text='')
+            self.force_check.pack(padx=10, side='right')
+            if self.prof_info['force_smapi']: self.force_check.select()
 
         self.apply_button = ctk.CTkButton(self.editor, text="Apply", command=self.apply_changes, width=10).pack(pady=10)
 
     def apply_changes(self):
-        self.callback({'name': self.name_entry.get(), 'path': self.path_entry.get(), 'created': self.prof_info['created'], 'last_launched': self.prof_info['last_launched']})
+        if self.prof_info['special'] == None:
+            self.callback({'name': self.name_entry.get(), 'path': self.path_entry.get(), 'created': self.prof_info['created'], 'last_launched': self.prof_info['last_launched'], 'special': None})
+        elif self.prof_info['special'] == 'unmodded':
+            self.callback({'name': self.name_entry.get(), 'special': 'unmodded', 'force_smapi': self.force_check.get(), 'last_launched': self.prof_info['last_launched']})
         self.editor.destroy()
 
     def browse_path(self):
@@ -175,6 +186,7 @@ class ProfileEditor:
         self.path_entry.delete(0, 'end')
         self.path_entry.insert(0, new_path)
         self.editor.attributes('-topmost', False)
+
 
 
 class Tooltip:

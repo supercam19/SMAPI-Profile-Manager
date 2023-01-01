@@ -12,7 +12,9 @@ from time import time
 class Profile:
     def __init__(self, info):
         self.name = info['name']
-        self.path = info['path'].rstrip("\n")
+        if 'path' in info: self.path = info['path'].rstrip("\n")
+        info['special'] = None if 'special' not in info else info['special']
+        self.special = info['special']
         self.prof_info = info # all other profile information
         if 'last_launched' not in self.prof_info: self.prof_info['last_launched'] = -1
         self.prof_frame = tk.CTkFrame(window.profiles_list, width=480, height=32)
@@ -32,28 +34,39 @@ class Profile:
         self.name_tooltip = Tooltip(self.prof_title, self.name)
 
     def draw_profile(self):
-        global profile_number
-        profile_number += 1
         self.prof_frame.pack(pady=2)
         self.left_frame.pack(side='left', padx=(10, 0))
         self.prof_title.pack(side=tk.LEFT, padx=(20, 10))
         self.prof_button.pack(side=tk.RIGHT, padx=(1, 2))
         self.prof_edit.pack(side=tk.RIGHT, padx=(1, 0))
-        self.prof_delete.pack(side=tk.RIGHT)
+        if self.special != 'unmodded': self.prof_delete.pack(side=tk.RIGHT)
         self.right_frame.pack(side='right')
         if 'warning_label' in globals(): warning_label.pack_forget()
 
     def select_profile(self):
         edit_saved_profile(self.name, int(time()), key='last_used')
-        cmd = f'start cmd /c \"\"{settings["smapi_path"]}\" --mods-path \"{self.path}\"\"'
-        call(cmd, shell=True)
+        if self.special != 'unmodded':
+            cmd = f'start cmd /c \"\"{settings["smapi_path"]}\" --mods-path \"{self.path}\"\"'
+            call(cmd, shell=True)
+        else:
+            if bool(self.prof_info['force_smapi']):
+                call(f'start cmd /c \"\"{settings["smapi_path"]}\"', shell=True)
+                return
+            game_path = settings['smapi_path']
+            game_path = os.path.dirname(game_path)
+            if os.path.exists(game_path + '/Stardew Valley.exe'):
+                cmd = f'start cmd /c \"\"{game_path}/Stardew Valley.exe\"\"'
+                call(cmd)
+            else:
+                cmd = f'start cmd /c \"\"{settings["smapi_path"]}\"'
+                call(cmd, shell=True)
 
     def edit_profile(self):
         editor = ProfileEditor(window, self.prof_info, self.load_changed_info)
         window.wait_window(editor.editor)
         edit_saved_profile(self.name, self.prof_info, action='edit')
         self.name = self.prof_info['name']
-        self.path = self.prof_info['path'].rstrip("\n")
+        if 'path' in self.prof_info: self.path = self.prof_info['path'].rstrip("\n")
         self.prof_title.configure(text=self.name)
 
     def load_changed_info(self, info):
@@ -171,7 +184,6 @@ def check_files():
 
 
 profiles = []
-profile_number = 0
 name_input = ''
 VERSION = "v1.1.4"
 
@@ -196,8 +208,8 @@ if __name__ == '__main__':
 
     if os.path.exists('profiles.txt'): convert_legacy_profiles()
     profiles_data = load_profiles()
+    if 'force_smapi' not in profiles_data[0]: profiles_data.insert(0, {'name': 'Unmodded', 'force_smapi': False, 'special': 'unmodded'})
     for profile in profiles_data:
-        # For each profile, create a Profile object with all its data from profiles.json
         profiles.append(Profile(profile))
         profiles[-1].draw_profile()
 
