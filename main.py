@@ -12,7 +12,8 @@ from time import time
 class Profile:
     def __init__(self, info):
         self.name = info['name']
-        self.path = info['path'].rstrip("\n")
+        if 'path' in info: self.path = info['path'].rstrip("\n")
+        self.special = info['special'] if 'special' in info else None
         self.prof_info = info # all other profile information
         if 'last_launched' not in self.prof_info: self.prof_info['last_launched'] = -1
         self.prof_frame = tk.CTkFrame(window.profiles_list, width=480, height=32)
@@ -32,14 +33,12 @@ class Profile:
         self.name_tooltip = Tooltip(self.prof_title, self.name)
 
     def draw_profile(self):
-        global profile_number
-        profile_number += 1
         self.prof_frame.pack(pady=2)
         self.left_frame.pack(side='left', padx=(10, 0))
         self.prof_title.pack(side=tk.LEFT, padx=(20, 10))
         self.prof_button.pack(side=tk.RIGHT, padx=(1, 2))
         self.prof_edit.pack(side=tk.RIGHT, padx=(1, 0))
-        self.prof_delete.pack(side=tk.RIGHT)
+        if self.special != 'unmodded': self.prof_delete.pack(side=tk.RIGHT)
         self.right_frame.pack(side='right')
         if 'warning_label' in globals(): warning_label.pack_forget()
 
@@ -171,7 +170,6 @@ def check_files():
 
 
 profiles = []
-profile_number = 0
 name_input = ''
 VERSION = "v1.1.4"
 
@@ -196,6 +194,7 @@ if __name__ == '__main__':
 
     if os.path.exists('profiles.txt'): convert_legacy_profiles()
     profiles_data = load_profiles()
+    profiles_data.insert(0, Profile({'name': 'Unmodded', 'force_smapi': False, 'special': 'unmodded'}))
     for profile in profiles_data:
         # For each profile, create a Profile object with all its data from profiles.json
         profiles.append(Profile(profile))
