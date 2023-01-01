@@ -13,7 +13,8 @@ class Profile:
     def __init__(self, info):
         self.name = info['name']
         if 'path' in info: self.path = info['path'].rstrip("\n")
-        self.special = info['special'] if 'special' in info else None
+        info['special'] = None if 'special' not in info else info['special']
+        self.special = info['special']
         self.prof_info = info # all other profile information
         if 'last_launched' not in self.prof_info: self.prof_info['last_launched'] = -1
         self.prof_frame = tk.CTkFrame(window.profiles_list, width=480, height=32)

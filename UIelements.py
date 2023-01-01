@@ -146,7 +146,6 @@ class ProfileEditor:
         self.protected_values = ('created', 'last_launched')  # Do not allow user to modify these
         self.editor = ctk.CTkToplevel(root, bg="gray18")
         self.editor.title("Profile Editor - " + self.prof_info['name'])
-        self.editor.geometry('300x140')
 
         self.name_frame = Frame(self.editor, width=300, height=100)
         self.name_frame.pack()
@@ -163,7 +162,7 @@ class ProfileEditor:
             self.path_entry.insert(0, self.prof_info['path'])
             self.path_entry.pack(pady=10, side='left')
             self.path_button = ctk.CTkButton(self.path_frame, text="...", width=5, command=self.browse_path).pack(padx=(5, 10), side='right')
-        
+
 
         self.apply_button = ctk.CTkButton(self.editor, text="Apply", command=self.apply_changes, width=10).pack(pady=10)
 
