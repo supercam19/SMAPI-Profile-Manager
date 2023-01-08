@@ -6,7 +6,7 @@ from webbrowser import open as open_url
 
 
 class Window(ctk.CTk):
-    def __init__(self, sort_callback=None):
+    def __init__(self, settings, sort_callback=None):
         super().__init__()
         self.sort_callback = sort_callback
         self.title("SMAPI Mod Manager")
@@ -40,7 +40,7 @@ class Window(ctk.CTk):
         self.version_label.pack(side="bottom", fill="x", pady=5)
         self.control_frame.lift()
 
-        # Profiles list (bottom)
+        # Sorting bar
         self.sorting_frame = Frame(self, width=500, height=30)
         self.sorting_frame.propagate(False)
         self.sorting_frame.pack(fill="both", expand=True, side="top", anchor="w")
@@ -48,10 +48,16 @@ class Window(ctk.CTk):
         self.sorting_label.pack(side="left", anchor="w", padx=(30, 15), pady=5)
         self.sorting_dropdown = ctk.CTkOptionMenu(self.sorting_frame, width=100, height=20, text_font=("Arial", 12), values=["Name", "Last Played", "Created"], command=self.sort_callback)
         self.sorting_dropdown.pack(side="left", anchor="w", pady=5)
-        self.sorting_dropdown.set("Name")
+        if 'sort' in settings:
+            self.sorting_dropdown.set(settings['sort'])
+        else:
+            self.sorting_dropdown.set("Name")
         self.invert_sort_checkbox = ctk.CTkCheckBox(self.sorting_frame, text="Invert", width=20, height=20, text_font=("Arial", 12), command=self.sort_callback)
         self.invert_sort_checkbox.pack(side="left", anchor="w", padx=15, pady=5)
+        if 'invert' in settings:
+            self.invert_sort_checkbox.select() if settings['invert'] else self.invert_sort_checkbox.deselect()
 
+        # Profiles list (bottom)
         self.canvas = ctk.CTkCanvas(self, bd=0)
         self.profiles_list = Frame(self, width=500, height=320)
         self.scrollbar = ctk.CTkScrollbar(self.profiles_list, command=self.canvas.yview)

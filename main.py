@@ -228,7 +228,7 @@ if __name__ == '__main__':
     # Initialize the TK window
     tk.set_appearance_mode("dark")
     windll.user32.SetProcessDPIAware()
-    window = Window(sort_callback=sort_profiles)
+    window = Window(settings, sort_callback=sort_profiles)
     window.add_prof_button.configure(command=add_profile)
 
     if 'smapi_path' not in settings or not os.path.exists(settings['smapi_path']):
@@ -245,7 +245,10 @@ if __name__ == '__main__':
     if 'force_smapi' not in profiles_data[0]: profiles_data.insert(0, {'name': 'Unmodded', 'force_smapi': False, 'special': 'unmodded', 'created': int(time())})
     for profile in profiles_data:
         profiles.append(Profile(profile))
-    sort_profiles('Name')
+    if 'sort' in settings:
+        sort_profiles(settings['sort'])
+    else:
+        sort_profiles('Name')
     for profile in profiles:
         profile.draw_profile()
 
