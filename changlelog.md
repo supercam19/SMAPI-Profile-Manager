@@ -1,6 +1,7 @@
 # SMAPI Profile Manager Changelog
 
-# Core Update [v1.2.0] (???)
+# Core Update [v1.2.0] (Jan 8, 2023)
+A major update that focuses on core backend features of the program to improve user experience and make the program more reliable.
 
 ### Additions
  - Profiles can now be edited, and an editor has been added to the UI (#20)
@@ -13,6 +14,7 @@
  - The program will now start in the center of your screen
  - Mod profile information is now stored in a JSON file (#19)
  - Mod profile creation date and date last played are now tracked (#19)
+ - Updated the preview image in the README
 
 ### Fixes
  - Fixed tooltips with small amounts of text being much wider than the text
