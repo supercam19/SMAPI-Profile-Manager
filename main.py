@@ -193,9 +193,6 @@ def check_files():
 
 
 def sort_profiles(sort=None):
-    def sort_by_name(profile):
-        return profile.name
-
     invert = window.invert_sort_checkbox.get()
     unmodded = profiles[0]
     profiles.pop(0)
@@ -214,6 +211,10 @@ def sort_profiles(sort=None):
         profile.hide_profile()
     for profile in profiles:
         profile.draw_profile()
+
+    if sort is not None: settings['sort'] = sort
+    settings['invert'] = invert
+    save_settings()
 
 
 profiles = []
