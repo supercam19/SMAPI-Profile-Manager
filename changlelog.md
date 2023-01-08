@@ -10,6 +10,7 @@
 
 ### Changes
  - Mod profiles can now be imported from anywhere on your computer (#18)
+ - The program will now start in the center of your screen
  - Mod profile information is now stored in a JSON file (#19)
  - Mod profile creation date and date last played are now tracked (#19)
 
