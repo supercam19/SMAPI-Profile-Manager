@@ -64,7 +64,7 @@ class Profile:
             game_path = settings['smapi_path']
             game_path = os.path.dirname(game_path)
             if os.path.exists(game_path + '/Stardew Valley.exe'):
-                cmd = f'start cmd /c \"\"{game_path}/Stardew Valley.exe\"\"'
+                cmd = f'\"{game_path}/Stardew Valley.exe\"'
                 call(cmd)
             else:
                 cmd = f'start cmd /c \"\"{settings["smapi_path"]}\"'
