@@ -224,7 +224,7 @@ VERSION = "v1.2.0"
 if __name__ == '__main__':
     check_files()
     settings = load_settings()
-    profiles_data = []
+    profiles_data = [None]
     # Initialize the TK window
     tk.set_appearance_mode("dark")
     windll.user32.SetProcessDPIAware()
@@ -242,7 +242,7 @@ if __name__ == '__main__':
 
     if os.path.exists('profiles.txt'): convert_legacy_profiles()
     profiles_data = load_profiles()
-    if 'force_smapi' not in profiles_data[0]: profiles_data.insert(0, {'name': 'Unmodded', 'force_smapi': False, 'special': 'unmodded', 'created': int(time())})
+    if profiles_data == [] or 'force_smapi' not in profiles_data[0]: profiles_data.insert(0, {'name': 'Unmodded', 'force_smapi': False, 'special': 'unmodded', 'created': int(time())})
     for profile in profiles_data:
         profiles.append(Profile(profile))
     if 'sort' in settings:
