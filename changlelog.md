@@ -13,6 +13,9 @@
  - Mod profile information is now stored in a JSON file (#19)
  - Mod profile creation date and date last played are now tracked (#19)
 
+### Fixes
+ - Fixed tooltips with small amounts of text being much wider than the text
+
 ## Round Tooltip Edges [v1.1.4] (Dec 27, 2022)
 Fixed critical issue where the app window would not display properly if your display scaling was not set to 150%, aswell as finally added rounded edges to tooltips.
 

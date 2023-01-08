@@ -206,7 +206,6 @@ class ProfileEditor:
         self.editor.attributes('-topmost', False)
 
 
-
 class Tooltip:
     def __init__(self, widget, text):
         self.wait_time = 500  # milliseconds
@@ -250,8 +249,9 @@ class Tooltip:
         """
         self.tw.wm_attributes('-transparentcolor', '#555555')
         self.tw.configure(bg="#555555")
-        label = ctk.CTkLabel(self.tw, text=self.text, corner_radius=10, bg_color='#555555', fg_color='#545454')
+        label = ctk.CTkLabel(self.tw, text=self.text, corner_radius=10, bg_color='#555555', fg_color='#545454', width=1)
         label.pack(padx=1, pady=1)
+        self.tw.geometry = label.winfo_width() + 1, label.winfo_height() + 1
 
     def hide_tip(self):
         self.unschedule()
