@@ -195,7 +195,6 @@ def check_files():
 def sort_profiles(sort=None):
     def sort_by_name(profile):
         return profile.name
-    print(sort)
 
     invert = window.invert_sort_checkbox.get()
     unmodded = profiles[0]
@@ -207,19 +206,14 @@ def sort_profiles(sort=None):
         if sort == 'Name':
             profiles.sort(key=lambda x: x.name, reverse=invert)
         elif sort == 'Created':
-            print('sort by created')
             profiles.sort(key=lambda x: x.created, reverse=invert)
         elif sort == 'Last Played':
-            print('last played')
             profiles.sort(key=lambda x: x.last_launched, reverse=invert)
         profiles.insert(0, unmodded)
     for profile in profiles:
         profile.hide_profile()
     for profile in profiles:
         profile.draw_profile()
-    print(profiles)
-
-
 
 
 profiles = []
