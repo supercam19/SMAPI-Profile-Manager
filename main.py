@@ -17,6 +17,8 @@ class Profile:
         self.special = info['special']
         self.prof_info = info # all other profile information
         if 'last_launched' not in self.prof_info: self.prof_info['last_launched'] = -1
+        self.created = info['created']
+        self.last_launched = info['last_launched']
         self.prof_frame = tk.CTkFrame(window.profiles_list, width=480, height=32)
         self.prof_frame.pack_propagate(False)
         self.left_frame = tk.CTkFrame(self.prof_frame, width=320, height=32, fg_color='gray21', bg_color='gray21')
@@ -42,6 +44,13 @@ class Profile:
         if self.special != 'unmodded': self.prof_delete.pack(side=tk.RIGHT)
         self.right_frame.pack(side='right')
         if 'warning_label' in globals(): warning_label.pack_forget()
+
+    def hide_profile(self):
+        self.prof_frame.pack_forget()
+        self.prof_title.pack_forget()
+        self.prof_button.pack_forget()
+        self.prof_edit.pack_forget()
+        self.prof_delete.pack_forget()
 
     def select_profile(self):
         edit_saved_profile(self.name, int(time()), key='last_used')
@@ -183,6 +192,31 @@ def check_files():
             f.write(icon_img.content)
 
 
+def sort_profiles(sort=None):
+    invert = window.invert_sort_checkbox.get()
+    unmodded = profiles[0]
+    profiles.pop(0)
+    if sort is None:
+        profiles.reverse()
+        profiles.insert(0, unmodded)
+    else:
+        if sort == 'Name':
+            profiles.sort(key=lambda x: x.name, reverse=invert)
+        elif sort == 'Created':
+            profiles.sort(key=lambda x: x.created, reverse=invert)
+        elif sort == 'Last Played':
+            profiles.sort(key=lambda x: x.last_launched, reverse=invert)
+        profiles.insert(0, unmodded)
+    for profile in profiles:
+        profile.hide_profile()
+    for profile in profiles:
+        profile.draw_profile()
+
+    if sort is not None: settings['sort'] = sort
+    settings['invert'] = invert
+    save_settings()
+
+
 profiles = []
 name_input = ''
 VERSION = "v1.1.4"
@@ -194,7 +228,7 @@ if __name__ == '__main__':
     # Initialize the TK window
     tk.set_appearance_mode("dark")
     windll.user32.SetProcessDPIAware()
-    window = Window()
+    window = Window(settings, sort_callback=sort_profiles)
     window.add_prof_button.configure(command=add_profile)
 
     if 'smapi_path' not in settings or not os.path.exists(settings['smapi_path']):
@@ -208,10 +242,15 @@ if __name__ == '__main__':
 
     if os.path.exists('profiles.txt'): convert_legacy_profiles()
     profiles_data = load_profiles()
-    if 'force_smapi' not in profiles_data[0]: profiles_data.insert(0, {'name': 'Unmodded', 'force_smapi': False, 'special': 'unmodded'})
+    if 'force_smapi' not in profiles_data[0]: profiles_data.insert(0, {'name': 'Unmodded', 'force_smapi': False, 'special': 'unmodded', 'created': int(time())})
     for profile in profiles_data:
         profiles.append(Profile(profile))
-        profiles[-1].draw_profile()
+    if 'sort' in settings:
+        sort_profiles(settings['sort'])
+    else:
+        sort_profiles('Name')
+    for profile in profiles:
+        profile.draw_profile()
 
     if not profiles:
         warning_label = tk.CTkLabel(window.profiles_list, text="No profiles found, use the + button to add a profile")
