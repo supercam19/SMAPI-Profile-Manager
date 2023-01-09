@@ -1,8 +1,8 @@
 import os
-from tkinter import filedialog, PhotoImage
+from tkinter import filedialog
 import customtkinter as tk
 from UIelements import *
-import requests
+from requests import get as get_url
 import json
 from ctypes import windll
 from subprocess import call
@@ -183,11 +183,11 @@ def check_files():
     if not os.path.exists('profiles'):
         os.mkdir('profiles')
     if not os.path.exists('assets/background.png'):
-        background_img = requests.get('https://github.com/supercam19/SMAPI-Profile-Manager/blob/main/assets/background.png?raw=true')
+        background_img = get_url('https://github.com/supercam19/SMAPI-Profile-Manager/blob/main/assets/background.png?raw=true')
         with open('assets/background.png', 'wb') as f:
             f.write(background_img.content)
     if not os.path.exists('assets/iconsheet.png'):
-        icon_img = requests.get('https://github.com/supercam19/SMAPI-Profile-Manager/blob/main/assets/iconsheet.png?raw=true')
+        icon_img = get_url('https://github.com/supercam19/SMAPI-Profile-Manager/blob/main/assets/iconsheet.png?raw=true')
         with open('assets/iconsheet.png', 'wb') as f:
             f.write(icon_img.content)
 
