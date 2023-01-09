@@ -292,9 +292,6 @@ class PopupInfo:
     def __str__(self):
         return self.info
 
-    def __dict__(self):
-        return self.info
-
     def change(self, info, format=str):
         assert isinstance(info, format)
         self.info = info
