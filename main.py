@@ -126,8 +126,8 @@ def edit_saved_profile(profile_name,  new_value=None, key=None, action='edit'):
 
 def load_profiles():
     with open('profiles.json', 'r') as f:
-        if f.read() == '{}': return []
-        else: return json.load(f)
+        return json.load(f)
+
 
 
 def convert_legacy_profiles():
