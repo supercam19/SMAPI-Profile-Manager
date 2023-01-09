@@ -14,14 +14,14 @@ class Window(ctk.CTk):
         self.resizable(False, False)
         self.protocol("WM_DELETE_WINDOW")
 
+        # Calculate how to place the window in the center of screen
         screen_width = self.winfo_screenwidth()
         screen_height = self.winfo_screenheight()
         window_width = self.winfo_width()
         window_height = self.winfo_height()
         x = (screen_width / 2) - (window_width / 2)
         y = (screen_height / 2) - (window_height / 2)
-        self.geometry("+%d+%d" % (x, y))
-        print(x, y)
+        self.geometry(f'+{x}+{y}')
 
         self.icons = IconSheet('assets/iconsheet.png')
         self.iconphoto(True, self.icons.logo)
@@ -45,7 +45,8 @@ class Window(ctk.CTk):
                                            width=50, command=lambda: open_url("https://github.com/supercam19/SMAPI-Profile-Manager"), pady=0)
         self.github_tooltip = Tooltip(self.github_button, "Help (Open GitHub page)")
         self.github_button.pack(pady=5, anchor="n")
-        self.version_label = ctk.CTkLabel(self.control_frame, text="Version: " + VERSION, width=100, height=20, text_font=("Arial", 7))
+        self.version_label = ctk.CTkLabel(self.control_frame, text="Version: " + VERSION,
+                                          width=100, height=20, text_font=("Arial", 7))
         self.version_label.pack(side="bottom", fill="x", pady=5)
         self.control_frame.lift()
 
@@ -55,13 +56,12 @@ class Window(ctk.CTk):
         self.sorting_frame.pack(fill="both", expand=True, side="top", anchor="w")
         self.sorting_label = ctk.CTkLabel(self.sorting_frame, text="Sort:", height=20, text_font=("Arial", 12), anchor="e")
         self.sorting_label.pack(side="left", anchor="w", padx=(30, 15), pady=5)
-        self.sorting_dropdown = ctk.CTkOptionMenu(self.sorting_frame, width=100, height=20, text_font=("Arial", 12), values=["Name", "Last Played", "Created"], command=self.sort_callback)
+        self.sorting_dropdown = ctk.CTkOptionMenu(self.sorting_frame, width=100, height=20, text_font=("Arial", 12),
+                                                  values=["Name", "Last Played", "Created"], command=self.sort_callback)
         self.sorting_dropdown.pack(side="left", anchor="w", pady=5)
-        if 'sort' in settings:
-            self.sorting_dropdown.set(settings['sort'])
-        else:
-            self.sorting_dropdown.set("Name")
-        self.invert_sort_checkbox = ctk.CTkCheckBox(self.sorting_frame, text="Invert", width=20, height=20, text_font=("Arial", 12), command=self.sort_callback)
+        self.sorting_dropdown.set(settings['sort']) if 'sort' in settings else self.sorting_dropdown.set("Name")
+        self.invert_sort_checkbox = ctk.CTkCheckBox(self.sorting_frame, text="Invert", width=20, height=20,
+                                                    text_font=("Arial", 12), command=self.sort_callback)
         self.invert_sort_checkbox.pack(side="left", anchor="w", padx=15, pady=5)
         if 'invert' in settings:
             self.invert_sort_checkbox.select() if settings['invert'] else self.invert_sort_checkbox.deselect()
@@ -83,6 +83,7 @@ class Window(ctk.CTk):
 
 
 class Frame(ctk.CTkFrame):
+    # Frame object (just a regular CTkFrame)
     def __init__(self, parent, **kwargs):
         super().__init__(parent, **kwargs)
         # define size of frame
@@ -91,7 +92,7 @@ class Frame(ctk.CTkFrame):
 
 
 class Button(ctk.CTkButton):
-    # define a custom button that changes colour on hover
+    # Define a custom button that changes colour or image on hover
     def __init__(self, parent, type='text', hover_image=None, **kwargs):
         super().__init__(parent, **kwargs)
         self.width = kwargs.get("width", 100)
@@ -133,12 +134,14 @@ class Button(ctk.CTkButton):
         self.bind("<Leave>", self.leave, add="+")
 
     def on_enter(self, event=None):
+        # On button hover
         if self.type == 'text':
             self.configure(text_color="gray45")
         elif self.type == 'button':
             self.configure(image=self.hover_image)
 
     def leave(self, event=None):
+        # On button leave
         if self.type == 'text':
             self.configure(text_color=self.text_color_default)
         elif self.type == 'button':
@@ -146,6 +149,7 @@ class Button(ctk.CTkButton):
 
 
 class Popup:
+    # Popup window, can have textbox, or just a message
     def __init__(self, title, message, root, text_box=True):
         self.popup = ctk.CTkToplevel(root)
         self.popup.title(title)
@@ -162,11 +166,13 @@ class Popup:
         self.popup_button.pack()
 
     def close_popup(self):
+        # Save text box value to the popup_info object
         if self.text_box: popup_info.change(self.popup_text.get())
         self.popup.destroy()
 
 
 class ProfileEditor:
+    # Profile editor window
     def __init__(self, root, profile_data, callback):
         self.prof_info = profile_data
         self.callback = callback
@@ -174,6 +180,7 @@ class ProfileEditor:
         self.editor = ctk.CTkToplevel(root, bg="gray18")
         self.editor.title("Profile Editor - " + self.prof_info['name'])
 
+        # Edit profile name
         self.name_frame = Frame(self.editor, width=300, height=100)
         self.name_frame.pack()
         self.name_label = ctk.CTkLabel(self.name_frame, text="Name:", width=30).pack(side="left", padx=10)
@@ -181,6 +188,7 @@ class ProfileEditor:
         self.name_entry.insert(0, self.prof_info['name'])
         self.name_entry.pack(pady=10, side='right', padx=(0, 10))
 
+        # Edit profile path if possible
         if self.prof_info['special'] != 'unmodded':
             self.path_frame = Frame(self.editor, width=300, height=100)
             self.path_frame.pack()
@@ -188,12 +196,13 @@ class ProfileEditor:
             self.path_entry = ctk.CTkEntry(self.path_frame, width=210)
             self.path_entry.insert(0, self.prof_info['path'])
             self.path_entry.pack(pady=10, side='left')
-            self.path_button = ctk.CTkButton(self.path_frame, text="...", width=5, command=self.browse_path).pack(padx=(5, 10), side='right')
+            self.path_button = ctk.CTkButton(self.path_frame, text="...", width=5,
+                                     command=self.browse_path).pack(padx=(5, 10), side='right')
+        # Force SMAPI checkbox if it is the unmodded profile
         elif self.prof_info['special'] == 'unmodded':
             self.force_frame = Frame(self.editor, width=300, height=100)
             self.force_frame.pack()
             self.force_label = ctk.CTkLabel(self.force_frame, text="Force SMAPI:", width=30).pack(side="left", padx=10)
-            # create a checkbox
             self.force_check = ctk.CTkCheckBox(self.force_frame, text='')
             self.force_check.pack(padx=10, side='right')
             if self.prof_info['force_smapi']: self.force_check.select()
@@ -201,21 +210,29 @@ class ProfileEditor:
         self.apply_button = ctk.CTkButton(self.editor, text="Apply", command=self.apply_changes, width=10).pack(pady=10)
 
     def apply_changes(self):
+        # Apply changes to the profile by calling the callback function in main.py
         if self.prof_info['special'] == None:
-            self.callback({'name': self.name_entry.get(), 'path': self.path_entry.get(), 'created': self.prof_info['created'], 'last_launched': self.prof_info['last_launched'], 'special': None})
+            self.callback({'name': self.name_entry.get(), 'path': self.path_entry.get(), 'created': self.prof_info['created'],
+                           'last_launched': self.prof_info['last_launched'], 'special': None})
         elif self.prof_info['special'] == 'unmodded':
-            self.callback({'name': self.name_entry.get(), 'special': 'unmodded', 'force_smapi': self.force_check.get(), 'last_launched': self.prof_info['last_launched']})
+            self.callback({'name': self.name_entry.get(), 'special': 'unmodded', 'force_smapi': self.force_check.get(),
+                           'last_launched': self.prof_info['last_launched']})
         self.editor.destroy()
 
     def browse_path(self):
+        # File explorer window for browsing the mod folder path
         new_path = filedialog.askdirectory()
+        # Put the profile editor back on top of other windows once the explorer closes
         self.editor.attributes('-topmost', True)
+        # Put the new folder path in the text box
         self.path_entry.delete(0, 'end')
         self.path_entry.insert(0, new_path)
+        # Stop the profile editor from sticking to above other windows (still on top, just not stuck)
         self.editor.attributes('-topmost', False)
 
 
 class Tooltip:
+    # Mouse hover tooltips that can be attached to widgets
     def __init__(self, widget, text):
         self.wait_time = 500  # milliseconds
         self.wrap_length = 180
@@ -232,7 +249,6 @@ class Tooltip:
         self.hide_tip()
 
     def schedule(self, event=None):
-        # self.unschedule()
         self.id = self.widget.after(self.wait_time, self.show_tip)
 
     def unschedule(self):
@@ -243,12 +259,13 @@ class Tooltip:
             self.widget.after_cancel(id)
 
     def show_tip(self, event=None):
+        # Get the position the tooltip needs to appear at
         x = y = 0
         x, y, cx, cy = self.widget.bbox("insert")
         x += self.widget.winfo_pointerx() + 1
         y += self.widget.winfo_pointery() + 1
         self.tw = ctk.CTkToplevel(self.widget)
-        # Leaves only the label and removes the app window
+        # Leaves only the label and removes the topbar of the window
         self.tw.wm_overrideredirect(True)
         self.tw.wm_geometry(f'+{x}+{y}')
         """
@@ -268,13 +285,11 @@ class Tooltip:
 
 
 class PopupInfo:
+    # Used to access the profile name after entered into the popup window
     def __init__(self):
         self.info = 'Error'
 
     def __str__(self):
-        return self.info
-
-    def __dict__(self):
         return self.info
 
     def change(self, info, format=str):
@@ -283,6 +298,7 @@ class PopupInfo:
 
 
 class IconSheet:
+    # All icons imported from the assets/iconsheet.png file
     def __init__(self, path):
         self.path = path
         self.sheet = PhotoImage(file=self.path)
@@ -293,9 +309,12 @@ class IconSheet:
         self.gear_dark = self.get_icon(0, 64, 63, 63).subsample(2, 2)
 
     def get_icon(self, x, y, width, height):
+        # Each icon is 64x64, so create a PhotoImage of only those pixels for each icon
         icon = PhotoImage()
         icon.tk.call(icon, 'copy', self.sheet, '-from', x, y, x + width, y + height, '-to', 0, 0)
         return icon
 
+
+# Used to store the profile name after entered in the popup window
 popup_info = PopupInfo()
 
