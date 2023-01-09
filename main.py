@@ -172,24 +172,19 @@ def save_settings():
 
 def check_files():
     # Check if critical files are missing, if so, download/create them
-    if not os.path.exists('profiles.json'):
-        with open('profiles.json', 'w') as f:
-            f.write('')
-    if not os.path.exists('settings.json'):
-        with open('settings.json', 'w') as f:
-            f.write('{}')
-    if not os.path.exists('assets'):
-        os.mkdir('assets')
-    if not os.path.exists('profiles'):
-        os.mkdir('profiles')
-    if not os.path.exists('assets/background.png'):
-        background_img = get_url('https://github.com/supercam19/SMAPI-Profile-Manager/blob/main/assets/background.png?raw=true')
-        with open('assets/background.png', 'wb') as f:
-            f.write(background_img.content)
-    if not os.path.exists('assets/iconsheet.png'):
-        icon_img = get_url('https://github.com/supercam19/SMAPI-Profile-Manager/blob/main/assets/iconsheet.png?raw=true')
-        with open('assets/iconsheet.png', 'wb') as f:
-            f.write(icon_img.content)
+    check = ('profiles.json', 'settings.json', 'assets', 'assets/background.png', 'assets/iconsheet.png')
+    for file in check:
+        if file.endswith('.json'):
+            if not os.path.exists(file):
+                with open(file, 'w') as f:
+                    f.write('{}')
+        elif '.' not in file:
+            if not os.path.exists(file):
+                os.mkdir(file)
+        elif file.endswith('.png'):
+            if not os.path.exists(file):
+                with open(file, 'wb') as f:
+                    f.write(get_url(f'https://github.com/supercam19/SMAPI-Profile-Manager/blob/main/{file}?raw=true').content)
 
 
 def sort_profiles(sort=None):
@@ -242,7 +237,8 @@ if __name__ == '__main__':
 
     if os.path.exists('profiles.txt'): convert_legacy_profiles()
     profiles_data = load_profiles()
-    if profiles_data == [] or 'force_smapi' not in profiles_data[0]: profiles_data.insert(0, {'name': 'Unmodded', 'force_smapi': False, 'special': 'unmodded', 'created': int(time())})
+    if profiles_data == []: profiles_data.insert(0, {'name': 'Unmodded', 'force_smapi': False, 'special': 'unmodded', 'created': int(time())})
+    elif 'force_smapi' not in profiles_data[0]: profiles_data.insert(0, {'name': 'Unmodded', 'force_smapi': False, 'special': 'unmodded', 'created': int(time())})
     for profile in profiles_data:
         profiles.append(Profile(profile))
     sort_profiles(settings['sort']) if 'sort' in settings else sort_profiles('Name')
