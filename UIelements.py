@@ -20,8 +20,7 @@ class Window(ctk.CTk):
         window_height = self.winfo_height()
         x = (screen_width / 2) - (window_width / 2)
         y = (screen_height / 2) - (window_height / 2)
-        self.geometry("+%d+%d" % (x, y))
-        print(x, y)
+        self.geometry(f'+{x}+{y}')
 
         self.icons = IconSheet('assets/iconsheet.png')
         self.iconphoto(True, self.icons.logo)
