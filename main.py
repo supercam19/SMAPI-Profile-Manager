@@ -53,7 +53,7 @@ class Profile:
         self.prof_delete.pack_forget()
 
     def select_profile(self):
-        edit_saved_profile(self.name, int(time()), key='last_used')
+        edit_saved_profile(self.name, int(time()), key='last_launched')
         if self.special != 'unmodded':
             cmd = f'start cmd /c \"\"{settings["smapi_path"]}\" --mods-path \"{self.path}\"\"'
             call(cmd, shell=True)
