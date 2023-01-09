@@ -140,11 +140,8 @@ def edit_saved_profile(profile_name,  new_value=None, key=None, action='edit'):
 
 def load_profiles():
     with open('profiles.json', 'r') as f:
-        try:
-            profiles_json = json.load(f)
-        except json.decoder.JSONDecodeError:
-            return []
-    return profiles_json
+        if f.read() == '{}': return []
+        else: return json.load(f)
 
 
 def convert_legacy_profiles():
