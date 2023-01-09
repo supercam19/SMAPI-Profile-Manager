@@ -43,7 +43,6 @@ class Profile:
         self.prof_edit.pack(side=tk.RIGHT, padx=(1, 0))
         if self.special != 'unmodded': self.prof_delete.pack(side=tk.RIGHT)
         self.right_frame.pack(side='right')
-        if 'warning_label' in globals(): warning_label.pack_forget()
 
     def hide_profile(self):
         self.prof_frame.pack_forget()
@@ -128,7 +127,6 @@ def load_profiles():
     with open('profiles.json', 'r') as f:
         data = json.load(f)
     return [] if data == {} else data
-
 
 
 def convert_legacy_profiles():
