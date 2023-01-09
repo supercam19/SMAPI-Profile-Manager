@@ -3,7 +3,7 @@
 ## Update [v1.2.1] (???)
 
 ### Changes 
- - Small program optimizations that should make the program load faster
+ - Small program optimizations that should make the program load faster (#24)
 
 ### Fixes
  - Fixed the Last Played value not getting updated when launching a profile
