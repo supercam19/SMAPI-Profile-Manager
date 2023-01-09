@@ -71,7 +71,7 @@ class Profile:
                 call(cmd, shell=True)
 
     def edit_profile(self):
-        editor = ProfileEditor(window, self.prof_info, self.load_changed_info)
+        editor = ProfileEditor(window, profile_data=self.prof_info, callback=self.load_changed_info)
         window.wait_window(editor.editor)
         edit_saved_profile(self.name, self.prof_info, action='edit')
         self.name = self.prof_info['name']
