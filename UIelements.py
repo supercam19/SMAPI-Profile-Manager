@@ -14,6 +14,7 @@ class Window(ctk.CTk):
         self.resizable(False, False)
         self.protocol("WM_DELETE_WINDOW")
 
+        # Calculate how to place the window in the center of screen
         screen_width = self.winfo_screenwidth()
         screen_height = self.winfo_screenheight()
         window_width = self.winfo_width()
@@ -44,7 +45,8 @@ class Window(ctk.CTk):
                                            width=50, command=lambda: open_url("https://github.com/supercam19/SMAPI-Profile-Manager"), pady=0)
         self.github_tooltip = Tooltip(self.github_button, "Help (Open GitHub page)")
         self.github_button.pack(pady=5, anchor="n")
-        self.version_label = ctk.CTkLabel(self.control_frame, text="Version: " + VERSION, width=100, height=20, text_font=("Arial", 7))
+        self.version_label = ctk.CTkLabel(self.control_frame, text="Version: " + VERSION,
+                                          width=100, height=20, text_font=("Arial", 7))
         self.version_label.pack(side="bottom", fill="x", pady=5)
         self.control_frame.lift()
 
@@ -54,13 +56,15 @@ class Window(ctk.CTk):
         self.sorting_frame.pack(fill="both", expand=True, side="top", anchor="w")
         self.sorting_label = ctk.CTkLabel(self.sorting_frame, text="Sort:", height=20, text_font=("Arial", 12), anchor="e")
         self.sorting_label.pack(side="left", anchor="w", padx=(30, 15), pady=5)
-        self.sorting_dropdown = ctk.CTkOptionMenu(self.sorting_frame, width=100, height=20, text_font=("Arial", 12), values=["Name", "Last Played", "Created"], command=self.sort_callback)
+        self.sorting_dropdown = ctk.CTkOptionMenu(self.sorting_frame, width=100, height=20, text_font=("Arial", 12),
+                                                  values=["Name", "Last Played", "Created"], command=self.sort_callback)
         self.sorting_dropdown.pack(side="left", anchor="w", pady=5)
         if 'sort' in settings:
             self.sorting_dropdown.set(settings['sort'])
         else:
             self.sorting_dropdown.set("Name")
-        self.invert_sort_checkbox = ctk.CTkCheckBox(self.sorting_frame, text="Invert", width=20, height=20, text_font=("Arial", 12), command=self.sort_callback)
+        self.invert_sort_checkbox = ctk.CTkCheckBox(self.sorting_frame, text="Invert", width=20, height=20,
+                                                    text_font=("Arial", 12), command=self.sort_callback)
         self.invert_sort_checkbox.pack(side="left", anchor="w", padx=15, pady=5)
         if 'invert' in settings:
             self.invert_sort_checkbox.select() if settings['invert'] else self.invert_sort_checkbox.deselect()
@@ -187,7 +191,8 @@ class ProfileEditor:
             self.path_entry = ctk.CTkEntry(self.path_frame, width=210)
             self.path_entry.insert(0, self.prof_info['path'])
             self.path_entry.pack(pady=10, side='left')
-            self.path_button = ctk.CTkButton(self.path_frame, text="...", width=5, command=self.browse_path).pack(padx=(5, 10), side='right')
+            self.path_button = ctk.CTkButton(self.path_frame, text="...", width=5,
+                                             command=self.browse_path).pack(padx=(5, 10), side='right')
         elif self.prof_info['special'] == 'unmodded':
             self.force_frame = Frame(self.editor, width=300, height=100)
             self.force_frame.pack()
@@ -201,9 +206,11 @@ class ProfileEditor:
 
     def apply_changes(self):
         if self.prof_info['special'] == None:
-            self.callback({'name': self.name_entry.get(), 'path': self.path_entry.get(), 'created': self.prof_info['created'], 'last_launched': self.prof_info['last_launched'], 'special': None})
+            self.callback({'name': self.name_entry.get(), 'path': self.path_entry.get(), 'created': self.prof_info['created'],
+                           'last_launched': self.prof_info['last_launched'], 'special': None})
         elif self.prof_info['special'] == 'unmodded':
-            self.callback({'name': self.name_entry.get(), 'special': 'unmodded', 'force_smapi': self.force_check.get(), 'last_launched': self.prof_info['last_launched']})
+            self.callback({'name': self.name_entry.get(), 'special': 'unmodded', 'force_smapi': self.force_check.get(),
+                           'last_launched': self.prof_info['last_launched']})
         self.editor.destroy()
 
     def browse_path(self):
