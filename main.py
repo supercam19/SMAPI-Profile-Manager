@@ -113,13 +113,6 @@ def save_profile(data):
 
 
 def edit_saved_profile(profile_name,  new_value=None, key=None, action='edit'):
-    """
-    Edits a saved profile
-    :param profile_name: The name value of the profile to edit
-    :param new_value: The new value to set the key to.
-    :param key: The key to edit. If None, it will try to replace the entire profile
-    :param action: The action to perform. Can be 'edit' or 'delete'
-    """
     if action == 'edit':
         for i, profile in enumerate(profiles_data):
             if profile['name'] == profile_name:
@@ -128,14 +121,11 @@ def edit_saved_profile(profile_name,  new_value=None, key=None, action='edit'):
                 else:
                     profile[key] = new_value
                     profiles_data[i] = profile
-            save_profile(profiles_data)
     elif action == 'delete':
         for profile in profiles_data:
             if profile['name'] == profile_name:
                 profiles_data.remove(profile)
-        save_profile(profiles_data)
-    else:
-        raise ValueError("Action must be either 'edit' or 'delete'")
+    save_profile(profiles_data)
 
 
 def load_profiles():
