@@ -245,10 +245,7 @@ if __name__ == '__main__':
     if profiles_data == [] or 'force_smapi' not in profiles_data[0]: profiles_data.insert(0, {'name': 'Unmodded', 'force_smapi': False, 'special': 'unmodded', 'created': int(time())})
     for profile in profiles_data:
         profiles.append(Profile(profile))
-    if 'sort' in settings:
-        sort_profiles(settings['sort'])
-    else:
-        sort_profiles('Name')
+    sort_profiles(settings['sort']) if 'sort' in settings else sort_profiles('Name')
     for profile in profiles:
         profile.draw_profile()
 
