@@ -1,6 +1,8 @@
 # SMAPI Profile Manager Changelog
 
-# Core Update [v1.2.0] (Jan 8, 2023)
+## Update [v1.2.1] (???)
+
+## Core Update [v1.2.0] (Jan 8, 2023)
 A major update that focuses on core backend features of the program to improve user experience and make the program more reliable.
 
 ### Additions

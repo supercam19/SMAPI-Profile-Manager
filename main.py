@@ -224,7 +224,7 @@ VERSION = "v1.2.0"
 if __name__ == '__main__':
     check_files()
     settings = load_settings()
-    profiles_data = [None]
+    profiles_data = []
     # Initialize the TK window
     tk.set_appearance_mode("dark")
     windll.user32.SetProcessDPIAware()
