@@ -93,12 +93,10 @@ class Profile:
 
 def add_profile():
     prof_path = filedialog.askdirectory()
-    # Write the name of the profile to a text file to save for later
     popup = Popup("Name your profile", "Enter a name for your profile", window)
-    # Wait for the popup to close
     window.wait_window(popup.popup)
     prof_name = str(popup_info)
-    # set prof_name to the first 100 characters of itself if it is longer than 100 characters
+    # Restrict profile name to 100 characters
     prof_name = prof_name[:100] if len(prof_name) > 100 else prof_name
     profiles.append(Profile({'name': prof_name, 'path': prof_path, 'created': int(time())}))
     profiles[-1].draw_profile()
