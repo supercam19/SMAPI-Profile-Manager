@@ -252,9 +252,5 @@ if __name__ == '__main__':
     for profile in profiles:
         profile.draw_profile()
 
-    if not profiles:
-        warning_label = tk.CTkLabel(window.profiles_list, text="No profiles found, use the + button to add a profile")
-        warning_label.pack(pady=20, padx=100)
-
     window.mainloop()
 
