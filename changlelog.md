@@ -2,6 +2,9 @@
 
 ## Update [v1.2.1] (???)
 
+### Changes 
+ - Small program optimizations that should make the program load faster
+
 ### Fixes
  - Fixed the Last Played value not getting updated when launching a profile
  - Fixed the unmodded profile not launching when the Force SMAPI option was checked
