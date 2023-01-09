@@ -59,10 +59,7 @@ class Window(ctk.CTk):
         self.sorting_dropdown = ctk.CTkOptionMenu(self.sorting_frame, width=100, height=20, text_font=("Arial", 12),
                                                   values=["Name", "Last Played", "Created"], command=self.sort_callback)
         self.sorting_dropdown.pack(side="left", anchor="w", pady=5)
-        if 'sort' in settings:
-            self.sorting_dropdown.set(settings['sort'])
-        else:
-            self.sorting_dropdown.set("Name")
+        self.sorting_dropdown.set(settings['sort']) if 'sort' in settings else self.sorting_dropdown.set("Name")
         self.invert_sort_checkbox = ctk.CTkCheckBox(self.sorting_frame, text="Invert", width=20, height=20,
                                                     text_font=("Arial", 12), command=self.sort_callback)
         self.invert_sort_checkbox.pack(side="left", anchor="w", padx=15, pady=5)
@@ -302,6 +299,7 @@ class IconSheet:
         icon = PhotoImage()
         icon.tk.call(icon, 'copy', self.sheet, '-from', x, y, x + width, y + height, '-to', 0, 0)
         return icon
+
 
 popup_info = PopupInfo()
 
