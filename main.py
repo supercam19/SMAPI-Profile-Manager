@@ -88,7 +88,6 @@ class Profile:
         self.prof_delete.destroy()
         # Remove the profile from the text file
         edit_saved_profile(self.name, action='delete')
-        save_profile(profiles_data)
 
 
 def add_profile():
