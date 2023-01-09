@@ -126,7 +126,8 @@ def edit_saved_profile(profile_name,  new_value=None, key=None, action='edit'):
 
 def load_profiles():
     with open('profiles.json', 'r') as f:
-        return json.load(f)
+        data = json.load(f)
+    return [] if data == {} else data
 
 
 
@@ -220,6 +221,7 @@ if __name__ == '__main__':
 
     if os.path.exists('profiles.txt'): convert_legacy_profiles()
     profiles_data = load_profiles()
+    print(profiles_data)
     if profiles_data == []: profiles_data.insert(0, {'name': 'Unmodded', 'force_smapi': False, 'special': 'unmodded', 'created': int(time())})
     elif 'force_smapi' not in profiles_data[0]: profiles_data.insert(0, {'name': 'Unmodded', 'force_smapi': False, 'special': 'unmodded', 'created': int(time())})
     for profile in profiles_data:
