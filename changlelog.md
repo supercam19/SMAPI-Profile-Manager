@@ -3,6 +3,7 @@
 ## Update [v1.2.1] (???)
 
 ### Changes 
+ - If the program tries to download files without an internet connection, an error popup will appear
  - Small program optimizations that should make the program load faster (#24)
 
 ### Fixes

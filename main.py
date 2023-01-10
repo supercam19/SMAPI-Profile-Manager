@@ -2,7 +2,7 @@ import os
 from tkinter import filedialog
 import customtkinter as tk
 from UIelements import *
-from requests import get as get_url
+from requests import get as get_url, exceptions
 import json
 from ctypes import windll
 from subprocess import call
@@ -190,7 +190,10 @@ def check_files():
         elif file.endswith('.png'):
             if not os.path.exists(file):
                 with open(file, 'wb') as f:
-                    f.write(get_url(f'https://github.com/supercam19/SMAPI-Profile-Manager/blob/main/{file}?raw=true').content)
+                    try:
+                        f.write(get_url(f'https://github.com/supercam19/SMAPI-Profile-Manager/blob/main/{file}?raw=true').content)
+                    except exceptions.ConnectionError:
+                        windll.user32.MessageBoxW(None, u"Error downloading assets, check your internet connection or firewall", u"Error", MB_OK | MB_ICONERROR)
 
 
 def sort_profiles(sort=None):
