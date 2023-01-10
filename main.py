@@ -62,7 +62,7 @@ class Profile:
         edit_saved_profile(self.name, int(time()), key='last_launched')
         # If not the unmodded profile, launch with SMAPI and a custom mods path
         if self.special != 'unmodded':
-            cmd = f'\"{settings["smapi_path"]}\" --mods-path \"{self.path}\"'
+            cmd = f'start cmd /c \"\"{settings["smapi_path"]}\" --mods-path \"{self.path}\"\"'
             call(cmd, shell=True)
         # If it is the unmodded profile...
         else:
@@ -73,11 +73,11 @@ class Profile:
             # otherwise try to launch the game through the vanilla exe file...
             game_path = os.path.dirname(settings['smapi_path'])
             if os.path.exists(game_path + '/Stardew Valley.exe'):
-                cmd = f'\"{game_path}/Stardew Valley.exe\"'
+                cmd = f'start cmd /c \"\"{game_path}/Stardew Valley.exe\"\"'
                 call(cmd)
             # if the executable can't be found, launch through SMAPI.
             else:
-                cmd = f'\"{settings["smapi_path"]}\"'
+                cmd = f'start cmd /c \"\"{settings["smapi_path"]}\"\"'
                 call(cmd, shell=True)
 
     def edit_profile(self):
