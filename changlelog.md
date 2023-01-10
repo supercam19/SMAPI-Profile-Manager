@@ -1,6 +1,6 @@
 # SMAPI Profile Manager Changelog
 
-## Update [v1.2.1] (???)
+## Update [v1.2.1] (Jan 9, 2022)
 
 ### Changes 
  - If the program tries to download files without an internet connection, an error popup will appear

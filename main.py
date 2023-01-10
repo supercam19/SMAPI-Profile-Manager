@@ -233,7 +233,7 @@ def sort_profiles(sort=None):
 
 profiles = []
 name_input = ''
-VERSION = "v1.2.0"
+VERSION = "v1.2.1"
 
 if __name__ == '__main__':
     check_files()
