@@ -198,6 +198,7 @@ class ProfileEditor:
         self.apply_button = ctk.CTkButton(self.editor, text="Apply", command=self.apply_changes, width=10).pack(pady=10)
 
     def editable_text(self, title):
+        # Creates a frame with a label and a textbox
         frame = Frame(self.editor, width=300, height=100)
         frame.pack()
         label = ctk.CTkLabel(frame, text=title, width=30)
@@ -207,6 +208,7 @@ class ProfileEditor:
         return frame, label, entry
 
     def editable_true_false(self, title):
+        # Creates a frame with a label and a checkbox
         frame = Frame(self.editor, width=300, height=100)
         frame.pack()
         label = ctk.CTkLabel(frame, text=title, width=30)
@@ -231,8 +233,8 @@ class ProfileEditor:
         # Put the profile editor back on top of other windows once the explorer closes
         self.editor.attributes('-topmost', True)
         # Put the new folder path in the text box
-        self.path_entry.delete(0, 'end')
-        self.path_entry.insert(0, new_path)
+        self.ePathEntry.delete(0, 'end')
+        self.ePathEntry.insert(0, new_path)
         # Stop the profile editor from sticking to above other windows (still on top, just not stuck)
         self.editor.attributes('-topmost', False)
 
