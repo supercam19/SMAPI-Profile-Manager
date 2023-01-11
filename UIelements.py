@@ -181,12 +181,8 @@ class ProfileEditor:
         self.editor.title("Profile Editor - " + self.prof_info['name'])
 
         # Edit profile name
-        self.name_frame = Frame(self.editor, width=300, height=100)
-        self.name_frame.pack()
-        self.name_label = ctk.CTkLabel(self.name_frame, text="Name:", width=30).pack(side="left", padx=10)
-        self.name_entry = ctk.CTkEntry(self.name_frame, width=240)
-        self.name_entry.insert(0, self.prof_info['name'])
-        self.name_entry.pack(pady=10, side='right', padx=(0, 10))
+        self.eName = self.editable_text('Name:')
+        self.eName.insert(0, self.prof_info['name'])
 
         # Edit profile path if possible
         if self.prof_info['special'] != 'unmodded':
@@ -209,13 +205,22 @@ class ProfileEditor:
 
         self.apply_button = ctk.CTkButton(self.editor, text="Apply", command=self.apply_changes, width=10).pack(pady=10)
 
+    def editable_text(self, title):
+        frame = Frame(self.editor, width=300, height=100)
+        frame.pack()
+        label = ctk.CTkLabel(frame, text=title, width=30)
+        label.pack(side="left", padx=10)
+        entry = ctk.CTkEntry(frame, width=240)
+        entry.pack(pady=10, side='right', padx=(0, 10))
+        return entry
+
     def apply_changes(self):
         # Apply changes to the profile by calling the callback function in main.py
         if self.prof_info['special'] == None:
-            self.callback({'name': self.name_entry.get(), 'path': self.path_entry.get(), 'created': self.prof_info['created'],
+            self.callback({'name': self.eName.get(), 'path': self.path_entry.get(), 'created': self.prof_info['created'],
                            'last_launched': self.prof_info['last_launched'], 'special': None})
         elif self.prof_info['special'] == 'unmodded':
-            self.callback({'name': self.name_entry.get(), 'special': 'unmodded', 'force_smapi': self.force_check.get(),
+            self.callback({'name': self.eName.get(), 'special': 'unmodded', 'force_smapi': self.force_check.get(),
                            'last_launched': self.prof_info['last_launched']})
         self.editor.destroy()
 
