@@ -1,5 +1,6 @@
 # SMAPI Profile Manager Changelog
 
+
 ## Update [v1.2.1] (Jan 9, 2022)
 
 ### Changes 
