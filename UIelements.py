@@ -186,9 +186,9 @@ class ProfileEditor:
 
         if self.prof_info['special'] != 'unmodded':
             # Show a path editor if this is not the unmodded profile
-            self.ePathFrame, _, self.ePathEntry = self.editable_text('Path:')
+            self.ePathFrame, _, self.ePathEntry = self.editable_text('Path:', entry_alignement='left')
             self.browse_button = ctk.CTkButton(self.ePathFrame, text="...", width=5,
-                                     command=self.browse_path).pack(padx=(5, 10), side='right')
+                                     command=self.browse_path).pack(padx=(0, 10), side='right')
             self.ePathEntry.insert(0, self.prof_info['path'])
         else:
             # Show the force smapi checkbox if this is the unmodded profile
@@ -197,22 +197,23 @@ class ProfileEditor:
 
         self.apply_button = ctk.CTkButton(self.editor, text="Apply", command=self.apply_changes, width=10).pack(pady=10)
 
-    def editable_text(self, title):
+    def editable_text(self, title, entry_alignement='right'):
         # Creates a frame with a label and a textbox
-        frame = Frame(self.editor, width=300, height=100)
+        frame = Frame(self.editor, width=300, height=40)
+        frame.pack_propagate(False)
         frame.pack()
         label = ctk.CTkLabel(frame, text=title, width=30)
         label.pack(side="left", padx=10)
         entry = ctk.CTkEntry(frame, width=210)
-        entry.pack(pady=10, side='left', padx=(0, 10))
+        entry.pack(side=entry_alignement, padx=(0, 10), pady=8)
         return frame, label, entry
 
     def editable_true_false(self, title):
         # Creates a frame with a label and a checkbox
-        frame = Frame(self.editor, width=300, height=100)
+        frame = Frame(self.editor, width=300, height=40)
         frame.pack_propagate(False)
         frame.pack()
-        label = ctk.CTkLabel(frame, text=title, width=30)
+        label = ctk.CTkLabel(frame, text=title, width=50)
         label.pack(side="left", padx=10)
         check = ctk.CTkCheckBox(frame, text='')
         check.pack(padx=10, side='right')
