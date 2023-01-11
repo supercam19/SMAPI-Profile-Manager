@@ -184,31 +184,16 @@ class ProfileEditor:
         self.eName = self.editable_text('Name:')[2]  # returns the textbox object
         self.eName.insert(0, self.prof_info['name'])
 
-        # Edit profile path if possible
-        # return object 1 and 2 of self.editable_text()
         if self.prof_info['special'] != 'unmodded':
+            # Show a path editor if this is not the unmodded profile
             self.ePathFrame, _, self.ePathEntry = self.editable_text('Path:')
             self.browse_button = ctk.CTkButton(self.ePathFrame, text="...", width=5,
                                      command=self.browse_path).pack(padx=(5, 10), side='right')
             self.ePathEntry.insert(0, self.prof_info['path'])
-
-        if self.prof_info['special'] != 'unmodded':
-            self.path_frame = Frame(self.editor, width=300, height=100)
-            self.path_frame.pack()
-            self.path_label = ctk.CTkLabel(self.path_frame, text="Path:", width=30).pack(side="left", padx=10)
-            self.path_entry = ctk.CTkEntry(self.path_frame, width=210)
-            self.path_entry.insert(0, self.prof_info['path'])
-            self.path_entry.pack(pady=10, side='left')
-            self.path_button = ctk.CTkButton(self.path_frame, text="...", width=5,
-                                     command=self.browse_path).pack(padx=(5, 10), side='right')
-        # Force SMAPI checkbox if it is the unmodded profile
-        elif self.prof_info['special'] == 'unmodded':
-            self.force_frame = Frame(self.editor, width=300, height=100)
-            self.force_frame.pack()
-            self.force_label = ctk.CTkLabel(self.force_frame, text="Force SMAPI:", width=30).pack(side="left", padx=10)
-            self.force_check = ctk.CTkCheckBox(self.force_frame, text='')
-            self.force_check.pack(padx=10, side='right')
-            if self.prof_info['force_smapi']: self.force_check.select()
+        else:
+            # Show the force smapi checkbox if this is the unmodded profile
+            self.eForceSMAPI = self.editable_true_false('Force SMAPI:')[2]
+            self.eForceSMAPI.select() if self.prof_info['force_smapi'] else self.eForceSMAPI.deselect()
 
         self.apply_button = ctk.CTkButton(self.editor, text="Apply", command=self.apply_changes, width=10).pack(pady=10)
 
@@ -221,13 +206,22 @@ class ProfileEditor:
         entry.pack(pady=10, side='left', padx=(0, 10))
         return frame, label, entry
 
+    def editable_true_false(self, title):
+        frame = Frame(self.editor, width=300, height=100)
+        frame.pack()
+        label = ctk.CTkLabel(frame, text=title, width=30)
+        label.pack(side="left", padx=10)
+        check = ctk.CTkCheckBox(frame, text='')
+        check.pack(padx=10, side='right')
+        return frame, label, check
+
     def apply_changes(self):
         # Apply changes to the profile by calling the callback function in main.py
         if self.prof_info['special'] == None:
             self.callback({'name': self.eName.get(), 'path': self.ePathEntry.get(), 'created': self.prof_info['created'],
                            'last_launched': self.prof_info['last_launched'], 'special': None})
         elif self.prof_info['special'] == 'unmodded':
-            self.callback({'name': self.eName.get(), 'special': 'unmodded', 'force_smapi': self.force_check.get(),
+            self.callback({'name': self.eName.get(), 'special': 'unmodded', 'force_smapi': self.eForceSMAPI.get(),
                            'last_launched': self.prof_info['last_launched']})
         self.editor.destroy()
 
