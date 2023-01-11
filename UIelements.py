@@ -181,10 +181,17 @@ class ProfileEditor:
         self.editor.title("Profile Editor - " + self.prof_info['name'])
 
         # Edit profile name
-        self.eName = self.editable_text('Name:')
+        self.eName = self.editable_text('Name:')[2]  # returns the textbox object
         self.eName.insert(0, self.prof_info['name'])
 
         # Edit profile path if possible
+        # return object 1 and 2 of self.editable_text()
+        if self.prof_info['special'] != 'unmodded':
+            self.ePathFrame, _, self.ePathEntry = self.editable_text('Path:')
+            self.browse_button = ctk.CTkButton(self.ePathFrame, text="...", width=5,
+                                     command=self.browse_path).pack(padx=(5, 10), side='right')
+            self.ePathEntry.insert(0, self.prof_info['path'])
+
         if self.prof_info['special'] != 'unmodded':
             self.path_frame = Frame(self.editor, width=300, height=100)
             self.path_frame.pack()
@@ -210,14 +217,14 @@ class ProfileEditor:
         frame.pack()
         label = ctk.CTkLabel(frame, text=title, width=30)
         label.pack(side="left", padx=10)
-        entry = ctk.CTkEntry(frame, width=240)
-        entry.pack(pady=10, side='right', padx=(0, 10))
-        return entry
+        entry = ctk.CTkEntry(frame, width=210)
+        entry.pack(pady=10, side='left', padx=(0, 10))
+        return frame, label, entry
 
     def apply_changes(self):
         # Apply changes to the profile by calling the callback function in main.py
         if self.prof_info['special'] == None:
-            self.callback({'name': self.eName.get(), 'path': self.path_entry.get(), 'created': self.prof_info['created'],
+            self.callback({'name': self.eName.get(), 'path': self.ePathEntry.get(), 'created': self.prof_info['created'],
                            'last_launched': self.prof_info['last_launched'], 'special': None})
         elif self.prof_info['special'] == 'unmodded':
             self.callback({'name': self.eName.get(), 'special': 'unmodded', 'force_smapi': self.force_check.get(),
