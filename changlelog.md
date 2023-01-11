@@ -1,5 +1,9 @@
 # SMAPI Profile Manager Changelog
 
+## Update [v1.2.2] (???)
+
+### Fixes
+ - Fixed a bug where the program would not load if the unmodded profile was edited
 
 ## Update [v1.2.1] (Jan 9, 2022)
 

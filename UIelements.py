@@ -210,6 +210,7 @@ class ProfileEditor:
     def editable_true_false(self, title):
         # Creates a frame with a label and a checkbox
         frame = Frame(self.editor, width=300, height=100)
+        frame.pack_propagate(False)
         frame.pack()
         label = ctk.CTkLabel(frame, text=title, width=30)
         label.pack(side="left", padx=10)
@@ -223,7 +224,7 @@ class ProfileEditor:
             self.callback({'name': self.eName.get(), 'path': self.ePathEntry.get(), 'created': self.prof_info['created'],
                            'last_launched': self.prof_info['last_launched'], 'special': None})
         elif self.prof_info['special'] == 'unmodded':
-            self.callback({'name': self.eName.get(), 'special': 'unmodded', 'force_smapi': self.eForceSMAPI.get(),
+            self.callback({'name': self.eName.get(), 'special': 'unmodded', 'force_smapi': self.eForceSMAPI.get(), 'created': self.prof_info['created'],
                            'last_launched': self.prof_info['last_launched']})
         self.editor.destroy()
 
