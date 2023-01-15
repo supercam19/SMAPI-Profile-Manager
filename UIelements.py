@@ -3,6 +3,7 @@ from tkinter import PhotoImage
 from main import VERSION
 from tkinter import filedialog
 from webbrowser import open as open_url
+from datetime import fromtimestamp
 
 
 class Window(ctk.CTk):
@@ -235,15 +236,24 @@ class ProfileEditor:
             self.dropdown_active = True
             self.apply_button.pack_forget()
             self.properties_dropdown.configure(text="Properties ^")
-            self.properties_frame = Frame(self.editor, bg="gray18")
+            self.properties_frame = Frame(self.editor, bg="gray18", width=240, height=40*len(self.protected_values))
             self.properties_frame.pack_propagate(False)
             self.properties_frame.pack(pady=10)
             self.apply_button.pack(pady=10)
-            for i, (key, value) in enumerate(self.prof_info.items()):
+            i = 0
+            for key, value in self.prof_info.items():
                 if key in self.protected_values:
-                    colour = 'gray45' if i % 2 == 0 else 'gray35'
-                    subframe = Frame(self.properties_frame, width=300, height=40, bg=colour)
+                    i += 1
+                    if key == 'created' or key == 'last_launched':
+                        value = fromtimestamp(value).strftime('%Y-%m-%d %H:%M:%S')
+                    colour = 'gray45' if i % 2 == 0 else 'gray25'
+                    subframe = Frame(self.properties_frame, width=300, height=40, fg_color=colour, bg_color=colour)
                     subframe.pack_propagate(False)
+                    subframe.pack()
+                    key_label = ctk.CTkLabel(subframe, text=key, width=30, fg_color=colour)
+                    key_label.pack(side="left", padx=2)
+                    value_label = ctk.CTkLabel(subframe, text=value, width=210, fg_color=colour, anchor='e')
+                    value_label.pack(side="right", padx=2)
 
     def apply_changes(self):
         # Apply changes to the profile by calling the callback function in main.py
