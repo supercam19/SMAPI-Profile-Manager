@@ -3,7 +3,7 @@ from tkinter import PhotoImage
 from main import VERSION
 from tkinter import filedialog
 from webbrowser import open as open_url
-from datetime import fromtimestamp
+from datetime import datetime
 
 
 class Window(ctk.CTk):
@@ -245,7 +245,7 @@ class ProfileEditor:
                 if key in self.protected_values:
                     i += 1
                     if key == 'created' or key == 'last_launched':
-                        value = fromtimestamp(value).strftime('%Y-%m-%d %H:%M:%S')
+                        value = datetime.fromtimestamp(value).strftime('%Y-%m-%d %H:%M:%S')
                     colour = 'gray45' if i % 2 == 0 else 'gray25'
                     subframe = Frame(self.properties_frame, width=300, height=40, fg_color=colour, bg_color=colour)
                     subframe.pack_propagate(False)
