@@ -3,7 +3,7 @@
 ## Update [v1.2.2] (???)
 
 ### Fixes
- - Fixed a bug where the program would not load if the unmodded profile was edited
+ - Fixed a bug where the program would not load if the unmodded profile was edited (#26)
 
 ## Update [v1.2.1] (Jan 9, 2022)
 

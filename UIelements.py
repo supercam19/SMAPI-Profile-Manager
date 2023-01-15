@@ -176,6 +176,8 @@ class ProfileEditor:
     def __init__(self, root, profile_data, callback):
         self.prof_info = profile_data
         self.callback = callback
+        self.dropdown_active = False
+        self.properties_frame = None
         self.protected_values = ('created', 'last_launched')  # Do not allow user to modify these
         self.editor = ctk.CTkToplevel(root, bg="gray18")
         self.editor.title("Profile Editor - " + self.prof_info['name'])
@@ -194,6 +196,10 @@ class ProfileEditor:
             # Show the force smapi checkbox if this is the unmodded profile
             self.eForceSMAPI = self.editable_true_false('Force SMAPI:')[2]
             self.eForceSMAPI.select() if self.prof_info['force_smapi'] else self.eForceSMAPI.deselect()
+
+        self.properties_dropdown = ctk.CTkButton(self.editor, text="Properties v", width=10,
+                                       command=self.dropdown_manager)
+        self.properties_dropdown.pack(pady=(10, 0))
 
         self.apply_button = ctk.CTkButton(self.editor, text="Apply", command=self.apply_changes, width=10).pack(pady=10)
 
@@ -218,6 +224,24 @@ class ProfileEditor:
         check = ctk.CTkCheckBox(frame, text='')
         check.pack(padx=10, side='right')
         return frame, label, check
+
+    def dropdown_manager(self):
+        if self.dropdown_active:
+            self.dropdown_active = False
+            self.properties_dropdown.configure(text="Properties v")
+            self.properties_frame.destroy()
+        else:
+            self.dropdown_active = True
+            self.properties_dropdown.configure(text="Properties ^")
+            self.properties_frame = Frame(self.editor, bg="gray18")
+            self.properties_frame.pack()
+            self.properties_frame.pack_propagate(False)
+            self.properties_frame.pack(pady=10)
+            for i, (key, value) in enumerate(self.prof_info.items()):
+                if key in self.protected_values:
+                    colour = 'gray45' if i % 2 == 0 else 'gray35'
+                    subframe = Frame(self.properties_frame, width=300, height=40, bg=colour)
+                    subframe.pack_propagate(False)
 
     def apply_changes(self):
         # Apply changes to the profile by calling the callback function in main.py
