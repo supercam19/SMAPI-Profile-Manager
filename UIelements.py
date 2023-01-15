@@ -201,7 +201,8 @@ class ProfileEditor:
                                        command=self.dropdown_manager)
         self.properties_dropdown.pack(pady=(10, 0))
 
-        self.apply_button = ctk.CTkButton(self.editor, text="Apply", command=self.apply_changes, width=10).pack(pady=10)
+        self.apply_button = ctk.CTkButton(self.editor, text="Apply", command=self.apply_changes, width=10)
+        self.apply_button.pack(pady=10)
 
     def editable_text(self, title, entry_alignement='right'):
         # Creates a frame with a label and a textbox
@@ -232,11 +233,12 @@ class ProfileEditor:
             self.properties_frame.destroy()
         else:
             self.dropdown_active = True
+            self.apply_button.pack_forget()
             self.properties_dropdown.configure(text="Properties ^")
             self.properties_frame = Frame(self.editor, bg="gray18")
-            self.properties_frame.pack()
             self.properties_frame.pack_propagate(False)
             self.properties_frame.pack(pady=10)
+            self.apply_button.pack(pady=10)
             for i, (key, value) in enumerate(self.prof_info.items()):
                 if key in self.protected_values:
                     colour = 'gray45' if i % 2 == 0 else 'gray35'
