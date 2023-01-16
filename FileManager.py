@@ -87,6 +87,7 @@ def check_files():
 
 def update_files():
     # Re-download files that might have changed in the update
+    print('Updating files...')
     for file in ('assets/background.png', 'assets/iconsheet.png'):
         os.remove(file)
     check_files()

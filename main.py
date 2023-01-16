@@ -149,7 +149,7 @@ def sort_profiles(sort=None):
 
 profiles = []
 name_input = ''
-VERSION = "v1.2.1"
+VERSION = "v1.2.2"
 
 if __name__ == '__main__':
     check_files()
@@ -179,7 +179,7 @@ if __name__ == '__main__':
             settings['smapi_path'] = filedialog.askopenfilename(title="Select StardewModdingAPI.exe", filetypes=[("StardewModdingAPI.exe", "*.exe")])
         save_settings(settings)
 
-    if os.path.exists('profiles.txt'): convert_legacy_profiles(profiles_data)
+    if os.path.exists('profiles.txt'): profiles_data = convert_legacy_profiles(profiles_data)
     profiles_data = load_profiles()
     # Make sure the unmodded profile is added to the save
     if profiles_data == []: profiles_data.insert(0, {'name': 'Unmodded', 'force_smapi': False, 'special': 'unmodded', 'created': int(time())})
