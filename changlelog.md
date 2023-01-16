@@ -9,6 +9,7 @@
 ### Fixes
  - Fixed a bug where the program would not load if the unmodded profile was edited (#26)
  - Fixed an issue with image files not getting updated when updating the software (#29)
+ - Program window should now actually start in the middle of your screen
  - Fixed some elements in the profile editor being aligned to the center rather than left and right (#26)
 
 ## Update [v1.2.1] (Jan 9, 2022)
