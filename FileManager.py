@@ -83,3 +83,12 @@ def check_files():
                         f.write(get_url(f'https://github.com/supercam19/SMAPI-Profile-Manager/blob/main/{file}?raw=true').content)
                     except exceptions.ConnectionError:
                         windll.user32.MessageBoxW(None, u"Error downloading assets, check your internet connection or firewall", u"Error", 0x00000000 | 0x00000010)
+
+
+def update_files():
+    # Re-download files that might have changed in the update
+    print('Updating files...')
+    for file in ('assets/background.png', 'assets/iconsheet.png'):
+        os.remove(file)
+    check_files()
+
