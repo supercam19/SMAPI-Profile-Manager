@@ -1,9 +1,7 @@
-import os
 from tkinter import filedialog
 import customtkinter as tk
 from UIelements import *
-from requests import get as get_url, exceptions
-import json
+from FileManager import *
 from ctypes import windll
 from subprocess import call
 from time import time
@@ -59,7 +57,7 @@ class Profile:
     def select_profile(self):
         # Launches the game with the selected profile
         # Update the Last Played stat for the profile
-        edit_saved_profile(self.name, int(time()), key='last_launched')
+        edit_saved_profile(profiles_data, self.name, int(time()), key='last_launched')
         # If not the unmodded profile, launch with SMAPI and a custom mods path
         if self.special != 'unmodded':
             cmd = f'start cmd /c \"\"{settings["smapi_path"]}\" --mods-path \"{self.path}\"\"'
@@ -84,7 +82,7 @@ class Profile:
         # Launches the profile editor, then applies changes
         editor = ProfileEditor(window, profile_data=self.prof_info, callback=self.load_changed_info)
         window.wait_window(editor.editor)
-        edit_saved_profile(self.name, self.prof_info, action='edit')
+        edit_saved_profile(profiles_data, self.name, self.prof_info, action='edit')
         self.name = self.prof_info['name']
         if 'path' in self.prof_info: self.path = self.prof_info['path'].rstrip("\n")
         self.prof_title.configure(text=self.name)
@@ -100,7 +98,7 @@ class Profile:
         self.prof_button.destroy()
         self.prof_delete.destroy()
         # Remove the profile from the text file
-        edit_saved_profile(self.name, action='delete')
+        edit_saved_profile(profiles_data, self.name, action='delete')
 
 
 def add_profile():
@@ -116,85 +114,6 @@ def add_profile():
     profiles[-1].draw_profile()
     profiles_data.append({'name': prof_name, 'path': prof_path, 'created': int(time())})
     save_profile(profiles_data)
-
-
-def save_profile(data):
-    # Save profile data by deleting old data, then dumping the entire list of profiles into the file
-    with open('profiles.json', 'a') as f:
-        f.truncate(0)
-        json.dump(data, f, indent=4)
-
-
-def edit_saved_profile(profile_name,  new_value=None, key=None, action='edit'):
-    # Edit a profile in the save file
-    if action == 'edit':
-        # Compare profile names to find the one to edit
-        for i, profile in enumerate(profiles_data):
-            if profile['name'] == profile_name:
-                # If a key is specified, edit that key, otherwise rewrite the entire profile
-                if key is None:
-                    profiles_data[i] = new_value
-                else:
-                    profile[key] = new_value
-                    profiles_data[i] = profile
-    elif action == 'delete':
-        # Compare profile names to find the one to delete
-        for profile in profiles_data:
-            if profile['name'] == profile_name:
-                profiles_data.remove(profile)
-    save_profile(profiles_data)
-
-
-def load_profiles():
-    # Load profiles from the save file
-    with open('profiles.json', 'r') as f:
-        data = json.load(f)
-    # This line returns an empty list if there are no profiles to prevent errors
-    return [] if data == {} else data
-
-
-def convert_legacy_profiles():
-    # Automatically converts profiles stored in the old format to the new format
-    with open('profiles.txt', 'r') as f:
-        for line in f:
-            prof_name, prof_path = line.split(';')
-            profiles_data.append({'name': prof_name, 'path': prof_path, 'created': int(time())})
-    save_profile(profiles_data)
-    os.remove('profiles.txt')
-
-
-def load_settings():
-    # Load settings from the save file
-    with open('settings.json', 'r') as f:
-        settings = json.load(f)
-    return settings
-
-
-def save_settings():
-    # Save settings to the save file
-    with open('settings.json', 'w') as f:
-        json.dump(settings, f, indent=4)
-
-
-def check_files():
-    # Check if critical files are missing, if so, download/create them
-    check = ('profiles.json', 'settings.json', 'assets', 'assets/background.png', 'assets/iconsheet.png')
-    for file in check:
-        if file.endswith('.json'):
-            if not os.path.exists(file):
-                with open(file, 'w') as f:
-                    f.write('{}')
-        elif '.' not in file:
-            if not os.path.exists(file):
-                os.mkdir(file)
-        elif file.endswith('.png'):
-            if not os.path.exists(file):
-                with open(file, 'wb') as f:
-                    try:
-                        f.write(get_url(f'https://github.com/supercam19/SMAPI-Profile-Manager/blob/main/{file}?raw=true').content)
-                    except exceptions.ConnectionError:
-                        windll.user32.MessageBoxW(None, u"Error downloading assets, check your internet connection or firewall", u"Error", MB_OK | MB_ICONERROR)
-
 
 def sort_profiles(sort=None):
     # Manages profile sorting
@@ -228,7 +147,7 @@ def sort_profiles(sort=None):
     # Save sorting preferences to settings file
     if sort is not None: settings['sort'] = sort
     settings['invert'] = invert
-    save_settings()
+    save_settings(settings)
 
 
 profiles = []
@@ -254,9 +173,9 @@ if __name__ == '__main__':
             popup = Popup("SMAPI not found!", "Select the SMAPI executable", window, False)
             window.wait_window(popup.popup)
             settings['smapi_path'] = filedialog.askopenfilename(title="Select StardewModdingAPI.exe", filetypes=[("StardewModdingAPI.exe", "*.exe")])
-        save_settings()
+        save_settings(settings)
 
-    if os.path.exists('profiles.txt'): convert_legacy_profiles()
+    if os.path.exists('profiles.txt'): convert_legacy_profiles(profiles_data)
     profiles_data = load_profiles()
     # Make sure the unmodded profile is added to the save
     if profiles_data == []: profiles_data.insert(0, {'name': 'Unmodded', 'force_smapi': False, 'special': 'unmodded', 'created': int(time())})
