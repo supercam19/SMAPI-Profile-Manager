@@ -153,7 +153,7 @@ class Popup:
     def __init__(self, title, message, root, text_box=True):
         self.popup = ctk.CTkToplevel(root)
         self.popup.title(title)
-        self.popup.geometry("300x100")
+        self.popup.geometry("300x100+%d+%d" % (root.winfo_x() + 100, root.winfo_y() + 100))
         # self.popup.resizable(False, False)
         self.popup.protocol("WM_DELETE_WINDOW", self.close_popup)
         self.popup_label = ctk.CTkLabel(self.popup, text=message)
@@ -181,6 +181,7 @@ class ProfileEditor:
         self.protected_values = ('created', 'last_launched')  # Do not allow user to modify these
         self.editor = ctk.CTkToplevel(root, bg="gray18")
         self.editor.title("Profile Editor - " + self.prof_info['name'])
+        self.editor.geometry("+%d+%d" % (root.winfo_x() + 100, root.winfo_y() + 100))
 
         # Edit profile name
         self.eName = self.editable_text('Name:')[2]  # returns the textbox object

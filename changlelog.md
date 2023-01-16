@@ -6,6 +6,9 @@
  - Added a properties dropdown to the profile editor to view properties that can't be edited (#26)
  - Added tooltips to the profile editor (#26)
 
+### Changes
+ - All popup windows now appear on top of the main window, rather than top left of screen
+
 ### Fixes
  - Fixed a bug where the program would not load if the unmodded profile was edited (#26)
  - Fixed an issue with image files not getting updated when updating the software (#29)
