@@ -154,6 +154,8 @@ VERSION = "v1.2.1"
 if __name__ == '__main__':
     check_files()
     settings = load_settings()
+    settings['version'] = VERSION
+    save_settings(settings)
     profiles_data = []
     # Initialize the TK window
     tk.set_appearance_mode("dark")
