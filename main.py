@@ -48,11 +48,8 @@ class Profile:
 
     def hide_profile(self):
         # Unpack all profile widgets
+        for widget in self.prof_frame.winfo_children(): widget.pack_forget()
         self.prof_frame.pack_forget()
-        self.prof_title.pack_forget()
-        self.prof_button.pack_forget()
-        self.prof_edit.pack_forget()
-        self.prof_delete.pack_forget()
 
     def select_profile(self):
         # Launches the game with the selected profile
