@@ -191,7 +191,9 @@ class ProfileEditor:
             # Show a path editor if this is not the unmodded profile
             self.ePathFrame, _, self.ePathEntry = self.editable_text('Path:', entry_alignement='left')
             self.browse_button = ctk.CTkButton(self.ePathFrame, text="...", width=5,
-                                     command=self.browse_path).pack(padx=(0, 10), side='right')
+                                     command=self.browse_path)
+            self.browse_button.pack(padx=(0, 10), side='right')
+            self.browse_button_tooltip = Tooltip(self.browse_button, "Browse profile path")
             self.ePathEntry.insert(0, self.prof_info['path'])
         else:
             # Show the force smapi checkbox if this is the unmodded profile
@@ -203,6 +205,7 @@ class ProfileEditor:
         self.properties_dropdown.pack(pady=(10, 0))
 
         self.apply_button = ctk.CTkButton(self.editor, text="Apply", command=self.apply_changes, width=10)
+        self.apply_tooltip = Tooltip(self.apply_button, "Apply changes")
         self.apply_button.pack(pady=10)
 
     def editable_text(self, title, entry_alignement='right'):
