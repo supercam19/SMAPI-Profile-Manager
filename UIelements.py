@@ -3,6 +3,7 @@ from tkinter import PhotoImage
 from main import VERSION
 from tkinter import filedialog
 from webbrowser import open as open_url
+from datetime import datetime
 
 
 class Window(ctk.CTk):
@@ -176,46 +177,95 @@ class ProfileEditor:
     def __init__(self, root, profile_data, callback):
         self.prof_info = profile_data
         self.callback = callback
+        self.dropdown_active = False
+        self.properties_frame = None
         self.protected_values = ('created', 'last_launched')  # Do not allow user to modify these
         self.editor = ctk.CTkToplevel(root, bg="gray18")
         self.editor.title("Profile Editor - " + self.prof_info['name'])
 
         # Edit profile name
-        self.name_frame = Frame(self.editor, width=300, height=100)
-        self.name_frame.pack()
-        self.name_label = ctk.CTkLabel(self.name_frame, text="Name:", width=30).pack(side="left", padx=10)
-        self.name_entry = ctk.CTkEntry(self.name_frame, width=240)
-        self.name_entry.insert(0, self.prof_info['name'])
-        self.name_entry.pack(pady=10, side='right', padx=(0, 10))
+        self.eName = self.editable_text('Name:')[2]  # returns the textbox object
+        self.eName.insert(0, self.prof_info['name'])
 
-        # Edit profile path if possible
         if self.prof_info['special'] != 'unmodded':
-            self.path_frame = Frame(self.editor, width=300, height=100)
-            self.path_frame.pack()
-            self.path_label = ctk.CTkLabel(self.path_frame, text="Path:", width=30).pack(side="left", padx=10)
-            self.path_entry = ctk.CTkEntry(self.path_frame, width=210)
-            self.path_entry.insert(0, self.prof_info['path'])
-            self.path_entry.pack(pady=10, side='left')
-            self.path_button = ctk.CTkButton(self.path_frame, text="...", width=5,
-                                     command=self.browse_path).pack(padx=(5, 10), side='right')
-        # Force SMAPI checkbox if it is the unmodded profile
-        elif self.prof_info['special'] == 'unmodded':
-            self.force_frame = Frame(self.editor, width=300, height=100)
-            self.force_frame.pack()
-            self.force_label = ctk.CTkLabel(self.force_frame, text="Force SMAPI:", width=30).pack(side="left", padx=10)
-            self.force_check = ctk.CTkCheckBox(self.force_frame, text='')
-            self.force_check.pack(padx=10, side='right')
-            if self.prof_info['force_smapi']: self.force_check.select()
+            # Show a path editor if this is not the unmodded profile
+            self.ePathFrame, _, self.ePathEntry = self.editable_text('Path:', entry_alignement='left')
+            self.browse_button = ctk.CTkButton(self.ePathFrame, text="...", width=5,
+                                     command=self.browse_path)
+            self.browse_button.pack(padx=(0, 10), side='right')
+            self.browse_button_tooltip = Tooltip(self.browse_button, "Browse profile path")
+            self.ePathEntry.insert(0, self.prof_info['path'])
+        else:
+            # Show the force smapi checkbox if this is the unmodded profile
+            self.eForceSMAPI = self.editable_true_false('Force SMAPI:')[2]
+            self.eForceSMAPI.select() if self.prof_info['force_smapi'] else self.eForceSMAPI.deselect()
 
-        self.apply_button = ctk.CTkButton(self.editor, text="Apply", command=self.apply_changes, width=10).pack(pady=10)
+        self.properties_dropdown = ctk.CTkButton(self.editor, text=('\U000023AF'*4) + ' Properties v ' + ('\U000023AF'*25), width=10,
+                                       command=self.dropdown_manager, fg_color='gray18', hover_color='gray22')
+        self.properties_dropdown.pack(pady=(10, 0))
+
+        self.apply_button = ctk.CTkButton(self.editor, text="Apply", command=self.apply_changes, width=10)
+        self.apply_tooltip = Tooltip(self.apply_button, "Apply changes")
+        self.apply_button.pack(pady=10)
+
+    def editable_text(self, title, entry_alignement='right'):
+        # Creates a frame with a label and a textbox
+        frame = Frame(self.editor, width=300, height=40)
+        frame.pack_propagate(False)
+        frame.pack()
+        label = ctk.CTkLabel(frame, text=title, width=30)
+        label.pack(side="left", padx=10)
+        entry = ctk.CTkEntry(frame, width=210)
+        entry.pack(side=entry_alignement, padx=(0, 10), pady=8)
+        return frame, label, entry
+
+    def editable_true_false(self, title):
+        # Creates a frame with a label and a checkbox
+        frame = Frame(self.editor, width=300, height=40)
+        frame.pack_propagate(False)
+        frame.pack()
+        label = ctk.CTkLabel(frame, text=title, width=50)
+        label.pack(side="left", padx=10)
+        check = ctk.CTkCheckBox(frame, text='')
+        check.pack(padx=10, side='right')
+        return frame, label, check
+
+    def dropdown_manager(self):
+        if self.dropdown_active:
+            self.dropdown_active = False
+            self.properties_dropdown.configure(text=('\U000023AF'*4) + ' Properties v ' + ('\U000023AF'*25))
+            self.properties_frame.destroy()
+        else:
+            self.dropdown_active = True
+            self.apply_button.pack_forget()
+            self.properties_dropdown.configure(text=('\U000023AF'*4) + ' Properties ^ ' + ('\U000023AF'*25))
+            self.properties_frame = Frame(self.editor, bg="gray18", width=240, height=40*len(self.protected_values))
+            self.properties_frame.pack_propagate(False)
+            self.properties_frame.pack(pady=10)
+            self.apply_button.pack(pady=10)
+            i = 0
+            for key, value in self.prof_info.items():
+                if key in self.protected_values:
+                    i += 1
+                    if key == 'created' or key == 'last_launched':
+                        value = datetime.fromtimestamp(value).strftime('%Y-%m-%d %H:%M:%S')
+                    colour = 'gray45' if i % 2 == 0 else 'gray30'
+                    key = key.replace('_', ' ').title()
+                    subframe = Frame(self.properties_frame, width=300, height=40, fg_color=colour, bg_color=colour)
+                    subframe.pack_propagate(False)
+                    subframe.pack()
+                    key_label = ctk.CTkLabel(subframe, text=key, width=30, fg_color=colour)
+                    key_label.pack(side="left", padx=2)
+                    value_label = ctk.CTkLabel(subframe, text=value, width=210, fg_color=colour, anchor='e')
+                    value_label.pack(side="right", padx=2)
 
     def apply_changes(self):
         # Apply changes to the profile by calling the callback function in main.py
         if self.prof_info['special'] == None:
-            self.callback({'name': self.name_entry.get(), 'path': self.path_entry.get(), 'created': self.prof_info['created'],
+            self.callback({'name': self.eName.get(), 'path': self.ePathEntry.get(), 'created': self.prof_info['created'],
                            'last_launched': self.prof_info['last_launched'], 'special': None})
         elif self.prof_info['special'] == 'unmodded':
-            self.callback({'name': self.name_entry.get(), 'special': 'unmodded', 'force_smapi': self.force_check.get(),
+            self.callback({'name': self.eName.get(), 'special': 'unmodded', 'force_smapi': self.eForceSMAPI.get(), 'created': self.prof_info['created'],
                            'last_launched': self.prof_info['last_launched']})
         self.editor.destroy()
 
@@ -225,8 +275,8 @@ class ProfileEditor:
         # Put the profile editor back on top of other windows once the explorer closes
         self.editor.attributes('-topmost', True)
         # Put the new folder path in the text box
-        self.path_entry.delete(0, 'end')
-        self.path_entry.insert(0, new_path)
+        self.ePathEntry.delete(0, 'end')
+        self.ePathEntry.insert(0, new_path)
         # Stop the profile editor from sticking to above other windows (still on top, just not stuck)
         self.editor.attributes('-topmost', False)
 

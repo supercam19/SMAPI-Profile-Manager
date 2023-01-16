@@ -1,5 +1,15 @@
 # SMAPI Profile Manager Changelog
 
+## Update [v1.2.2] (???)
+
+### Additions
+ - Added a properties dropdown to the profile editor to view properties that can't be edited (#26)
+ - Added tooltips to the profile editor (#26)
+
+### Fixes
+ - Fixed a bug where the program would not load if the unmodded profile was edited (#26)
+ - Fixed some elements in the profile editor being aligned to the center rather than left and right (#26)
+
 ## Update [v1.2.1] (Jan 9, 2022)
 
 ### Changes 
