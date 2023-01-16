@@ -154,6 +154,11 @@ VERSION = "v1.2.1"
 if __name__ == '__main__':
     check_files()
     settings = load_settings()
+
+    if 'version' in settings:
+        if settings['version'] != VERSION:
+            update_files()
+
     settings['version'] = VERSION
     save_settings(settings)
     profiles_data = []
