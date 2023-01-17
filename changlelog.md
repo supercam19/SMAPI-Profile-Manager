@@ -1,6 +1,6 @@
 # SMAPI Profile Manager Changelog
 
-## Profile Editor Improvements [v1.2.2] (???)
+## Profile Editor Improvements [v1.2.2] (Jan 16, 2022)
 
 ### Additions
  - Added a properties dropdown to the profile editor to view properties that can't be edited (#26)
