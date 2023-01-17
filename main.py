@@ -189,6 +189,7 @@ if __name__ == '__main__':
     sort_profiles(settings['sort']) if 'sort' in settings else sort_profiles('Name')
     for profile in profiles:
         profile.draw_profile()
+    save_settings(settings)
 
     window.mainloop()
 
