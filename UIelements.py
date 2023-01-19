@@ -154,6 +154,7 @@ class Popup:
         self.popup = ctk.CTkToplevel(root)
         self.popup.title(title)
         self.popup.geometry("300x100+%d+%d" % (root.winfo_x() + 100, root.winfo_y() + 100))
+        self.popup.focus()
         # self.popup.resizable(False, False)
         self.popup.protocol("WM_DELETE_WINDOW", self.close_popup)
         self.popup_label = ctk.CTkLabel(self.popup, text=message)
@@ -161,7 +162,9 @@ class Popup:
         self.text_box = text_box
         if text_box:
             self.popup_text = ctk.CTkEntry(self.popup, width=200)
+            self.popup_text.after(100, self.popup_text.focus)
             self.popup_text.pack(pady=10)
+            print("focus set")
         self.popup_button = ctk.CTkButton(self.popup, text="OK", command=self.close_popup, width=10)
         self.popup_button.pack()
 

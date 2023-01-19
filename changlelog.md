@@ -1,5 +1,10 @@
 # SMAPI Profile Manager Changelog
 
+## QOL Changes [v1.2.3] (???)
+
+### Changes
+ - The textbox to input the name when creating a profile is now selected by default
+
 ## Profile Editor Improvements [v1.2.2] (Jan 16, 2022)
 A slightly larger update than usual, this update brings a few new features to the profile editor, as well as a few bug fixes.
 
