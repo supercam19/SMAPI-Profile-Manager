@@ -1,9 +1,10 @@
 # SMAPI Profile Manager Changelog
 
-## QOL Changes [v1.2.3] (???)
+## QOL Update [v1.2.3] (???)
 
 ### Changes
  - The textbox to input the name when creating a profile is now selected by default
+ - The profile name input popup and profile editor can now be applied by pressing enter
 
 ### Fixes
  - Closing the window to name a new profile no longer creates a new profile
