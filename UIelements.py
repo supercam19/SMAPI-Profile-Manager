@@ -70,6 +70,7 @@ class Window(ctk.CTk):
         self.canvas = ctk.CTkCanvas(self, bd=0, width=0, height=0)
         self.canvas.configure(height=240)
         self.profiles_list = Frame(self, width=500)
+        self.profiles_list.bind_all("<MouseWheel>", self._on_mousewheel)
         self.profiles_list.lower()
         self.scrollbar = ctk.CTkScrollbar(self.profiles_list, command=self.canvas.yview)
         self.canvas.configure(yscrollcommand=self.scrollbar.set)
@@ -81,6 +82,11 @@ class Window(ctk.CTk):
         self.scrollbar.pack(side="right", fill="y")
         self.profiles_list.bind("<Configure>", lambda e: self.canvas.configure(scrollregion=self.canvas.bbox("all")))
         self.canvas.configure(scrollregion=self.canvas.bbox("all"))
+
+    def _on_mousewheel(self, event):
+        mouse_y = self.winfo_pointery() - self.winfo_rooty()
+        if mouse_y > 360:
+            self.canvas.yview_scroll(-1 * int((event.delta / 120)), "units")
 
 
 class Frame(ctk.CTkFrame):

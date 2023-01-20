@@ -3,6 +3,7 @@
 ## QOL Update [v1.2.3] (???)
 
 ### Changes
+ - The profiles list can now be scrolled with the mouse wheel while hovering the profiles, instead of just the scrollbar
  - The textbox to input the name when creating a profile is now selected by default
  - The profile name input popup and profile editor can now be applied by pressing enter
 
