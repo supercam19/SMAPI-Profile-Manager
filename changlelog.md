@@ -7,6 +7,7 @@
  - The profile name input popup and profile editor can now be applied by pressing enter
 
 ### Fixes
+ - Scrolling down the profiles list will no longer cover the top of the window
  - Closing the window to name a new profile no longer creates a new profile
  - Closing the profile path explorer no longer creates a new profile with no mods path
 

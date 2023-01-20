@@ -67,22 +67,21 @@ class Window(ctk.CTk):
             self.invert_sort_checkbox.select() if settings['invert'] else self.invert_sort_checkbox.deselect()
 
         # Profiles list (bottom)
-        self.canvas = ctk.CTkCanvas(self, bd=0)
+        self.canvas = ctk.CTkCanvas(self, bd=0, width=0, height=0)
         self.canvas.configure(height=240)
-        self.canvas.pack_propagate(False)
-        self.profiles_list = Frame(self, width=500, height=240)
-        self.profiles_list.propagate(False)
+        self.profiles_list = Frame(self, width=500)
+        self.profiles_list.lower()
         self.scrollbar = ctk.CTkScrollbar(self.profiles_list, command=self.canvas.yview)
         self.canvas.configure(yscrollcommand=self.scrollbar.set)
         self.canvas.pack(side="left")
-        id = self.canvas.create_window((0, 200), window=self.profiles_list, anchor='nw')
+        self.canvas.create_window((0, 200), window=self.profiles_list, anchor='nw')
         self.canvas.config(bd=0)
-        self.canvas.config(bg="gray18")
+        self.canvas.config(bg="red")
         self.canvas.config(highlightthickness=0)
         self.canvas.bind('<Configure>', lambda e: self.canvas.configure(scrollregion=self.canvas.bbox("all")))
         self.scrollbar.pack(side="right", fill="y")
         self.profiles_list.bind("<Configure>", lambda e: self.canvas.configure(scrollregion=self.canvas.bbox("all")))
-        self.canvas.configure(scrollregion=self.canvas.bbox(id))
+        self.canvas.configure(scrollregion=self.canvas.bbox("all"))
 
 
 class Frame(ctk.CTkFrame):
