@@ -7,6 +7,7 @@
 
 ### Fixes
  - Closing the window to name a new profile no longer creates a new profile
+ - Closing the profile path explorer no longer creates a new profile with no mods path
 
 ## Profile Editor Improvements [v1.2.2] (Jan 16, 2022)
 A slightly larger update than usual, this update brings a few new features to the profile editor, as well as a few bug fixes.

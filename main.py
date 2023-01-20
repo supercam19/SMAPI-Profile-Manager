@@ -101,6 +101,7 @@ class Profile:
 def add_profile():
     # Add a new profile (top right button)
     prof_path = filedialog.askdirectory()
+    if prof_path == '': return
     popup = Popup("Name your profile", "Enter a name for your profile", window, callback=return_popup_info)
     window.wait_window(popup.popup)
     # Gets the information from the popup (profile name)
