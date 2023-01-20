@@ -101,22 +101,24 @@ class Profile:
 def add_profile():
     # Add a new profile (top right button)
     prof_path = filedialog.askdirectory()
-    popup = Popup("Name your profile", "Enter a name for your profile", window, callback=popup_info)
+    popup = Popup("Name your profile", "Enter a name for your profile", window, callback=return_popup_info)
     window.wait_window(popup.popup)
     # Gets the information from the popup (profile name)
     prof_name = popup_info['name']
-    # Restrict profile name to 100 characters
-    prof_name = prof_name[:100] if len(prof_name) > 100 else prof_name
-    profiles.append(Profile({'name': prof_name, 'path': prof_path, 'created': int(time())}))
-    profiles[-1].draw_profile()
-    profiles_data.append({'name': prof_name, 'path': prof_path, 'created': int(time())})
-    save_profile(profiles_data)
+    if prof_name != None:
+        # Restrict profile name to 100 characters
+        prof_name = prof_name[:100] if len(prof_name) > 100 else prof_name
+        profiles.append(Profile({'name': prof_name, 'path': prof_path, 'created': int(time())}))
+        profiles[-1].draw_profile()
+        profiles_data.append({'name': prof_name, 'path': prof_path, 'created': int(time())})
+        save_profile(profiles_data)
 
 
-def popup_info(info):
+def return_popup_info(info):
     # Used to pass any changed info back into the main file from UIelements
     global popup_info
     popup_info = info
+
 
 def sort_profiles(sort=None):
     # Manages profile sorting
@@ -188,8 +190,10 @@ if __name__ == '__main__':
     if os.path.exists('profiles.txt'): profiles_data = convert_legacy_profiles(profiles_data)
     profiles_data = load_profiles()
     # Make sure the unmodded profile is added to the save
-    if profiles_data == []: profiles_data.insert(0, {'name': 'Unmodded', 'force_smapi': False, 'special': 'unmodded', 'created': int(time())})
-    elif 'force_smapi' not in profiles_data[0]: profiles_data.insert(0, {'name': 'Unmodded', 'force_smapi': False, 'special': 'unmodded', 'created': int(time())})
+    if profiles_data == []:
+        profiles_data.insert(0, {'name': 'Unmodded', 'force_smapi': False, 'special': 'unmodded', 'created': int(time())})
+    elif 'force_smapi' not in profiles_data[0]:
+        profiles_data.insert(0, {'name': 'Unmodded', 'force_smapi': False, 'special': 'unmodded', 'created': int(time())})
     for profile in profiles_data:
         profiles.append(Profile(profile))
     sort_profiles(settings['sort']) if 'sort' in settings else sort_profiles('Name')
@@ -198,4 +202,3 @@ if __name__ == '__main__':
     save_settings(settings)
 
     window.mainloop()
-

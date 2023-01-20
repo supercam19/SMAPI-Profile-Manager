@@ -165,7 +165,6 @@ class Popup:
             self.popup_text = ctk.CTkEntry(self.popup, width=200)
             self.popup_text.after(100, self.popup_text.focus)
             self.popup_text.pack(pady=10)
-            print("focus set")
         self.popup_button = ctk.CTkButton(self.popup, text="OK", command=self.close_popup, width=10)
         self.popup_button.pack()
 
