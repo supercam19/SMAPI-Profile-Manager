@@ -201,5 +201,7 @@ if __name__ == '__main__':
     for profile in profiles:
         profile.draw_profile()
     save_settings(settings)
+    for i in range(15):
+        Profile({'name': 'Test Profile ' + str(i), 'path': 'C:/Users/Username/AppData/Roaming/StardewValley/Saves/Test Profile ' + str(i), 'created': int(time())}).draw_profile()
 
     window.mainloop()

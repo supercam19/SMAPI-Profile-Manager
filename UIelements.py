@@ -68,18 +68,21 @@ class Window(ctk.CTk):
 
         # Profiles list (bottom)
         self.canvas = ctk.CTkCanvas(self, bd=0)
-        self.profiles_list = Frame(self, width=500, height=320)
+        self.canvas.configure(height=240)
+        self.canvas.pack_propagate(False)
+        self.profiles_list = Frame(self, width=500, height=240)
+        self.profiles_list.propagate(False)
         self.scrollbar = ctk.CTkScrollbar(self.profiles_list, command=self.canvas.yview)
         self.canvas.configure(yscrollcommand=self.scrollbar.set)
         self.canvas.pack(side="left")
-        self.canvas.create_window((0, 200), window=self.profiles_list, anchor='nw')
+        id = self.canvas.create_window((0, 200), window=self.profiles_list, anchor='nw')
         self.canvas.config(bd=0)
         self.canvas.config(bg="gray18")
         self.canvas.config(highlightthickness=0)
         self.canvas.bind('<Configure>', lambda e: self.canvas.configure(scrollregion=self.canvas.bbox("all")))
         self.scrollbar.pack(side="right", fill="y")
         self.profiles_list.bind("<Configure>", lambda e: self.canvas.configure(scrollregion=self.canvas.bbox("all")))
-        self.canvas.configure(scrollregion=self.canvas.bbox("all"))
+        self.canvas.configure(scrollregion=self.canvas.bbox(id))
 
 
 class Frame(ctk.CTkFrame):
@@ -168,7 +171,9 @@ class Popup:
         self.popup_button = ctk.CTkButton(self.popup, text="OK", command=self.close_popup, width=10)
         self.popup_button.pack()
 
-    def close_popup(self):
+        self.popup.bind("<Return>", self.close_popup)
+
+    def close_popup(self, event=None):
         # Save text box value to the popup_info object
         if self.text_box: self.callback({"name": self.popup_text.get()})
         self.popup.destroy()
@@ -215,6 +220,8 @@ class ProfileEditor:
         self.apply_button = ctk.CTkButton(self.editor, text="Apply", command=self.apply_changes, width=10)
         self.apply_tooltip = Tooltip(self.apply_button, "Apply changes")
         self.apply_button.pack(pady=10)
+
+        self.editor.bind("<Return>", self.apply_changes)
 
     def editable_text(self, title, entry_alignement='right'):
         # Creates a frame with a label and a textbox
@@ -267,7 +274,7 @@ class ProfileEditor:
                     value_label = ctk.CTkLabel(subframe, text=value, width=210, fg_color=colour, anchor='e')
                     value_label.pack(side="right", padx=2)
 
-    def apply_changes(self):
+    def apply_changes(self, event=None):
         # Apply changes to the profile by calling the callback function in main.py
         if self.prof_info['special'] == None:
             self.callback({'name': self.eName.get(), 'path': self.ePathEntry.get(), 'created': self.prof_info['created'],
