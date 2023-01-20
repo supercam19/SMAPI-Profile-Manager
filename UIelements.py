@@ -342,19 +342,6 @@ class Tooltip:
         if self.tw: self.tw.withdraw()
 
 
-class PopupInfo:
-    # Used to access the profile name after entered into the popup window
-    def __init__(self):
-        self.info = 'Error'
-
-    def __str__(self):
-        return self.info
-
-    def change(self, info, format=str):
-        assert isinstance(info, format)
-        self.info = info
-
-
 class IconSheet:
     # All icons imported from the assets/iconsheet.png file
     def __init__(self, path):
@@ -371,7 +358,3 @@ class IconSheet:
         icon = PhotoImage()
         icon.tk.call(icon, 'copy', self.sheet, '-from', x, y, x + width, y + height, '-to', 0, 0)
         return icon
-
-
-# Used to store the profile name after entered in the popup window
-popup_info = PopupInfo()
