@@ -101,16 +101,22 @@ class Profile:
 def add_profile():
     # Add a new profile (top right button)
     prof_path = filedialog.askdirectory()
-    popup = Popup("Name your profile", "Enter a name for your profile", window)
+    popup = Popup("Name your profile", "Enter a name for your profile", window, callback=popup_info)
     window.wait_window(popup.popup)
     # Gets the information from the popup (profile name)
-    prof_name = str(popup_info)
+    prof_name = popup_info['name']
     # Restrict profile name to 100 characters
     prof_name = prof_name[:100] if len(prof_name) > 100 else prof_name
     profiles.append(Profile({'name': prof_name, 'path': prof_path, 'created': int(time())}))
     profiles[-1].draw_profile()
     profiles_data.append({'name': prof_name, 'path': prof_path, 'created': int(time())})
     save_profile(profiles_data)
+
+
+def popup_info(info):
+    # Used to pass any changed info back into the main file from UIelements
+    global popup_info
+    popup_info = info
 
 def sort_profiles(sort=None):
     # Manages profile sorting

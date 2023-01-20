@@ -150,16 +150,17 @@ class Button(ctk.CTkButton):
 
 class Popup:
     # Popup window, can have textbox, or just a message
-    def __init__(self, title, message, root, text_box=True):
+    def __init__(self, title, message, root, text_box=True, callback=None):
         self.popup = ctk.CTkToplevel(root)
         self.popup.title(title)
         self.popup.geometry("300x100+%d+%d" % (root.winfo_x() + 100, root.winfo_y() + 100))
         self.popup.focus()
         # self.popup.resizable(False, False)
-        self.popup.protocol("WM_DELETE_WINDOW", self.close_popup)
+        self.popup.protocol("WM_DELETE_WINDOW", self.destruct)
         self.popup_label = ctk.CTkLabel(self.popup, text=message)
         self.popup_label.pack()
         self.text_box = text_box
+        self.callback = callback
         if text_box:
             self.popup_text = ctk.CTkEntry(self.popup, width=200)
             self.popup_text.after(100, self.popup_text.focus)
@@ -170,7 +171,12 @@ class Popup:
 
     def close_popup(self):
         # Save text box value to the popup_info object
-        if self.text_box: popup_info.change(self.popup_text.get())
+        if self.text_box: self.callback({"name": self.popup_text.get()})
+        self.popup.destroy()
+
+    def destruct(self):
+        # If the popup is closed, set the popup_info object to None
+        self.callback({"name": None})
         self.popup.destroy()
 
 
