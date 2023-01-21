@@ -267,7 +267,10 @@ class ProfileEditor:
                 if key in self.protected_values:
                     i += 1
                     if key == 'created' or key == 'last_launched':
-                        value = datetime.fromtimestamp(value).strftime('%Y-%m-%d %H:%M:%S')
+                        if value == -1:
+                            value = 'Never'
+                        else:
+                            value = datetime.fromtimestamp(value).strftime('%Y-%m-%d %H:%M:%S')
                     colour = 'gray45' if i % 2 == 0 else 'gray30'
                     key = key.replace('_', ' ').title()
                     subframe = Frame(self.properties_frame, width=300, height=40, fg_color=colour, bg_color=colour)

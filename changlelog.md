@@ -1,6 +1,7 @@
 # SMAPI Profile Manager Changelog
 
 ## QOL Update [v1.2.3] (???)
+An update with a lot of small quality of life changes and fixes. The goal is to make the program work as you'd think it would.
 
 ### Changes
  - The profiles list can now be scrolled with the mouse wheel while hovering the profiles, instead of just the scrollbar
@@ -9,6 +10,7 @@
 
 ### Fixes
  - Scrolling down the profiles list will no longer cover the top of the window
+ - The Last Played property of a profile now says "Never" instead of being blank if the profile has never been played
  - Closing the window to name a new profile no longer creates a new profile
  - Closing the profile path explorer no longer creates a new profile with no mods path
 

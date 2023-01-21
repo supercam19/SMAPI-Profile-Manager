@@ -201,5 +201,5 @@ if __name__ == '__main__':
     for profile in profiles:
         profile.draw_profile()
     save_settings(settings)
-    
+
     window.mainloop()
