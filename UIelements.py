@@ -337,6 +337,7 @@ class Tooltip:
         x += self.widget.winfo_pointerx() + 1
         y += self.widget.winfo_pointery() + 1
         self.tw = ctk.CTkToplevel(self.widget)
+        self.tw.wm_attributes("-toolwindow", True)
         # Leaves only the label and removes the topbar of the window
         self.tw.wm_overrideredirect(True)
         self.tw.wm_geometry(f'+{x}+{y}')

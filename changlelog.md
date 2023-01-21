@@ -11,6 +11,7 @@ An update with a lot of small quality of life changes and fixes. The goal is to 
 ### Fixes
  - Scrolling down the profiles list will no longer cover the top of the window
  - The Last Played property of a profile now says "Never" instead of being blank if the profile has never been played
+ - Tooltips should no longer show up in the taskbar as a sub-window
  - Closing the window to name a new profile no longer creates a new profile
  - Closing the profile path explorer no longer creates a new profile with no mods path
 
