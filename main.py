@@ -27,8 +27,8 @@ class Profile:
         self.right_frame.pack_propagate(False)
         self.prof_title = tk.CTkLabel(self.left_frame, text=self.name, fg_color="gray21", text_font=("Arial", 12), anchor='w')
         self.prof_button = Button(self.right_frame, text="\U000025B6", fg_color="gray21", text_font=("Arial", 24), text_color='white', hover_color='gray21', width=32, command=self.select_profile)
-        self.prof_edit = Button(self.right_frame, image=window.icons.gear, fg_color="gray21", height=40, type='button', text_color='white', hover_image=window.icons.gear_dark, width=32, command=self.edit_profile)
-        self.prof_delete = Button(self.right_frame, width=32, image=window.icons.trash_closed, height=40, type='button', hover_image=window.icons.trash_opened, command=self.delete_profile)
+        self.prof_edit = Button(self.right_frame, width=32, image=window.icons.gear, fg_color="gray21", height=40, type='button', text_color='white', hover_image=window.icons.gear_dark, command=self.edit_profile)
+        self.prof_delete = Button(self.right_frame, width=32, image=window.icons.trash_closed, fg_color='gray21', height=40, type='button', hover_image=window.icons.trash_opened, command=self.delete_profile)
 
         # Define profile tooltips
         self.launch_tooltip = Tooltip(self.prof_button, "Launch the game with this profile")
@@ -41,8 +41,8 @@ class Profile:
         self.prof_frame.pack(pady=2)
         self.left_frame.pack(side='left', padx=(10, 0))
         self.prof_title.pack(side=tk.LEFT, padx=(20, 10))
-        self.prof_button.pack(side=tk.RIGHT, padx=(1, 2))
-        self.prof_edit.pack(side=tk.RIGHT, padx=(1, 0))
+        self.prof_button.pack(side=tk.RIGHT, padx=(8, 4))
+        self.prof_edit.pack(side=tk.RIGHT, padx=(8, 0))
         if self.special != 'unmodded': self.prof_delete.pack(side=tk.RIGHT)
         self.right_frame.pack(side='right')
 
