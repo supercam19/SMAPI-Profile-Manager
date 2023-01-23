@@ -5,6 +5,7 @@ An update with a lot of small quality of life changes and fixes. The goal is to 
 
 ### Changes
  - The profiles list can now be scrolled with the mouse wheel while hovering the profiles, instead of just the scrollbar
+ - Tooltips can now be hovered over without disappearing
  - The textbox to input the name when creating a profile is now selected by default
  - The profile name input popup and profile editor can now be applied by pressing enter
 

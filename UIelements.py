@@ -289,14 +289,17 @@ class Tooltip:
         self.widget = widget
         self.text = text
         self.widget.bind("<Enter>", self.schedule, add="+")
-        self.widget.bind("<Leave>", self.leave, add="+")
+        self.widget.bind("<Leave>", lambda e: self.widget.after(5, self.leave), add="+")
         self.widget.bind("<ButtonPress>", self.leave, add="+")
         self.id = None
         self.tw = None
+        self.over_tooltip = False
 
     def leave(self, event=None):
-        self.unschedule()
-        self.hide_tip()
+        if not self.over_tooltip:
+            self.unschedule()
+            print('hiding')
+            self.hide_tip()
 
     def schedule(self, event=None):
         self.id = self.widget.after(self.wait_time, self.show_tip)
@@ -307,6 +310,15 @@ class Tooltip:
         self.id = None
         if id:
             self.widget.after_cancel(id)
+
+    def tt_enter(self, event=None):
+        if not self.over_tooltip:
+            self.over_tooltip = True
+
+    def tt_leave(self, event=None):
+        if self.over_tooltip:
+            self.over_tooltip = False
+            self.leave()
 
     def show_tip(self, event=None):
         # Get the position the tooltip needs to appear at
@@ -327,7 +339,9 @@ class Tooltip:
         self.tw.wm_attributes('-transparentcolor', '#555555')
         self.tw.configure(bg="#555555")
         label = ctk.CTkLabel(self.tw, text=self.text, corner_radius=10, bg_color='#555555', fg_color='#545454', width=1)
-        label.pack(padx=1, pady=1)
+        label.pack()
+        label.bind("<Enter>", self.tt_enter, add="+")
+        label.bind("<Leave>", self.tt_leave, add="+")
         self.tw.geometry = label.winfo_width() + 1, label.winfo_height() + 1
 
     def hide_tip(self):
