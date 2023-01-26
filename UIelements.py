@@ -298,7 +298,6 @@ class Tooltip:
     def leave(self, event=None):
         if not self.over_tooltip:
             self.unschedule()
-            print('hiding')
             self.hide_tip()
 
     def schedule(self, event=None):
