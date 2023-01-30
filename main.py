@@ -168,7 +168,12 @@ def check_for_updates():
         #  Give up if the request fails
         return
     if latest_release != VERSION:
-        window.update_bar(latest_release)
+        window.update_bar(latest_release, dont_show_update_bar_again)
+
+
+def dont_show_update_bar_again():
+    settings['show_update_bar'] = False
+    save_settings(settings)
 
 
 profiles = []
@@ -216,6 +221,6 @@ if __name__ == '__main__':
     for profile in profiles:
         profile.draw_profile()
     save_settings(settings)
-    check_for_updates()
+    if settings['show_update_bar']: check_for_updates()
 
     window.mainloop()
