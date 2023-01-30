@@ -88,6 +88,8 @@ class Window(ctk.CTk):
         if mouse_y > 360:
             self.canvas.yview_scroll(-1 * int((event.delta / 120)), "units")
 
+    def update_bar(self, new_ver):
+        pass
 
 class Frame(ctk.CTkFrame):
     # Frame object (just a regular CTkFrame)
