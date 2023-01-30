@@ -89,7 +89,15 @@ class Window(ctk.CTk):
             self.canvas.yview_scroll(-1 * int((event.delta / 120)), "units")
 
     def update_bar(self, new_ver):
-        pass
+        msg_frame = Frame(self, fg_color='blue', bg_color='blue')
+        msg_frame.pack(side='bottom', fill='x')
+        msg = ctk.CTkLabel(msg_frame, text=f'New version available: {new_ver}', text_font=('Arial', 8))
+        msg.pack(side='left', padx=2, pady=1)
+        download_button = ctk.CTkButton(msg_frame, text='| Download', command=lambda: open_url('https://github.com/supercam19/SMAPI-Profile-Manager/releases/latest'),
+                                        fg_color='blue', text_font=('Arial', 8), hover_color='#0000DD', width=35)
+        download_button.pack(side='left', pady=1)
+        download_button.bind('<Enter>', lambda e: download_button.configure(text_font=('Arial', 8, 'underline')))
+        download_button.bind('<Leave>', lambda e: download_button.configure(text_font=('Arial', 8)))
 
 class Frame(ctk.CTkFrame):
     # Frame object (just a regular CTkFrame)

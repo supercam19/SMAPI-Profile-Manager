@@ -168,12 +168,12 @@ def check_for_updates():
         #  Give up if the request fails
         return
     if latest_release != VERSION:
-        print(f'New version available: {latest_release}')
+        window.update_bar(latest_release)
 
 
 profiles = []
 name_input = ''
-VERSION = "v1.2.3"
+VERSION = "v1.2.2"
 
 if __name__ == '__main__':
     check_files()
