@@ -108,6 +108,9 @@ class Window(ctk.CTk):
         dont_show_button.bind('<Enter>', lambda e: dont_show_button.configure(text_font=('Arial', 8, 'underline')))
         dont_show_button.bind('<Leave>', lambda e: dont_show_button.configure(text_font=('Arial', 8)))
 
+        hide_button = ctk.CTkButton(self.msg_frame, text='x', command=self.hide_update_bar, fg_color='blue', text_font=('Arial', 12), hover_color='#0000DD', width=1)
+        hide_button.pack(side='right', pady=1)
+
     def dont_show_update_bar_again(self, callback):
         self.hide_update_bar()
         callback()
