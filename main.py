@@ -178,7 +178,7 @@ def dont_show_update_bar_again():
 
 profiles = []
 name_input = ''
-VERSION = "v1.2.2"
+VERSION = "v1.2.3"
 
 if __name__ == '__main__':
     check_files()
