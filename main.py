@@ -1,10 +1,12 @@
 from tkinter import filedialog
-import customtkinter as tk
+import customtkinter as ctk
 from UIelements import *
 from FileManager import *
 from ctypes import windll
 from subprocess import call
 from time import time
+import requests
+from webbrowser import open as open_url
 
 
 class Profile:
@@ -19,13 +21,13 @@ class Profile:
         self.created = info['created']
         self.last_launched = info['last_launched']
         # Define profile widgets
-        self.prof_frame = tk.CTkFrame(window.profiles_list, width=480, height=32)
+        self.prof_frame = ctk.CTkFrame(window.profiles_list, width=480, height=32)
         self.prof_frame.pack_propagate(False)
-        self.left_frame = tk.CTkFrame(self.prof_frame, width=320, height=32, fg_color='gray21', bg_color='gray21')
+        self.left_frame = ctk.CTkFrame(self.prof_frame, width=320, height=32, fg_color='gray21', bg_color='gray21')
         self.left_frame.pack_propagate(False)
-        self.right_frame = tk.CTkFrame(self.prof_frame, width=140, height=32, fg_color='gray21', bg_color='gray21')
+        self.right_frame = ctk.CTkFrame(self.prof_frame, width=140, height=32, fg_color='gray21', bg_color='gray21')
         self.right_frame.pack_propagate(False)
-        self.prof_title = tk.CTkLabel(self.left_frame, text=self.name, fg_color="gray21", text_font=("Arial", 12), anchor='w')
+        self.prof_title = ctk.CTkLabel(self.left_frame, text=self.name, fg_color="gray21", text_font=("Arial", 12), anchor='w')
         self.prof_button = Button(self.right_frame, text="\U000025B6", fg_color="gray21", text_font=("Arial", 24), text_color='white', hover_color='gray21', width=32, command=self.select_profile)
         self.prof_edit = Button(self.right_frame, width=32, image=window.icons.gear, fg_color="gray21", height=40, type='button', text_color='white', hover_image=window.icons.gear_dark, command=self.edit_profile)
         self.prof_delete = Button(self.right_frame, width=32, image=window.icons.trash_closed, fg_color='gray21', height=40, type='button', hover_image=window.icons.trash_opened, command=self.delete_profile)
@@ -40,10 +42,10 @@ class Profile:
         # Pack all profile widgets
         self.prof_frame.pack(pady=2)
         self.left_frame.pack(side='left', padx=(10, 0))
-        self.prof_title.pack(side=tk.LEFT, padx=(20, 10))
-        self.prof_button.pack(side=tk.RIGHT, padx=(8, 4))
-        self.prof_edit.pack(side=tk.RIGHT, padx=(8, 0))
-        if self.special != 'unmodded': self.prof_delete.pack(side=tk.RIGHT)
+        self.prof_title.pack(side=ctk.LEFT, padx=(20, 10))
+        self.prof_button.pack(side=ctk.RIGHT, padx=(8, 4))
+        self.prof_edit.pack(side=ctk.RIGHT, padx=(8, 0))
+        if self.special != 'unmodded': self.prof_delete.pack(side=ctk.RIGHT)
         self.right_frame.pack(side='right')
 
     def hide_profile(self):
@@ -156,6 +158,24 @@ def sort_profiles(sort=None):
     save_settings(settings)
 
 
+def check_for_updates():
+    # Checks for updates to the program
+    # Get the latest release from the GitHub API
+    try:
+        response = requests.get('https://api.github.com/repos/supercam19/SMAPI-Profile-Manager/releases/latest')
+        latest_release = response.json()['tag_name']
+    except:
+        #  Give up if the request fails
+        return
+    if latest_release != VERSION:
+        window.update_bar(latest_release, dont_show_update_bar_again)
+
+
+def dont_show_update_bar_again():
+    settings['show_update_bar'] = False
+    save_settings(settings)
+
+
 profiles = []
 name_input = ''
 VERSION = "v1.2.3"
@@ -172,7 +192,7 @@ if __name__ == '__main__':
     save_settings(settings)
     profiles_data = []
     # Initialize the TK window
-    tk.set_appearance_mode("dark")
+    ctk.set_appearance_mode("dark")
     # This method makes the tk window scale properly at different monitor DPI scales
     windll.user32.SetProcessDPIAware()
     window = Window(settings, sort_callback=sort_profiles)
@@ -201,5 +221,6 @@ if __name__ == '__main__':
     for profile in profiles:
         profile.draw_profile()
     save_settings(settings)
+    if settings['show_update_bar']: check_for_updates()
 
     window.mainloop()
