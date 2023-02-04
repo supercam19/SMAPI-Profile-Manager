@@ -1,9 +1,5 @@
 # SMAPI Profile Manager Changelog
 
-## Update v1.2.4 (???)
-
-### Additions
- - Added a check to notify you when a new update is availible
 
 ## QOL Update [v1.2.3] (Jan 26, 2022)
 An update with a lot of small quality of life changes and fixes. The goal is to make the program work as you'd think it would.

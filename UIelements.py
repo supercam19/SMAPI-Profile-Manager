@@ -88,6 +88,37 @@ class Window(ctk.CTk):
         if mouse_y > 360:
             self.canvas.yview_scroll(-1 * int((event.delta / 120)), "units")
 
+    def update_bar(self, new_ver, dont_show_callback):
+        self.msg_frame = Frame(self, fg_color='blue', bg_color='blue')
+        self.msg_frame.pack(side='bottom', fill='x')
+        msg = ctk.CTkLabel(self.msg_frame, text=f'New version available: {new_ver}', text_font=('Arial', 8))
+        msg.pack(side='left', padx=(2, 0))
+
+        # Link to download the newest release
+        download_button = ctk.CTkButton(self.msg_frame, text='| Download', command=lambda: open_url('https://github.com/supercam19/SMAPI-Profile-Manager/releases/latest'),
+                                        fg_color='blue', text_font=('Arial', 8), hover_color='#0000DD', width=1)
+        download_button.pack(side='left')
+        download_button.bind('<Enter>', lambda e: download_button.configure(text_font=('Arial', 8, 'underline')))
+        download_button.bind('<Leave>', lambda e: download_button.configure(text_font=('Arial', 8)))
+
+        # Don't show new version message again
+        dont_show_button = ctk.CTkButton(self.msg_frame, text='| Don\'t show again', command=lambda: self.dont_show_update_bar_again(dont_show_callback),
+                                         fg_color='blue', text_font=('Arial', 8), hover_color='#0000DD', width=1)
+        dont_show_button.pack(side='left')
+        dont_show_button.bind('<Enter>', lambda e: dont_show_button.configure(text_font=('Arial', 8, 'underline')))
+        dont_show_button.bind('<Leave>', lambda e: dont_show_button.configure(text_font=('Arial', 8)))
+
+        hide_button = ctk.CTkButton(self.msg_frame, text='x', command=self.hide_update_bar, fg_color='blue', text_font=('Arial', 12), hover_color='#0000DD', width=1)
+        hide_button.pack(side='right', padx=5)
+
+    def dont_show_update_bar_again(self, callback):
+        self.hide_update_bar()
+        callback()
+
+    def hide_update_bar(self):
+        self.msg_frame.pack_forget()
+
+
 
 class Frame(ctk.CTkFrame):
     # Frame object (just a regular CTkFrame)
@@ -131,45 +162,6 @@ class Button(ctk.CTkButton):
             self.configure(text_color=self.text_color_default)
         elif self.type == 'button':
             self.configure(image=self.image_default)
-
-
-class BarPopup:
-    def __init__(self, window):
-        self.msg_frame = Frame(window, fg_color='blue', bg_color='blue')
-        self.msg_frame.pack(side='bottom', fill='x')
-
-    def dont_show_update_bar_again(self, callback):
-        self.hide_update_bar()
-        callback()
-
-    def hide_update_bar(self):
-        self.msg_frame.pack_forget()
-
-    def set_update_preset(self, new_ver, dont_show_callback):
-        msg = ctk.CTkLabel(self.msg_frame, text=f'New version available: {new_ver}', text_font=('Arial', 8))
-        msg.pack(side='left', padx=(2, 0))
-
-        # Link to download the newest release
-        download_button = ctk.CTkButton(self.msg_frame, text='| Download', command=lambda: open_url('https://github.com/supercam19/SMAPI-Profile-Manager/releases/latest'),
-                                        fg_color='blue', text_font=('Arial', 8), hover_color='#0000DD', width=1)
-        download_button.pack(side='left')
-        download_button.bind('<Enter>', lambda e: download_button.configure(text_font=('Arial', 8, 'underline')))
-        download_button.bind('<Leave>', lambda e: download_button.configure(text_font=('Arial', 8)))
-
-        # Don't show new version message again
-        dont_show_button = ctk.CTkButton(self.msg_frame, text='| Don\'t show again', command=lambda: self.dont_show_update_bar_again(dont_show_callback),
-                                         fg_color='blue', text_font=('Arial', 8), hover_color='#0000DD', width=1)
-        dont_show_button.pack(side='left')
-        dont_show_button.bind('<Enter>', lambda e: dont_show_button.configure(text_font=('Arial', 8, 'underline')))
-        dont_show_button.bind('<Leave>', lambda e: dont_show_button.configure(text_font=('Arial', 8)))
-
-        hide_button = ctk.CTkButton(self.msg_frame, text='x', command=self.hide_update_bar, fg_color='blue', text_font=('Arial', 12), hover_color='#0000DD', width=1)
-        hide_button.pack(side='right', padx=5)
-
-    def set_profile_delete_preset(self):
-        pass
-
-
 
 
 class Popup:
