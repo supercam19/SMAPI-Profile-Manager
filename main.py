@@ -168,7 +168,7 @@ def check_for_updates():
         #  Give up if the request fails
         return
     if latest_release != VERSION:
-        popup = BarPopup(window).preset.set_new_update(latest_release, dont_show_update_bar_again)
+        popup = BarPopup(window).set_update_preset(latest_release, dont_show_update_bar_again)
 
 
 def dont_show_update_bar_again():
