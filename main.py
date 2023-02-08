@@ -83,6 +83,7 @@ class Profile:
         editor = ProfileEditor(window, profile_data=self.prof_info, callback=self.load_changed_info)
         window.wait_window(editor.editor)
         profiles_data_old = profiles_data.copy()
+        window.undo_button.configure(state='normal')
         edit_saved_profile(profiles_data, self.name, self.prof_info, action='edit')
         self.name = self.prof_info['name']
         if 'path' in self.prof_info: self.path = self.prof_info['path'].rstrip("\n")
@@ -101,6 +102,7 @@ class Profile:
         self.prof_delete.destroy()
         # Remove the profile from the text file
         profiles_data_old = profiles_data.copy()
+        window.undo_button.configure(state='normal')
         edit_saved_profile(profiles_data, self.name, action='delete')
         profiles.remove(self)
 
@@ -117,6 +119,7 @@ def add_profile():
     if prof_name is not None:
         # Restrict profile name to 100 characters
         profiles_data_old = profiles_data.copy()
+        window.undo_button.configure(state='normal')
         prof_name = prof_name[:100] if len(prof_name) > 100 else prof_name
         profiles.append(Profile({'name': prof_name, 'path': prof_path, 'created': int(time())}))
         profiles[-1].draw_profile()
@@ -181,6 +184,7 @@ def check_for_updates():
 def undo_changes():
     global profiles_data_old, profiles_data
     profiles_data = profiles_data_old
+    window.undo_button.configure(state='disabled')
     save_profile(profiles_data)
     for profile in profiles:
         # Redraw all the profiles in case any were deleted or added
