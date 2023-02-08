@@ -187,10 +187,12 @@ def undo_changes():
     window.undo_button.configure(state='disabled')
     save_profile(profiles_data)
     for profile in profiles:
-        # Redraw all the profiles in case any were deleted or added
         profile.hide_profile()
-        profile.draw_profile()
-        sort_profiles(settings['sort'])
+    profiles.clear()
+    for profile in profiles_data:
+        profiles.append(Profile(profile))
+        profiles[-1].draw_profile()
+    sort_profiles(settings['sort'])
 
 
 def dont_show_update_bar_again():
