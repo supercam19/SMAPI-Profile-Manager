@@ -7,6 +7,9 @@ A slightly more feature heavy update than recently, possibly the last big update
  - Added a button to revert the last change to profiles, in case you accidentally deleted one, for example
  - Added an update check that informs you when a new update is available
 
+### Changes
+ - Massively reorganized the code to make it easier to work with
+
 ## QOL Update [v1.2.3] (Jan 26, 2022)
 An update with a lot of small quality of life changes and fixes. The goal is to make the program work as you'd think it would.
 

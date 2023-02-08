@@ -5,7 +5,6 @@
 @description: Profile editor window
 """
 
-
 import customtkinter as ctk
 from datetime import datetime
 from tkinter import filedialog
@@ -35,7 +34,7 @@ class ProfileEditor:
             # Show a path editor if this is not the unmodded profile
             self.ePathFrame, _, self.ePathEntry = self.editable_text('Path:', entry_alignement='left')
             self.browse_button = ctk.CTkButton(self.ePathFrame, text="...", width=5,
-                                     command=self.browse_path)
+                                               command=self.browse_path)
             self.browse_button.pack(padx=(0, 10), side='right')
             self.browse_button_tooltip = Tooltip(self.browse_button, "Browse profile path")
             self.ePathEntry.insert(0, self.prof_info['path'])
@@ -44,8 +43,8 @@ class ProfileEditor:
             self.eForceSMAPI = self.editable_true_false('Force SMAPI:')[2]
             self.eForceSMAPI.select() if self.prof_info['force_smapi'] else self.eForceSMAPI.deselect()
 
-        self.properties_dropdown = ctk.CTkButton(self.editor, text=('\U000023AF'*4) + ' Properties v ' + ('\U000023AF'*25), width=10,
-                                       command=self.dropdown_manager, fg_color='gray18', hover_color='gray22')
+        self.properties_dropdown = ctk.CTkButton(self.editor, text=('\U000023AF' * 4) + ' Properties v ' + ('\U000023AF' * 25), width=10,
+                                                 command=self.dropdown_manager, fg_color='gray18', hover_color='gray22')
         self.properties_dropdown.pack(pady=(10, 0))
 
         self.apply_button = ctk.CTkButton(self.editor, text="Apply", command=self.apply_changes, width=10)
@@ -79,13 +78,13 @@ class ProfileEditor:
     def dropdown_manager(self):
         if self.dropdown_active:
             self.dropdown_active = False
-            self.properties_dropdown.configure(text=('\U000023AF'*4) + ' Properties v ' + ('\U000023AF'*25))
+            self.properties_dropdown.configure(text=('\U000023AF' * 4) + ' Properties v ' + ('\U000023AF' * 25))
             self.properties_frame.destroy()
         else:
             self.dropdown_active = True
             self.apply_button.pack_forget()
-            self.properties_dropdown.configure(text=('\U000023AF'*4) + ' Properties ^ ' + ('\U000023AF'*25))
-            self.properties_frame = Frame(self.editor, bg="gray18", width=240, height=40*len(self.protected_values))
+            self.properties_dropdown.configure(text=('\U000023AF' * 4) + ' Properties ^ ' + ('\U000023AF' * 25))
+            self.properties_frame = Frame(self.editor, bg="gray18", width=240, height=40 * len(self.protected_values))
             self.properties_frame.pack_propagate(False)
             self.properties_frame.pack(pady=10)
             self.apply_button.pack(pady=10)

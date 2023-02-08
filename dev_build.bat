@@ -1,1 +1,1 @@
-pyinstaller --noconfirm --onefile --icon=assets/logo.ico --name "SMAPI Profile Manager DEVMODE" --add-data "C:\Users\label\scoop\apps\python\current\Lib\site-packages\customtkinter;customtkinter"  main.py
+pyinstaller --noconfirm --onefile --icon=ProfileManager/assets/logo.ico --name "SMAPI Profile Manager DEVMODE" --add-data "C:\Users\label\scoop\apps\python\current\Lib\site-packages\customtkinter;customtkinter"  ProfileManager/main.py
