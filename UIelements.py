@@ -41,6 +41,9 @@ class Window(ctk.CTk):
         self.add_prof_button = ctk.CTkButton(self.control_frame, text="+", text_font=("Arial", 18), width=50,)
         self.add_prof_tooltip = Tooltip(self.add_prof_button, "Add a new profile")
         self.add_prof_button.pack(pady=(10, 5), anchor=ctk.N)
+        self.undo_button = ctk.CTkButton(self.control_frame, text="\U000021A9", text_font=("Arial", 18), width=50, state="disabled")
+        self.undo_tooltip = Tooltip(self.undo_button, "Revert last change to profiles")
+        self.undo_button.pack(pady=5, anchor=ctk.N)
         self.github_button = ctk.CTkButton(self.control_frame, text="\U0001F6C8", text_color='white', text_font=("Arial", 20),
                                            width=50, command=lambda: open_url("https://github.com/supercam19/SMAPI-Profile-Manager"), pady=0)
         self.github_tooltip = Tooltip(self.github_button, "Help (Open GitHub page)")
