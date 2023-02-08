@@ -1,12 +1,19 @@
+"""
+@author: supercam19
+@github: https://github.com/supercam19
+@license: MIT
+@description: File that initialises the program and handles most backend operations
+"""
+
 from tkinter import filedialog
-import customtkinter as ctk
 from UIelements import *
 from FileManager import *
 from ctypes import windll
 from subprocess import call
 from time import time
 import requests
-from webbrowser import open as open_url
+from SuperWidgets.SuperWidgets import Button
+from SuperWidgets.ProfileEditor import ProfileEditor
 
 
 class Profile:
@@ -237,7 +244,7 @@ if __name__ == '__main__':
     profiles_data = load_profiles()
     profiles_data_old = profiles_data.copy()
     # Make sure the unmodded profile is added to the save
-    if profiles_data == []:
+    if not profiles_data:
         profiles_data.insert(0, {'name': 'Unmodded', 'force_smapi': False, 'special': 'unmodded', 'created': int(time())})
     elif 'force_smapi' not in profiles_data[0]:
         profiles_data.insert(0, {'name': 'Unmodded', 'force_smapi': False, 'special': 'unmodded', 'created': int(time())})

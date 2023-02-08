@@ -1,3 +1,10 @@
+"""
+@author: supercam19
+@github: https://github.com/supercam19
+@license: MIT
+@description: Manages file loading and saving
+"""
+
 import json
 from time import time
 import os

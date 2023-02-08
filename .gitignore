@@ -1,6 +1,8 @@
 
 /.idea
 /__pycache__
+/ProfileManager/__pycache__
+/ProfileManager/SuperWidgets/__pycache__
 /.vscode
 /build
 /dist
