@@ -79,8 +79,11 @@ class Profile:
 
     def edit_profile(self):
         # Launches the profile editor, then applies changes
+        global profiles_data_old
         editor = ProfileEditor(window, profile_data=self.prof_info, callback=self.load_changed_info)
         window.wait_window(editor.editor)
+        profiles_data_old = profiles_data.copy()
+        window.undo_button.configure(state='normal')
         edit_saved_profile(profiles_data, self.name, self.prof_info, action='edit')
         self.name = self.prof_info['name']
         if 'path' in self.prof_info: self.path = self.prof_info['path'].rstrip("\n")
@@ -92,24 +95,31 @@ class Profile:
 
     def delete_profile(self):
         # Remove profile widgets, then remove profile from the save file
+        global profiles_data_old
         self.prof_frame.destroy()
         self.prof_title.destroy()
         self.prof_button.destroy()
         self.prof_delete.destroy()
         # Remove the profile from the text file
+        profiles_data_old = profiles_data.copy()
+        window.undo_button.configure(state='normal')
         edit_saved_profile(profiles_data, self.name, action='delete')
+        profiles.remove(self)
 
 
 def add_profile():
     # Add a new profile (top right button)
+    global profiles_data_old
     prof_path = filedialog.askdirectory()
     if prof_path == '': return
     popup = Popup("Name your profile", "Enter a name for your profile", window, callback=return_popup_info)
     window.wait_window(popup.popup)
     # Gets the information from the popup (profile name)
     prof_name = popup_info['name']
-    if prof_name != None:
+    if prof_name is not None:
         # Restrict profile name to 100 characters
+        profiles_data_old = profiles_data.copy()
+        window.undo_button.configure(state='normal')
         prof_name = prof_name[:100] if len(prof_name) > 100 else prof_name
         profiles.append(Profile({'name': prof_name, 'path': prof_path, 'created': int(time())}))
         profiles[-1].draw_profile()
@@ -171,6 +181,20 @@ def check_for_updates():
         window.update_bar(latest_release, dont_show_update_bar_again)
 
 
+def undo_changes():
+    global profiles_data_old, profiles_data
+    profiles_data = profiles_data_old
+    window.undo_button.configure(state='disabled')
+    save_profile(profiles_data)
+    for profile in profiles:
+        profile.hide_profile()
+    profiles.clear()
+    for profile in profiles_data:
+        profiles.append(Profile(profile))
+        profiles[-1].draw_profile()
+    sort_profiles(settings['sort'])
+
+
 def dont_show_update_bar_again():
     settings['show_update_bar'] = False
     save_settings(settings)
@@ -197,6 +221,7 @@ if __name__ == '__main__':
     windll.user32.SetProcessDPIAware()
     window = Window(settings, sort_callback=sort_profiles)
     window.add_prof_button.configure(command=add_profile)
+    window.undo_button.configure(command=undo_changes)
 
     # Check for the SMAPI executable and prompt user if not found
     if 'smapi_path' not in settings or not os.path.exists(settings['smapi_path']):
@@ -210,6 +235,7 @@ if __name__ == '__main__':
 
     if os.path.exists('profiles.txt'): profiles_data = convert_legacy_profiles(profiles_data)
     profiles_data = load_profiles()
+    profiles_data_old = profiles_data.copy()
     # Make sure the unmodded profile is added to the save
     if profiles_data == []:
         profiles_data.insert(0, {'name': 'Unmodded', 'force_smapi': False, 'special': 'unmodded', 'created': int(time())})
