@@ -34,6 +34,7 @@ class Profile:
         self.left_frame.pack_propagate(False)
         self.right_frame = ctk.CTkFrame(self.prof_frame, width=140, height=32, fg_color='gray21', bg_color='gray21')
         self.right_frame.pack_propagate(False)
+        self.prof_pin = ctk.CTkLabel(self.left_frame, text="\U0001F4CC", text_color="gray6", text_font=("Arial", 12), width=1)
         self.prof_title = ctk.CTkLabel(self.left_frame, text=self.name, fg_color="gray21", text_font=("Arial", 12), anchor='w')
         self.prof_button = Button(self.right_frame, text="\U000025B6", fg_color="gray21", text_font=("Arial", 24), text_color='white', hover_color='gray21', width=32, command=self.select_profile)
         self.prof_edit = Button(self.right_frame, width=32, image=window.icons.gear, fg_color="gray21", height=40, type='button', text_color='white', hover_image=window.icons.gear_dark, command=self.edit_profile)
@@ -44,12 +45,18 @@ class Profile:
         self.edit_tooltip = Tooltip(self.prof_edit, "Edit this profile")
         self.delete_tooltip = Tooltip(self.prof_delete, "Delete this profile")
         self.name_tooltip = Tooltip(self.prof_title, self.name)
+        self.pin_tooltip = Tooltip(self.prof_pin, "This profile is pinned to the top of the list")
 
     def draw_profile(self):
         # Pack all profile widgets
         self.prof_frame.pack(pady=2)
-        self.left_frame.pack(side='left', padx=(10, 0))
-        self.prof_title.pack(side=ctk.LEFT, padx=(20, 10))
+        if 'pinned' in self.prof_info and self.prof_info['pinned']:
+            self.left_frame.pack(side='left')
+            self.prof_pin.pack(side=ctk.LEFT, padx=(7,3))
+            self.prof_title.pack(side=ctk.LEFT, padx=(0, 10))
+        else:
+            self.left_frame.pack(side='left', padx=(10, 0))
+            self.prof_title.pack(side=ctk.LEFT, padx=(20, 10))
         self.prof_button.pack(side=ctk.RIGHT, padx=(8, 4))
         self.prof_edit.pack(side=ctk.RIGHT, padx=(8, 0))
         if self.special != 'unmodded': self.prof_delete.pack(side=ctk.RIGHT)
