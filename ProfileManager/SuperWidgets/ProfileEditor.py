@@ -33,11 +33,15 @@ class ProfileEditor:
         if self.prof_info['special'] != 'unmodded':
             # Show a path editor if this is not the unmodded profile
             self.ePathFrame, _, self.ePathEntry = self.editable_text('Path:', entry_alignement='left')
+            self.ePathEntry.pack_forget()
             self.browse_button = ctk.CTkButton(self.ePathFrame, text="...", width=5,
                                                command=self.browse_path)
             self.browse_button.pack(padx=(0, 10), side='right')
             self.browse_button_tooltip = Tooltip(self.browse_button, "Browse profile path")
+            self.ePathEntry.pack(side='right', padx=(0, 10), pady=8)
+            self.ePathEntry.pack_propagate(False)
             self.ePathEntry.insert(0, self.prof_info['path'])
+            self.ePathEntry.configure(width=173)
         else:
             # Show the force smapi checkbox if this is the unmodded profile
             self.eForceSMAPI = self.editable_true_false('Force SMAPI:')[2]
@@ -63,7 +67,7 @@ class ProfileEditor:
         frame = Frame(self.editor, width=300, height=40, fg_color='gray18')
         frame.pack_propagate(False)
         frame.pack()
-        label = ctk.CTkLabel(frame, text=title, width=30)
+        label = ctk.CTkLabel(frame, text=title, width=30, anchor='w')
         label.pack(side="left", padx=10)
         entry = ctk.CTkEntry(frame, width=210)
         entry.pack(side=entry_alignement, padx=(0, 10), pady=8)
@@ -74,10 +78,10 @@ class ProfileEditor:
         frame = Frame(self.editor, width=300, height=40, fg_color='gray18')
         frame.pack_propagate(False)
         frame.pack()
-        label = ctk.CTkLabel(frame, text=title, width=50)
+        label = ctk.CTkLabel(frame, text=title, width=50, anchor='w')
         label.pack(side="left", padx=10)
         check = ctk.CTkCheckBox(frame, text='')
-        check.pack(padx=10, side='right')
+        check.pack(padx=3, side='right')
         return frame, label, check
 
     def dropdown_manager(self):

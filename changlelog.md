@@ -12,6 +12,9 @@ A slightly more feature heavy update than recently, possibly the last big update
  - Massively reorganized the code to make it easier to work with
  - Colour improvements to the profile editor
 
+### Fixes
+ - Fixed alignment issues in the profile editor
+
 ## QOL Update [v1.2.3] (Jan 26, 2022)
 An update with a lot of small quality of life changes and fixes. The goal is to make the program work as you'd think it would.
 
