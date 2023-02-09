@@ -87,7 +87,7 @@ def check_files():
             if not os.path.exists(file):
                 with open(file, 'wb') as f:
                     try:
-                        f.write(get_url(f'https://github.com/supercam19/SMAPI-Profile-Manager/blob/main/{file}?raw=true').content)
+                        f.write(get_url(f'https://github.com/supercam19/SMAPI-Profile-Manager/blob/main/ProfileManager/{file}?raw=true').content)
                     except exceptions.ConnectionError:
                         windll.user32.MessageBoxW(None, u"Error downloading assets, check your internet connection or firewall", u"Error", 0x00000000 | 0x00000010)
 
