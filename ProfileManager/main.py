@@ -34,6 +34,7 @@ class Profile:
         self.left_frame.pack_propagate(False)
         self.right_frame = ctk.CTkFrame(self.prof_frame, width=140, height=32, fg_color='gray21', bg_color='gray21')
         self.right_frame.pack_propagate(False)
+        self.prof_pin = ctk.CTkLabel(self.left_frame, text="\U0001F4CC", text_color="gray6", text_font=("Arial", 12), width=1)
         self.prof_title = ctk.CTkLabel(self.left_frame, text=self.name, fg_color="gray21", text_font=("Arial", 12), anchor='w')
         self.prof_button = Button(self.right_frame, text="\U000025B6", fg_color="gray21", text_font=("Arial", 24), text_color='white', hover_color='gray21', width=32, command=self.select_profile)
         self.prof_edit = Button(self.right_frame, width=32, image=window.icons.gear, fg_color="gray21", height=40, type='button', text_color='white', hover_image=window.icons.gear_dark, command=self.edit_profile)
@@ -44,12 +45,18 @@ class Profile:
         self.edit_tooltip = Tooltip(self.prof_edit, "Edit this profile")
         self.delete_tooltip = Tooltip(self.prof_delete, "Delete this profile")
         self.name_tooltip = Tooltip(self.prof_title, self.name)
+        self.pin_tooltip = Tooltip(self.prof_pin, "This profile is pinned to the top of the list")
 
     def draw_profile(self):
         # Pack all profile widgets
         self.prof_frame.pack(pady=2)
-        self.left_frame.pack(side='left', padx=(10, 0))
-        self.prof_title.pack(side=ctk.LEFT, padx=(20, 10))
+        if 'pinned' in self.prof_info and self.prof_info['pinned']:
+            self.left_frame.pack(side='left')
+            self.prof_pin.pack(side=ctk.LEFT, padx=(7,3))
+            self.prof_title.pack(side=ctk.LEFT, padx=(0, 10))
+        else:
+            self.left_frame.pack(side='left', padx=(10, 0))
+            self.prof_title.pack(side=ctk.LEFT, padx=(20, 10))
         self.prof_button.pack(side=ctk.RIGHT, padx=(8, 4))
         self.prof_edit.pack(side=ctk.RIGHT, padx=(8, 0))
         if self.special != 'unmodded': self.prof_delete.pack(side=ctk.RIGHT)
@@ -144,14 +151,18 @@ def sort_profiles(sort=None):
     # Manages profile sorting
     invert = window.invert_sort_checkbox.get()
     # Save the unmodded profile to local var unmodded
-    unmodded = profiles[0]
-    # Remove unmodded profile from profiles list
-    profiles.pop(0)
+    pinned = []
+    for profile in profiles:
+        if 'pinned' in profile.prof_info:
+            if profile.prof_info['pinned']:
+                pinned.append(profile)
+                profiles.pop(profiles.index(profile))
     if sort is None:
         # If the sorting method didn't change, but invert was toggled
         profiles.reverse()
         # Re-insert the unmodded profile back at position 0
-        profiles.insert(0, unmodded)
+        for profile in pinned:
+            profiles.insert(0, profile)
     else:
         # If the sorting method does change...
         if sort == 'Name':
@@ -161,7 +172,8 @@ def sort_profiles(sort=None):
         elif sort == 'Last Played':
             profiles.sort(key=lambda x: x.last_launched, reverse=invert)
         # Re-insert the unmodded profile back at position 0
-        profiles.insert(0, unmodded)
+        for profile in pinned:
+            profiles.insert(0, profile)
     # Un-pack all the profiles first...
     for profile in profiles:
         profile.hide_profile()
@@ -245,9 +257,9 @@ if __name__ == '__main__':
     profiles_data_old = profiles_data.copy()
     # Make sure the unmodded profile is added to the save
     if not profiles_data:
-        profiles_data.insert(0, {'name': 'Unmodded', 'force_smapi': False, 'special': 'unmodded', 'created': int(time())})
+        profiles_data.insert(0, {'name': 'Unmodded', 'force_smapi': False, 'special': 'unmodded', 'created': int(time()), 'pinned': 1})
     elif 'force_smapi' not in profiles_data[0]:
-        profiles_data.insert(0, {'name': 'Unmodded', 'force_smapi': False, 'special': 'unmodded', 'created': int(time())})
+        profiles_data.insert(0, {'name': 'Unmodded', 'force_smapi': False, 'special': 'unmodded', 'created': int(time()), 'pinned': 1})
     for profile in profiles_data:
         profiles.append(Profile(profile))
     sort_profiles(settings['sort']) if 'sort' in settings else sort_profiles('Name')

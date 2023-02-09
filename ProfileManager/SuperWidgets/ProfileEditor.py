@@ -43,6 +43,11 @@ class ProfileEditor:
             self.eForceSMAPI = self.editable_true_false('Force SMAPI:')[2]
             self.eForceSMAPI.select() if self.prof_info['force_smapi'] else self.eForceSMAPI.deselect()
 
+        # Pin profile
+        self.ePin = self.editable_true_false('Pin:')[2]
+        if 'pinned' in self.prof_info:
+            self.ePin.select() if self.prof_info['pinned'] else self.ePin.deselect()
+
         self.properties_dropdown = ctk.CTkButton(self.editor, text=('\U000023AF' * 4) + ' Properties v ' + ('\U000023AF' * 25), width=10,
                                                  command=self.dropdown_manager, fg_color='gray18', hover_color='gray22')
         self.properties_dropdown.pack(pady=(10, 0))
@@ -111,10 +116,10 @@ class ProfileEditor:
         # Apply changes to the profile by calling the callback function in main.py
         if self.prof_info['special'] == None:
             self.callback({'name': self.eName.get(), 'path': self.ePathEntry.get(), 'created': self.prof_info['created'],
-                           'last_launched': self.prof_info['last_launched'], 'special': None})
+                           'last_launched': self.prof_info['last_launched'], 'special': None, 'pinned': self.ePin.get()})
         elif self.prof_info['special'] == 'unmodded':
             self.callback({'name': self.eName.get(), 'special': 'unmodded', 'force_smapi': self.eForceSMAPI.get(), 'created': self.prof_info['created'],
-                           'last_launched': self.prof_info['last_launched']})
+                           'last_launched': self.prof_info['last_launched'], 'pinned': self.ePin.get()})
         self.editor.destroy()
 
     def browse_path(self):
