@@ -144,14 +144,18 @@ def sort_profiles(sort=None):
     # Manages profile sorting
     invert = window.invert_sort_checkbox.get()
     # Save the unmodded profile to local var unmodded
-    unmodded = profiles[0]
-    # Remove unmodded profile from profiles list
-    profiles.pop(0)
+    pinned = []
+    for profile in profiles:
+        if 'pinned' in profile.prof_info:
+            if profile.prof_info['pinned']:
+                pinned.append(profile)
+                profiles.pop(profiles.index(profile))
     if sort is None:
         # If the sorting method didn't change, but invert was toggled
         profiles.reverse()
         # Re-insert the unmodded profile back at position 0
-        profiles.insert(0, unmodded)
+        for profile in pinned:
+            profiles.insert(0, profile)
     else:
         # If the sorting method does change...
         if sort == 'Name':
@@ -161,7 +165,8 @@ def sort_profiles(sort=None):
         elif sort == 'Last Played':
             profiles.sort(key=lambda x: x.last_launched, reverse=invert)
         # Re-insert the unmodded profile back at position 0
-        profiles.insert(0, unmodded)
+        for profile in pinned:
+            profiles.insert(0, profile)
     # Un-pack all the profiles first...
     for profile in profiles:
         profile.hide_profile()
