@@ -4,8 +4,8 @@
 A slightly more feature heavy update than recently, possibly the last big update until 1.3.0.
 
 ### Additions
- - Added a button to revert the last change to profiles, in case you accidentally deleted one, for example
- - Added an update check that informs you when a new update is available
+ - Added a button to revert the last change to profiles, in case you accidentally deleted one, for example (#33)
+ - Added an update check that informs you when a new update is available (#32)
 
 ### Changes
  - Massively reorganized the code to make it easier to work with
