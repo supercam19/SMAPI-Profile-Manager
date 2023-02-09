@@ -22,7 +22,7 @@ class ProfileEditor:
         self.dropdown_active = False
         self.properties_frame = None
         self.protected_values = ('created', 'last_launched')  # Do not allow user to modify these
-        self.editor = ctk.CTkToplevel(root, bg="gray18")
+        self.editor = ctk.CTkToplevel(root, fg_color="gray18")
         self.editor.title("Profile Editor - " + self.prof_info['name'])
         self.editor.geometry("+%d+%d" % (root.winfo_x() + 100, root.winfo_y() + 100))
 
@@ -60,7 +60,7 @@ class ProfileEditor:
 
     def editable_text(self, title, entry_alignement='right'):
         # Creates a frame with a label and a textbox
-        frame = Frame(self.editor, width=300, height=40)
+        frame = Frame(self.editor, width=300, height=40, fg_color='gray18')
         frame.pack_propagate(False)
         frame.pack()
         label = ctk.CTkLabel(frame, text=title, width=30)
@@ -71,7 +71,7 @@ class ProfileEditor:
 
     def editable_true_false(self, title):
         # Creates a frame with a label and a checkbox
-        frame = Frame(self.editor, width=300, height=40)
+        frame = Frame(self.editor, width=300, height=40, fg_color='gray18')
         frame.pack_propagate(False)
         frame.pack()
         label = ctk.CTkLabel(frame, text=title, width=50)
@@ -89,7 +89,7 @@ class ProfileEditor:
             self.dropdown_active = True
             self.apply_button.pack_forget()
             self.properties_dropdown.configure(text=('\U000023AF' * 4) + ' Properties ^ ' + ('\U000023AF' * 25))
-            self.properties_frame = Frame(self.editor, bg="gray18", width=240, height=40 * len(self.protected_values))
+            self.properties_frame = Frame(self.editor, fg_color='gray18', width=240, height=40 * len(self.protected_values))
             self.properties_frame.pack_propagate(False)
             self.properties_frame.pack(pady=10)
             self.apply_button.pack(pady=10)
@@ -102,7 +102,9 @@ class ProfileEditor:
                             value = 'Never'
                         else:
                             value = datetime.fromtimestamp(value).strftime('%Y-%m-%d %H:%M:%S')
-                    colour = 'gray45' if i % 2 == 0 else 'gray30'
+                    # Alternate colours for each row
+                    colour = 'gray35' if i % 2 == 0 else 'gray25'
+                    # Nice formatting for keys
                     key = key.replace('_', ' ').title()
                     subframe = Frame(self.properties_frame, width=300, height=40, fg_color=colour, bg_color=colour)
                     subframe.pack_propagate(False)
