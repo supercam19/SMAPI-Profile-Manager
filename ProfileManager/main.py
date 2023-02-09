@@ -245,9 +245,9 @@ if __name__ == '__main__':
     profiles_data_old = profiles_data.copy()
     # Make sure the unmodded profile is added to the save
     if not profiles_data:
-        profiles_data.insert(0, {'name': 'Unmodded', 'force_smapi': False, 'special': 'unmodded', 'created': int(time())})
+        profiles_data.insert(0, {'name': 'Unmodded', 'force_smapi': False, 'special': 'unmodded', 'created': int(time()), 'pinned': 1})
     elif 'force_smapi' not in profiles_data[0]:
-        profiles_data.insert(0, {'name': 'Unmodded', 'force_smapi': False, 'special': 'unmodded', 'created': int(time())})
+        profiles_data.insert(0, {'name': 'Unmodded', 'force_smapi': False, 'special': 'unmodded', 'created': int(time()), 'pinned': 1})
     for profile in profiles_data:
         profiles.append(Profile(profile))
     sort_profiles(settings['sort']) if 'sort' in settings else sort_profiles('Name')
