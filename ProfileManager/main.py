@@ -52,7 +52,7 @@ class Profile:
         self.prof_frame.pack(pady=2)
         if 'pinned' in self.prof_info and self.prof_info['pinned']:
             self.left_frame.pack(side='left')
-            self.prof_pin.pack(side=ctk.LEFT, padx=(7,3))
+            self.prof_pin.pack(side=ctk.LEFT, padx=(7, 3))
             self.prof_title.pack(side=ctk.LEFT, padx=(0, 10))
         else:
             self.left_frame.pack(side='left', padx=(10, 0))
@@ -64,7 +64,10 @@ class Profile:
 
     def hide_profile(self):
         # Unpack all profile widgets
-        for widget in self.prof_frame.winfo_children(): widget.pack_forget()
+        for widget in self.prof_frame.winfo_children():
+            widget.pack_forget()
+            for child in widget.winfo_children():
+                child.pack_forget()
         self.prof_frame.pack_forget()
 
     def select_profile(self):
@@ -102,6 +105,7 @@ class Profile:
         self.name = self.prof_info['name']
         if 'path' in self.prof_info: self.path = self.prof_info['path'].rstrip("\n")
         self.prof_title.configure(text=self.name)
+        sort_profiles(settings['sort'])
 
     def load_changed_info(self, info):
         # Used to pass any changed profile info back into the main file from UIelements
