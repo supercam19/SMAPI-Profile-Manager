@@ -2,7 +2,7 @@
 
 Allows you to quickly switch between different Stardew Valley mod profiles
 
-![Preview](assets/preview.png)
+![Preview](ProfileManager/assets/preview.png)
 
 ## Setup
 Download the [latest release](https://github.com/supercam19/SMAPI-Profile-Manager/releases/latest) of the profile manager
