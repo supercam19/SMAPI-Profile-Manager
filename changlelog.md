@@ -1,5 +1,6 @@
 # SMAPI Profile Manager Changelog
 
+
 ## Update [v1.2.4] (Feb 9, 2023)
 A slightly more feature heavy update than recently, possibly the last big update until 1.3.0.
 
