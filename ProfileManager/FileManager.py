@@ -11,6 +11,7 @@ import os
 from requests import get as get_url
 from requests import exceptions
 from ctypes import windll
+import winreg
 
 
 def save_profile(data):
@@ -20,7 +21,7 @@ def save_profile(data):
         json.dump(data, f, indent=4)
 
 
-def edit_saved_profile(profiles_data, profile_name,  new_value=None, key=None, action='edit'):
+def edit_saved_profile(profiles_data, profile_name, new_value=None, key=None, action='edit'):
     # Edit a profile in the save file
     if action == 'edit':
         # Compare profile names to find the one to edit
@@ -99,3 +100,24 @@ def update_files():
         os.remove(file)
     check_files()
 
+
+def find_file(name, path='all'):
+    found = False
+    if path == 'all':
+        # Get all valid drive letters
+        drives = [chr(x) + ":\\" for x in range(65, 91) if os.path.exists(chr(x) + ":\\")]
+        print(drives)
+        for drive in drives:
+            for root, dirs, files in os.walk(drive):
+                if name in files:
+                    print(os.path.join(root, name))
+                    print(os.path.exists(os.path.join(root, name)))
+                    found = True
+                    break
+            if found:
+                break
+    else:
+        for root, dirs, files in os.walk(path):
+            if name in files:
+                print(os.path.join(root, name))
+                break

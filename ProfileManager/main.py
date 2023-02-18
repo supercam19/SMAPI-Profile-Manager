@@ -248,12 +248,15 @@ if __name__ == '__main__':
 
     # Check for the SMAPI executable and prompt user if not found
     if 'smapi_path' not in settings or not os.path.exists(settings['smapi_path']):
-        if os.path.exists('C:/Program Files (x86)/Steam/steamapps/common/Stardew Valley/StardewModdingAPI.exe'):
-            settings['smapi_path'] = 'C:/Program Files (x86)/Steam/steamapps/common/Stardew Valley/StardewModdingAPI.exe'
-        else:
-            popup = Popup("SMAPI not found!", "Select the SMAPI executable", window, False)
-            window.wait_window(popup.popup)
-            settings['smapi_path'] = filedialog.askopenfilename(title="Select StardewModdingAPI.exe", filetypes=[("StardewModdingAPI.exe", "*.exe")])
+        find_file('StardewModdingAPI.exe')
+        # print('no smapi path')
+        # if path is not None:
+        #     settings['smapi_path'] = path
+        #     print('game found')
+        # else:
+        #     popup = Popup("SMAPI not found!", "Select the SMAPI executable", window, False)
+        #     window.wait_window(popup.popup)
+        #     settings['smapi_path'] = filedialog.askopenfilename(title="Select StardewModdingAPI.exe", filetypes=[("StardewModdingAPI.exe", "*.exe")])
         save_settings(settings)
 
     if os.path.exists('profiles.txt'): profiles_data = convert_legacy_profiles(profiles_data)
