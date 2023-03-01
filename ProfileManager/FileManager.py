@@ -12,6 +12,7 @@ from requests import get as get_url
 from requests import exceptions
 from ctypes import windll
 import winreg
+import glob
 
 
 def save_profile(data):
@@ -101,23 +102,27 @@ def update_files():
     check_files()
 
 
-def find_file(name, path='all'):
-    found = False
+def find_file(name, update_callback, return_info, path='all'):
+    processed = 0
+    total = 0
     if path == 'all':
         # Get all valid drive letters
         drives = [chr(x) + ":\\" for x in range(65, 91) if os.path.exists(chr(x) + ":\\")]
-        print(drives)
         for drive in drives:
+            for entry in os.scandir(drive):
+                if entry.is_dir(): total += 1
             for root, dirs, files in os.walk(drive):
-                if name in files:
-                    print(os.path.join(root, name))
-                    print(os.path.exists(os.path.join(root, name)))
-                    found = True
-                    break
-            if found:
-                break
+                if os.path.dirname(root) == drive:
+                    processed += 1
+                    update_callback(processed, drive, total)
+                if os.path.basename(root) == "Stardew Valley":
+                    for file in files:
+                        if file == "StardewModdingAPI.exe":
+                            return_info(os.path.join(root, file))
+                            return  # exit function early
     else:
         for root, dirs, files in os.walk(path):
             if name in files:
-                print(os.path.join(root, name))
-                break
+                return_info(os.path.join(root, name))
+                return
+    return_info(None)

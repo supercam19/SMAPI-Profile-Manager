@@ -134,21 +134,32 @@ class Popup:
     def __init__(self, title, message, root, text_box=True, callback=None):
         self.popup = ctk.CTkToplevel(root)
         self.popup.title(title)
-        self.popup.geometry("300x100+%d+%d" % (root.winfo_x() + 100, root.winfo_y() + 100))
+        self.popup.geometry("+%d+%d" % (root.winfo_x() + 100, root.winfo_y() + 100))
+        self.popup.minsize(300, 100)
         self.popup.focus()
         # self.popup.resizable(False, False)
         self.popup.protocol("WM_DELETE_WINDOW", self.destruct)
         self.popup_label = ctk.CTkLabel(self.popup, text=message)
-        self.popup_label.pack()
+        self.popup_label.pack(side="top", pady=10)
         self.text_box = text_box
         self.callback = callback
         if text_box:
             self.popup_text = ctk.CTkEntry(self.popup, width=200)
             self.popup_text.after(100, self.popup_text.focus)
             self.popup_text.pack(pady=10)
-        self.popup_button = ctk.CTkButton(self.popup, text="OK", command=self.close_popup, width=10)
-        self.popup_button.pack()
+        self.button_frame = Frame(self.popup, fg_color='gray14', width=self.popup.winfo_width())
+        self.button_frame.pack(side="bottom", pady=10)
+        # self.button_frame.pack_propagate(False)
+        self.popup_button = ctk.CTkButton(self.button_frame, text="OK", command=self.close_popup, width=10)
+        self.popup_button.pack(side="right", padx=10)
 
+        self.progress_frame = Frame(self.popup, fg_color='gray14', height=30, width=300)
+        self.drive_letter = ctk.CTkLabel(self.progress_frame, text="")
+        self.drive_letter.pack(side="left", padx=2)
+        self.progress_bar = ctk.CTkProgressBar(self.progress_frame, orient=ctk.HORIZONTAL, width=200, mode='determinate')
+        self.progress_bar.pack(side="left", padx=2)
+        self.progress_label = ctk.CTkLabel(self.progress_frame, text="")
+        self.progress_label.pack(side="left", padx=2)
         self.popup.bind("<Return>", self.close_popup)
 
     def close_popup(self, event=None):
@@ -158,8 +169,12 @@ class Popup:
 
     def destruct(self):
         # If the popup is closed, set the popup_info object to None
-        self.callback({"name": None})
+        if self.callback: self.callback({"name": None})
         self.popup.destroy()
+
+    def add_button(self, text, command, **kwargs):
+        button = ctk.CTkButton(self.button_frame, text=text, command=command, width=10, **kwargs)
+        button.pack(side="right", padx=10)
 
 
 class IconSheet:

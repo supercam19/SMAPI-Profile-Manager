@@ -10,10 +10,11 @@ from UIelements import *
 from FileManager import *
 from ctypes import windll
 from subprocess import call
-from time import time
+from time import time, sleep
 import requests
 from SuperWidgets.SuperWidgets import Button
 from SuperWidgets.ProfileEditor import ProfileEditor
+import threading
 
 
 class Profile:
@@ -223,9 +224,48 @@ def dont_show_update_bar_again():
     save_settings(settings)
 
 
+def set_smapi_path():
+    settings['smapi_path'] = filedialog.askopenfilename(title="Select StardewModdingAPI.exe", filetypes=(("StardewModdingAPI", "*.exe"),))
+
+
+def scan_for_smapi():
+    # Function exists to handle failure to find SMAPI
+    popup.progress_frame.pack(side='top')
+    popup.progress_frame.pack_propagate(False)
+    scan_thread = threading.Thread(target=find_file, args=("StardewModdingAPI.exe", progress_updates, return_popup_info, 'all'))
+    scan_thread.start()
+    window.withdraw()
+    while scan_thread.is_alive():
+        popup.progress_bar.set(file_search_complete / file_search_total)
+        popup.drive_letter.configure(text=file_search_drive)
+        popup.progress_label.configure(text=f"{file_search_complete} / {file_search_total}")
+        window.update()
+    scan_thread.join()
+    window.deiconify()
+    path = popup_info  # reusing the method to return popup info because im lazy
+    if path is None:
+        popup.close_popup()
+        tmp_popup = Popup("SMAPI not found!", "SMAPI wasn't found in the scan, please select the file", window, text_box=False)
+        tmp_popup.popup_button.configure(command=set_smapi_path)
+    else:
+        settings['smapi_path'] = path
+        popup.close_popup()
+    save_settings(settings)
+
+
+def progress_updates(complete, drive, total):
+    global file_search_complete, file_search_total, file_search_drive
+    file_search_complete = complete
+    file_search_total = total
+    file_search_drive = drive
+
+
 profiles = []
 name_input = ''
 VERSION = "v1.2.4"
+file_search_complete = 0
+file_search_total = 1
+file_search_drive = None
 
 if __name__ == '__main__':
     check_files()
@@ -248,15 +288,14 @@ if __name__ == '__main__':
 
     # Check for the SMAPI executable and prompt user if not found
     if 'smapi_path' not in settings or not os.path.exists(settings['smapi_path']):
-        find_file('StardewModdingAPI.exe')
-        # print('no smapi path')
-        # if path is not None:
-        #     settings['smapi_path'] = path
-        #     print('game found')
-        # else:
-        #     popup = Popup("SMAPI not found!", "Select the SMAPI executable", window, False)
-        #     window.wait_window(popup.popup)
-        #     settings['smapi_path'] = filedialog.askopenfilename(title="Select StardewModdingAPI.exe", filetypes=[("StardewModdingAPI.exe", "*.exe")])
+        # Try the default install location first
+        if os.path.exists(r"C:\Program Files (x86)\Steam\steamapps\common\Stardew Valley\StardewModdingAPI.exe"):
+            settings['smapi_path'] = r"C:\Program Files (x86)\Steam\steamapps\common\Stardew Valley\StardewModdingAPI.exe"
+        else:
+            popup = Popup("Locate SMAPI", "Choose how to find SMAPI", window, False)
+            popup.add_button("Scan", scan_for_smapi)
+            popup.popup_button.configure(text='Select', fg_color='gray30', command=set_smapi_path)
+            window.wait_window(popup.popup)
         save_settings(settings)
 
     if os.path.exists('profiles.txt'): profiles_data = convert_legacy_profiles(profiles_data)
