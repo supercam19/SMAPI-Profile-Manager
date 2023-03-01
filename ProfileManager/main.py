@@ -257,6 +257,8 @@ def scan_for_smapi():
         popup.close_popup()
         tmp_popup = Popup("SMAPI not found!", "SMAPI wasn't found in the scan, please select the file", window, text_box=False)
         tmp_popup.popup_button.configure(command=set_smapi_path)
+        window.wait_window(tmp_popup.popup)
+        tmp_popup.close_popup()
     else:
         settings['smapi_path'] = path
         popup.close_popup()
@@ -299,7 +301,7 @@ if __name__ == '__main__':
     # Check for the SMAPI executable and prompt user if not found
     if 'smapi_path' not in settings or not os.path.exists(settings['smapi_path']):
         # Try the default install location first
-        if not os.path.exists(r"C:\Program Files (x86)\Steam\steamapps\common\Stardew Valley\StardewModdingAPI.exe"):
+        if os.path.exists(r"C:\Program Files (x86)\Steam\steamapps\common\Stardew Valley\StardewModdingAPI.exe"):
             settings['smapi_path'] = r"C:\Program Files (x86)\Steam\steamapps\common\Stardew Valley\StardewModdingAPI.exe"
         else:
             popup = Popup("Locate SMAPI", "Choose how to find SMAPI", window, False)
