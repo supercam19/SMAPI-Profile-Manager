@@ -225,16 +225,26 @@ def dont_show_update_bar_again():
 
 
 def set_smapi_path():
-    settings['smapi_path'] = filedialog.askopenfilename(title="Select StardewModdingAPI.exe", filetypes=(("StardewModdingAPI", "*.exe"),))
+    path = filedialog.askopenfilename(title="Select StardewModdingAPI.exe", filetypes=(("StardewModdingAPI", "*.exe"),))
+    if path != '' or not path.endswith('.exe'):
+        settings['smapi_path'] = path
+        save_settings(settings)
+        popup.close_popup()
 
 
 def scan_for_smapi():
     # Function exists to handle failure to find SMAPI
+    # Modify the default popup to show a progress bar
+    popup.button_frame.pack_forget()
     popup.progress_frame.pack(side='top')
     popup.progress_frame.pack_propagate(False)
+    popup.button_frame.pack(side='right')
+    popup.popup.protocol("WM_DELETE_WINDOW", exit)
+    for button in popup.buttons: button.configure(state='disabled')
     scan_thread = threading.Thread(target=find_file, args=("StardewModdingAPI.exe", progress_updates, return_popup_info, 'all'))
     scan_thread.start()
     window.withdraw()
+    # While the scan is running, update the progress bar
     while scan_thread.is_alive():
         popup.progress_bar.set(file_search_complete / file_search_total)
         popup.drive_letter.configure(text=file_search_drive)
@@ -289,12 +299,12 @@ if __name__ == '__main__':
     # Check for the SMAPI executable and prompt user if not found
     if 'smapi_path' not in settings or not os.path.exists(settings['smapi_path']):
         # Try the default install location first
-        if os.path.exists(r"C:\Program Files (x86)\Steam\steamapps\common\Stardew Valley\StardewModdingAPI.exe"):
+        if not os.path.exists(r"C:\Program Files (x86)\Steam\steamapps\common\Stardew Valley\StardewModdingAPI.exe"):
             settings['smapi_path'] = r"C:\Program Files (x86)\Steam\steamapps\common\Stardew Valley\StardewModdingAPI.exe"
         else:
             popup = Popup("Locate SMAPI", "Choose how to find SMAPI", window, False)
             popup.add_button("Scan", scan_for_smapi)
-            popup.popup_button.configure(text='Select', fg_color='gray30', command=set_smapi_path)
+            popup.popup_button.configure(text='Select', fg_color='gray30', command=set_smapi_path, hover_color='gray24')
             window.wait_window(popup.popup)
         save_settings(settings)
 

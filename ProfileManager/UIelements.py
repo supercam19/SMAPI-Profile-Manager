@@ -132,6 +132,7 @@ class Window(ctk.CTk):
 class Popup:
     # Popup window, can have textbox, or just a message
     def __init__(self, title, message, root, text_box=True, callback=None):
+        self.buttons = []
         self.popup = ctk.CTkToplevel(root)
         self.popup.title(title)
         self.popup.geometry("+%d+%d" % (root.winfo_x() + 100, root.winfo_y() + 100))
@@ -148,17 +149,18 @@ class Popup:
             self.popup_text.after(100, self.popup_text.focus)
             self.popup_text.pack(pady=10)
         self.button_frame = Frame(self.popup, fg_color='gray14', width=self.popup.winfo_width())
-        self.button_frame.pack(side="bottom", pady=10)
         # self.button_frame.pack_propagate(False)
         self.popup_button = ctk.CTkButton(self.button_frame, text="OK", command=self.close_popup, width=10)
         self.popup_button.pack(side="right", padx=10)
+        self.buttons.append(self.popup_button)
+        self.button_frame.pack(side="right", pady=10)
 
         self.progress_frame = Frame(self.popup, fg_color='gray14', height=30, width=300)
-        self.drive_letter = ctk.CTkLabel(self.progress_frame, text="")
+        self.drive_letter = ctk.CTkLabel(self.progress_frame, text="", width=1)
         self.drive_letter.pack(side="left", padx=2)
         self.progress_bar = ctk.CTkProgressBar(self.progress_frame, orient=ctk.HORIZONTAL, width=200, mode='determinate')
         self.progress_bar.pack(side="left", padx=2)
-        self.progress_label = ctk.CTkLabel(self.progress_frame, text="")
+        self.progress_label = ctk.CTkLabel(self.progress_frame, text="", width=65)
         self.progress_label.pack(side="left", padx=2)
         self.popup.bind("<Return>", self.close_popup)
 
@@ -174,7 +176,8 @@ class Popup:
 
     def add_button(self, text, command, **kwargs):
         button = ctk.CTkButton(self.button_frame, text=text, command=command, width=10, **kwargs)
-        button.pack(side="right", padx=10)
+        button.pack(side="right", padx=5)
+        self.buttons.append(button)
 
 
 class IconSheet:
