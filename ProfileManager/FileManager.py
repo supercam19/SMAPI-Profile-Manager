@@ -102,7 +102,16 @@ def update_files():
     check_files()
 
 
-def find_file(name, update_callback, return_info, path='all'):
+def find_file(dirname, filename, update_callback, return_info, path='all'):
+    """
+    Find a directory by name through recursive searching
+    Total and processed is the number of subdirectories searched from the initial directory
+    @param dirname: The name of the directory to find
+    @param filename: The name of the file to find within the found directory
+    @param update_callback: The function to call to update progress
+    @param return_info: The function to call to return the path to the found file
+    @param path: The path to start searching from, if 'all' is specified, all drives will be searched
+    """
     processed = 0
     total = 0
     if path == 'all':
@@ -115,14 +124,21 @@ def find_file(name, update_callback, return_info, path='all'):
                 if os.path.dirname(root) == drive:
                     processed += 1
                     update_callback(processed, drive, total)
-                if os.path.basename(root) == "Stardew Valley":
+                if os.path.basename(root) == dirname:
                     for file in files:
-                        if file == "StardewModdingAPI.exe":
+                        if file == filename:
                             return_info(os.path.join(root, file))
                             return  # exit function early
     else:
+        for entry in os.scandir(path):
+            if entry.is_dir(): total += 1
         for root, dirs, files in os.walk(path):
-            if name in files:
-                return_info(os.path.join(root, name))
-                return
+            if os.path.dirname(root) == path:
+                processed += 1
+                update_callback(processed, "", total)
+            if os.path.basename(root) == dirname:
+                for file in files:
+                    if file == filename:
+                        return_info(os.path.join(root, file))
+                        return  # exit function early
     return_info(None)

@@ -241,7 +241,7 @@ def scan_for_smapi():
     popup.button_frame.pack(side='right')
     popup.popup.protocol("WM_DELETE_WINDOW", exit)
     for button in popup.buttons: button.configure(state='disabled')
-    scan_thread = threading.Thread(target=find_file, args=("StardewModdingAPI.exe", progress_updates, return_popup_info, 'all'))
+    scan_thread = threading.Thread(target=find_file, args=("Stardew Valley", "StardewModdingAPI.exe", progress_updates, return_popup_info, 'all'))
     scan_thread.start()
     window.withdraw()
     # While the scan is running, update the progress bar
