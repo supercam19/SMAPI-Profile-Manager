@@ -253,12 +253,15 @@ def scan_for_smapi():
     scan_thread.join()
     window.deiconify()
     path = popup_info  # reusing the method to return popup info because im lazy
+    # If scan fails
     if path is None:
         popup.close_popup()
         tmp_popup = Popup("SMAPI not found!", "SMAPI wasn't found in the scan, please select the file", window, text_box=False)
         tmp_popup.popup_button.configure(command=set_smapi_path)
         window.wait_window(tmp_popup.popup)
         tmp_popup.close_popup()
+        path = popup_info
+        settings['smapi_path'] = path
     else:
         settings['smapi_path'] = path
         popup.close_popup()
