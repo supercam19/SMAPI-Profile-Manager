@@ -11,6 +11,8 @@ import os
 from requests import get as get_url
 from requests import exceptions
 from ctypes import windll
+import winreg
+import glob
 
 
 def save_profile(data):
@@ -20,7 +22,7 @@ def save_profile(data):
         json.dump(data, f, indent=4)
 
 
-def edit_saved_profile(profiles_data, profile_name,  new_value=None, key=None, action='edit'):
+def edit_saved_profile(profiles_data, profile_name, new_value=None, key=None, action='edit'):
     # Edit a profile in the save file
     if action == 'edit':
         # Compare profile names to find the one to edit
@@ -99,3 +101,44 @@ def update_files():
         os.remove(file)
     check_files()
 
+
+def find_file(dirname, filename, update_callback, return_info, path='all'):
+    """
+    Find a directory by name through recursive searching
+    Total and processed is the number of subdirectories searched from the initial directory
+    @param dirname: The name of the directory to find
+    @param filename: The name of the file to find within the found directory
+    @param update_callback: The function to call to update progress
+    @param return_info: The function to call to return the path to the found file
+    @param path: The path to start searching from, if 'all' is specified, all drives will be searched
+    """
+    processed = 0
+    total = 0
+    if path == 'all':
+        # Get all valid drive letters
+        drives = [chr(x) + ":\\" for x in range(65, 91) if os.path.exists(chr(x) + ":\\")]
+        for drive in drives:
+            for entry in os.scandir(drive):
+                if entry.is_dir(): total += 1
+            for root, dirs, files in os.walk(drive):
+                if os.path.dirname(root) == drive:
+                    processed += 1
+                    update_callback(processed, drive, total)
+                if os.path.basename(root) == dirname:
+                    for file in files:
+                        if file == filename:
+                            return_info(os.path.join(root, file))
+                            return  # exit function early
+    else:
+        for entry in os.scandir(path):
+            if entry.is_dir(): total += 1
+        for root, dirs, files in os.walk(path):
+            if os.path.dirname(root) == path:
+                processed += 1
+                update_callback(processed, "", total)
+            if os.path.basename(root) == dirname:
+                for file in files:
+                    if file == filename:
+                        return_info(os.path.join(root, file))
+                        return  # exit function early
+    return_info(None)
