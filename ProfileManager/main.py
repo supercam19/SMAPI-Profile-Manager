@@ -103,6 +103,7 @@ class Profile:
         window.undo_button.configure(state='normal')
         edit_saved_profile(profiles_data, self.name, self.prof_info, action='edit')
         self.name = self.prof_info['name']
+        self.name_tooltip.text = self.name
         if 'path' in self.prof_info: self.path = self.prof_info['path'].rstrip("\n")
         self.prof_title.configure(text=self.name)
         sort_profiles(settings['sort'])
