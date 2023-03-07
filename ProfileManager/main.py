@@ -155,14 +155,18 @@ def return_popup_info(info):
 
 def sort_profiles(sort=None):
     # Manages profile sorting
+    #print(profiles[1].prof_info)
     invert = window.invert_sort_checkbox.get()
     # Save the unmodded profile to local var unmodded
     pinned = []
+    to_remove = []
     for profile in profiles:
-        if 'pinned' in profile.prof_info:
-            if profile.prof_info['pinned']:
-                pinned.append(profile)
-                profiles.pop(profiles.index(profile))
+        print(profile.name, profile.prof_info.get('pinned', False))
+        if profile.prof_info.get('pinned', False):
+            pinned.append(profile)
+            to_remove.append(profile)
+    for profile in to_remove:
+        profiles.remove(profile)
     if sort is None:
         # If the sorting method didn't change, but invert was toggled
         profiles.reverse()
