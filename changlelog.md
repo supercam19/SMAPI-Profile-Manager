@@ -1,6 +1,6 @@
 # SMAPI Profile Manager Changelog
 
-## Update [v.1.2.5] (???)
+## Update [v1.2.5] (???)
 An update to make the install process simpler and fix some bugs.
 
 ### Additions
