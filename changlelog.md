@@ -6,9 +6,13 @@ An update to make the install process simpler and fix some bugs.
 ### Additions
  - Added a file scanner to find the SMAPI executable automatically (#38)
 
+### Changes
+ - Added hover effects to the profile list
+
 ### Fixes
  - Fixed pinned profiles not sticking to the top of the list if the profile was next to another pinned profile in the sort (#35)
  - The tooltip for profile names now gets updated when the profile name is changed (#37)
+ - Fixed profile name tooltips appearing away from the profile name in some situations
 
 ## Update [v1.2.4] (Feb 9, 2023)
 A slightly more feature heavy update than recently, possibly the last big update until 1.3.0.
