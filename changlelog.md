@@ -1,6 +1,6 @@
 # SMAPI Profile Manager Changelog
 
-## Update [v1.2.5] (???)
+## Update [v1.2.5] (March 7, 2023)
 An update to make the install process simpler and fix some bugs.
 
 ### Additions

@@ -280,7 +280,7 @@ def progress_updates(complete, drive, total):
 
 profiles = []
 name_input = ''
-VERSION = "v1.2.4"
+VERSION = "v1.2.5"
 file_search_complete = 0
 file_search_total = 1
 file_search_drive = None
@@ -330,6 +330,7 @@ if __name__ == '__main__':
     for profile in profiles:
         profile.draw_profile()
     save_settings(settings)
-    if settings['show_update_bar']: check_for_updates()
+    if 'show_update_bar' in settings:
+        if settings['show_update_bar']: check_for_updates()
 
     window.mainloop()
