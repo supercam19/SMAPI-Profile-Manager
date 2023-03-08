@@ -6,15 +6,24 @@
 """
 
 import customtkinter as ctk
+from .Util import get_all_children
 
 
 class Frame(ctk.CTkFrame):
     # Frame object (just a regular CTkFrame)
-    def __init__(self, parent, **kwargs):
+    def __init__(self, parent, vfx=False, **kwargs):
         super().__init__(parent, **kwargs)
         # define size of frame
         self.width = kwargs.get("width", 100)
         self.height = kwargs.get("height", 100)
+        # Adds visual hover effets if vfx is True
+        if vfx:
+            self.bind("<Enter>", lambda x: self.configure(highlightthickness=1), add="+")
+            self.bind("<Leave>", lambda x: self.configure(highlightthickness=0), add="+")
+            # for child in get_all_children(self, True, True):
+            #     print(child)
+            #     child.bind("<Enter>", lambda x: self.configure(fg_color='gray15'), add="+")
+            #     child.bind("<Leave>", lambda x: self.configure(fg_color='gray21'), add="+")
 
 
 class Button(ctk.CTkButton):
