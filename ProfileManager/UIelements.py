@@ -52,7 +52,7 @@ class Window(ctk.CTk):
         self.undo_button = ctk.CTkButton(self.control_frame, text="\U000021A9", text_font=("Arial", 18), width=50, state="disabled")
         self.undo_tooltip = Tooltip(self.undo_button, "Revert last change to profiles")
         self.undo_button.pack(pady=5, anchor=ctk.N)
-        self.help_button = ctk.CTkButton(self.control_frame, text="\U0001F6C8", text_color='white', text_font=("Arial", 20),
+        self.help_button = ctk.CTkButton(self.control_frame, text="\U0000003F", text_color='white', text_font=("Arial", 18),
                                            width=50, command=lambda: HelpMenu(self), pady=0)
         self.help_tooltip = Tooltip(self.help_button, "Open Help Menu")
         self.help_button.pack(pady=5, anchor="n")
