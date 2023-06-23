@@ -11,6 +11,7 @@ from main import VERSION
 from webbrowser import open as open_url
 from SuperWidgets.SuperWidgets import Frame
 from SuperWidgets.Tooltip import Tooltip
+from SuperWidgets.HelpMenu import HelpMenu
 
 
 class Window(ctk.CTk):
@@ -51,10 +52,10 @@ class Window(ctk.CTk):
         self.undo_button = ctk.CTkButton(self.control_frame, text="\U000021A9", text_font=("Arial", 18), width=50, state="disabled")
         self.undo_tooltip = Tooltip(self.undo_button, "Revert last change to profiles")
         self.undo_button.pack(pady=5, anchor=ctk.N)
-        self.github_button = ctk.CTkButton(self.control_frame, text="\U0001F6C8", text_color='white', text_font=("Arial", 20),
-                                           width=50, command=lambda: open_url("https://github.com/supercam19/SMAPI-Profile-Manager"), pady=0)
-        self.github_tooltip = Tooltip(self.github_button, "Help (Open GitHub page)")
-        self.github_button.pack(pady=5, anchor="n")
+        self.help_button = ctk.CTkButton(self.control_frame, text="\U0000003F", text_color='white', text_font=("Arial", 18),
+                                           width=50, command=lambda: HelpMenu(self), pady=0)
+        self.help_tooltip = Tooltip(self.help_button, "Open Help Menu")
+        self.help_button.pack(pady=5, anchor="n")
         self.version_label = ctk.CTkLabel(self.control_frame, text="Version: " + VERSION,
                                           width=100, height=20, text_font=("Arial", 7))
         self.version_label.pack(side="bottom", fill="x", pady=5)
