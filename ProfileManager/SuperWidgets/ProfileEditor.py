@@ -21,7 +21,7 @@ class ProfileEditor:
         self.callback = callback
         self.dropdown_active = False
         self.properties_frame = None
-        self.protected_values = ('created', 'last_launched')  # Do not allow user to modify these
+        self.protected_values = ('created', 'last_launched', 'mods')  # Do not allow user to modify these
         self.editor = ctk.CTkToplevel(root, fg_color="gray18")
         self.editor.title("Profile Editor - " + self.prof_info['name'])
         self.editor.geometry("+%d+%d" % (root.winfo_x() + 100, root.winfo_y() + 100))
