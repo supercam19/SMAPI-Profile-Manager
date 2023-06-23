@@ -53,6 +53,7 @@ class Tooltip:
         x += self.widget.winfo_pointerx() + 1
         y += self.widget.winfo_pointery() + 1
         self.tw = ctk.CTkToplevel(self.widget)
+        self.tw.withdraw()
         self.tw.wm_attributes("-toolwindow", True)
         # Leaves only the label and removes the topbar of the window
         self.tw.wm_overrideredirect(True)
@@ -69,6 +70,7 @@ class Tooltip:
         label.bind("<Enter>", self.tt_enter, add="+")
         label.bind("<Leave>", self.tt_leave, add="+")
         self.tw.geometry = label.winfo_width() + 1, label.winfo_height() + 1
+        self.tw.deiconify()
 
     def hide_tip(self):
         self.unschedule()

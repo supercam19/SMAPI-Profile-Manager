@@ -332,5 +332,4 @@ if __name__ == '__main__':
     save_settings(settings)
     if 'show_update_bar' in settings:
         if settings['show_update_bar']: check_for_updates()
-
     window.mainloop()

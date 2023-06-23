@@ -6,6 +6,9 @@ This update adds a whole new help menu along with other features and fixes.
 ### Additions
  - Added a new help menu to better assist users with the program (#43)
 
+### Fixes
+ - Fixed an issue where tooltips wouldn't render properly when the computer is running slow
+
 ## Update [v1.2.5] (March 7, 2023)
 An update to make the install process simpler and fix some bugs.
 
