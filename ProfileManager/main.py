@@ -24,6 +24,12 @@ class Profile:
         if 'path' in info: self.path = info['path'].rstrip("\n")
         info['special'] = None if 'special' not in info else info['special']
         self.special = info['special']
+        # Calculate # of mods in profile everytime program starts
+        if self.special == 'unmodded':
+            info['mods'] = 0
+        else:
+            info['mods'] = len([x for x in os.listdir(self.path) if os.path.isdir(os.path.join(self.path, x))])
+
         self.prof_info = info  # all other profile information
         if 'last_launched' not in self.prof_info: self.prof_info['last_launched'] = -1
         self.created = info['created']
@@ -332,5 +338,4 @@ if __name__ == '__main__':
     save_settings(settings)
     if 'show_update_bar' in settings:
         if settings['show_update_bar']: check_for_updates()
-
     window.mainloop()
