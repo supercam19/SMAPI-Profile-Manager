@@ -7,15 +7,15 @@ class HelpMenu:
         self.menu = ctk.CTkToplevel(root)
         self.menu.geometry("+%d+%d" % (root.winfo_x() + 100, root.winfo_y() + 100))
         self.menu.title("Help Menu")
-
+        self.menu.resizable(False, False)
         self.stack = []
         for i in range(4):
             self.stack.append(ctk.CTkFrame(self.menu))
             self.stack[i].pack(side=ctk.TOP, fill=ctk.BOTH, expand=ctk.YES)
 
         self.stack[0].configure(bg_color='gray24', fg_color='gray24')
-        self.title = ctk.CTkLabel(self.stack[0], text="SMAPI Profile Manager Help", text_font=("Arial", 20), fg_color="gray24", height=40)
-        self.title.pack(pady=(10, 0), side=ctk.LEFT)
+        self.title = ctk.CTkLabel(self.stack[0], text="SMAPI Profile Manager Help", text_font=("Arial", 20), fg_color="gray24", height=40, anchor='center')
+        self.title.pack(pady=(10, 0), side=ctk.LEFT, fill=ctk.X, expand=ctk.YES)
         self.stack[1].configure(bg_color='gray24', fg_color='gray24')
         self.seperator = ctk.CTkLabel(self.stack[1], text="\U000023AF"*28, text_font=("Arial", 20), fg_color='gray24', height=5)
         self.seperator.pack(side=ctk.LEFT)
@@ -37,12 +37,12 @@ class HelpMenu:
 
         self.button_frame = ctk.CTkFrame(self.stack[3])
         self.stack[3].configure(bg_color='gray24', fg_color='gray24')
-        self.ok_button = ctk.CTkButton(self.stack[3], text="OK", command=self.visit, fg_color='gray24', bg_color='gray24', width=int(self.menu.winfo_width()), hover_color='gray18')
-        self.ok_button.pack(side=ctk.RIGHT)
+        self.ok_button = ctk.CTkButton(self.stack[3], text="OK", command=self.visit, fg_color='gray24', bg_color='gray24', hover_color='gray18')
+        self.ok_button.pack(side=ctk.RIGHT, fill='both', expand=True)
         self.ok_button.bind("<Enter>", lambda event: self.ok_button.configure(bg_color='gray18'))
         self.ok_button.bind("<Leave>", lambda event: self.ok_button.configure(bg_color='gray24'))
-        self.cancel_button = ctk.CTkButton(self.stack[3], text="Cancel", command=self.menu.destroy, fg_color='gray24', bg_color='gray24', width=int(self.menu.winfo_width()), hover_color='gray18')
-        self.cancel_button.pack(side=ctk.RIGHT)
+        self.cancel_button = ctk.CTkButton(self.stack[3], text="Cancel", command=self.menu.destroy, fg_color='gray24', bg_color='gray24', hover_color='gray18')
+        self.cancel_button.pack(side=ctk.RIGHT, fill='both', expand=True)
         self.cancel_button.bind("<Enter>", lambda event: self.cancel_button.configure(bg_color='gray18'))
         self.cancel_button.bind("<Leave>", lambda event: self.cancel_button.configure(bg_color='gray24'))
 
