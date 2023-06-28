@@ -11,8 +11,7 @@ import os
 from requests import get as get_url
 from requests import exceptions
 from ctypes import windll
-import winreg
-import glob
+from shutil import move as move_file
 
 
 def save_profile(data):
@@ -72,6 +71,16 @@ def save_settings(settings):
     # Save settings to the save file
     with open('settings.json', 'w') as f:
         json.dump(settings, f, indent=4)
+
+
+def create_appdata_dir():
+    if not os.path.exists(os.path.join(os.getenv('APPDATA'), 'SMAPI Profile Manager')):
+        os.mkdir(os.path.join(os.getenv('APPDATA'), 'SMAPI Profile Manager'))
+    program_files = ['profiles.json', 'settings.json', 'assets']
+    for file in program_files:
+        if os.path.exists(file) and not os.path.exists(os.path.join(os.getenv('APPDATA'), 'SMAPI Profile Manager', file)):
+            move_file(file, os.path.join(os.getenv('APPDATA'), 'SMAPI Profile Manager', file))
+    os.chdir(os.path.join(os.getenv('APPDATA'), 'SMAPI Profile Manager'))
 
 
 def check_files():

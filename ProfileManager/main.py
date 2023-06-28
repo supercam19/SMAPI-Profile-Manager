@@ -292,6 +292,7 @@ file_search_total = 1
 file_search_drive = None
 
 if __name__ == '__main__':
+    create_appdata_dir()
     check_files()
     settings = load_settings()
 

@@ -10,6 +10,7 @@ This update adds a whole new help menu along with other features and fixes.
  - The amount of mods a profile has can now be seen in its properties
 
 ### Fixes
+ - Fixed settings and profiles not syncing when launching the program from different directories
  - Fixed an issue where tooltips wouldn't render properly when the computer is running slow
 
 ## Update [v1.2.5] (March 7, 2023)
