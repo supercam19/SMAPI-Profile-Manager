@@ -1,6 +1,6 @@
 # SMAPI Profile Manager Changelog
 
-## Update [v1.2.6] (???)
+## Update [v1.2.6] (October 20, 2024)
 This update adds a new help menu, and fixes the bugs I've noticed since last update...
 
 ### Additions
