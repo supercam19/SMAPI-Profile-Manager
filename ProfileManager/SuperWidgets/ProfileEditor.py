@@ -23,6 +23,8 @@ class ProfileEditor:
         self.properties_frame = None
         self.protected_values = ('created', 'last_launched', 'mods')  # Do not allow user to modify these
         self.editor = ctk.CTkToplevel(root, fg_color="gray18")
+        self.editor.withdraw()
+        self.editor.after(10, self.display)
         self.editor.title("Profile Editor - " + self.prof_info['name'])
         self.editor.geometry("+%d+%d" % (root.winfo_x() + 100, root.winfo_y() + 100))
 
@@ -77,7 +79,7 @@ class ProfileEditor:
         # Creates a frame with a label and a checkbox
         frame = Frame(self.editor, width=300, height=40, fg_color='gray18')
         frame.pack_propagate(False)
-        frame.pack()
+        frame.pack(expand=True, fill='both')
         label = ctk.CTkLabel(frame, text=title, width=50, anchor='w')
         label.pack(side="left", padx=10)
         check = ctk.CTkCheckBox(frame, text='')
@@ -138,3 +140,7 @@ class ProfileEditor:
         self.ePathEntry.insert(0, new_path)
         # Stop the profile editor from sticking to above other windows (still on top, just not stuck)
         self.editor.attributes('-topmost', False)
+
+    def display(self):
+        self.editor.deiconify()
+        self.editor.focus()

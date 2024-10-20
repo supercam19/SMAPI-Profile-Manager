@@ -29,11 +29,11 @@ class Frame(ctk.CTkFrame):
 class Button(ctk.CTkButton):
     # Define a custom button that changes colour or image on hover
     def __init__(self, parent, type='text', hover_image=None, **kwargs):
-        super().__init__(parent, **kwargs)
+        super().__init__(parent, hover=False, **kwargs)
         self.text_color_default = kwargs.get("text_color", "white")
         self.configure(text_color=self.text_color_default)
         self.image_default = kwargs.get("image", None)
-        self.configure(image=self.image)
+        self.configure(image=self.image_default)
         self.state = kwargs.get("state", "normal")
         self.configure(state=self.state)
         self.text = kwargs.get("text", "")

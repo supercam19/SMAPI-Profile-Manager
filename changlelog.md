@@ -1,17 +1,22 @@
 # SMAPI Profile Manager Changelog
 
 ## Update [v1.2.6] (???)
-This update adds a whole new help menu along with other features and fixes.
+This update adds a new help menu, and fixes the bugs I've noticed since last update...
 
 ### Additions
  - Added a new help menu to better assist users with the program (#43)
 
 ### Changes
+ - Mod profiles will now be synced across the computer, independent of where you launched the program
  - The amount of mods a profile has can now be seen in its properties
+ - Tooltips now follow mouse movements
 
 ### Fixes
- - Fixed settings and profiles not syncing when launching the program from different directories
+ - Fixed tooltips sometimes not disappearing
+ - Fixed profiles list being scrollable when it didn't need to be (#39)
+ - Scroll button now properly scales with profiles list size (#40)
  - Fixed an issue where tooltips wouldn't render properly when the computer is running slow
+ - Fixed visual lag when scrolling the profiles list
 
 ## Update [v1.2.5] (March 7, 2023)
 An update to make the install process simpler and fix some bugs.

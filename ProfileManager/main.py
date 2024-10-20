@@ -35,17 +35,17 @@ class Profile:
         self.created = info['created']
         self.last_launched = info['last_launched']
         # Define profile widgets
-        self.prof_frame = Frame(window.profiles_list, vfx=True, width=480, height=32)
+        self.prof_frame = Frame(window.profiles_list, vfx=False, width=480, height=32, fg_color='gray21', bg_color='gray21')
         self.prof_frame.pack_propagate(False)
         self.left_frame = Frame(self.prof_frame, width=320, height=32, fg_color='gray21', bg_color='gray21')
         self.left_frame.pack_propagate(False)
         self.right_frame = Frame(self.prof_frame, width=140, height=32, fg_color='gray21', bg_color='gray21')
         self.right_frame.pack_propagate(False)
-        self.prof_pin = ctk.CTkLabel(self.left_frame, text="\U0001F4CC", text_color="gray6", text_font=("Arial", 12), width=1)
-        self.prof_title = ctk.CTkLabel(self.left_frame, text=self.name, fg_color="gray21", text_font=("Arial", 12), anchor='w', width=1)
-        self.prof_button = Button(self.right_frame, text="\U000025B6", fg_color="gray21", text_font=("Arial", 24), text_color='white', hover_color='gray21', width=32, command=self.select_profile)
-        self.prof_edit = Button(self.right_frame, width=32, image=window.icons.gear, fg_color="gray21", height=40, type='button', text_color='white', hover_image=window.icons.gear_dark, command=self.edit_profile)
-        self.prof_delete = Button(self.right_frame, width=32, image=window.icons.trash_closed, fg_color='gray21', height=40, type='button', hover_image=window.icons.trash_opened, command=self.delete_profile)
+        self.prof_pin = ctk.CTkLabel(self.left_frame, text="\U0001F4CC", text_color="gray6", font=("Arial", 16), width=1)
+        self.prof_title = ctk.CTkLabel(self.left_frame, text=self.name, fg_color="gray21", font=("Arial", 16), anchor='w', width=1)
+        self.prof_button = Button(self.right_frame, text="\U000025B6", fg_color="gray21", font=("Arial", 28), text_color='white', hover_color='gray21', width=32, command=self.select_profile)
+        self.prof_edit = Button(self.right_frame, width=36, image=window.icons.gear, fg_color="gray21", height=44, type='button', text_color='white', hover_image=window.icons.gear_dark, command=self.edit_profile)
+        self.prof_delete = Button(self.right_frame, width=36, image=window.icons.trash_closed, fg_color='gray21', height=44, type='button', hover_image=window.icons.trash_opened, command=self.delete_profile)
 
         # Define profile tooltips
         self.launch_tooltip = Tooltip(self.prof_button, "Launch the game with this profile")
@@ -286,7 +286,7 @@ def progress_updates(complete, drive, total):
 
 profiles = []
 name_input = ''
-VERSION = "v1.2.5"
+VERSION = "v1.2.6"
 file_search_complete = 0
 file_search_total = 1
 file_search_drive = None
